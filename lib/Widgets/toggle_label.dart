@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:moneyboi/Constants/colors.dart';
 
 class ToggleLabel extends StatelessWidget {
   final bool isActive;
@@ -22,7 +23,7 @@ class _ActiveLabel extends StatelessWidget {
     return Container(
       padding: const EdgeInsets.symmetric(vertical: 14.0, horizontal: 18.0),
       decoration: BoxDecoration(
-        color: const Color(0xFF877BEB),
+        color: moneyBoyPurple,
         borderRadius: BorderRadius.circular(18.0),
       ),
       child: Row(

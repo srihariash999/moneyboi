@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:moneyboi/Constants/colors.dart';
 import 'package:moneyboi/Widgets/profile_avatar.dart';
 import 'package:moneyboi/Widgets/timewise_expense_list.dart';
 import 'package:moneyboi/Widgets/toggle_label.dart';
@@ -11,33 +12,45 @@ class HomePage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        body: SafeArea(
-      child: Column(
-        children: [
-          const HomeScreenTopBar(),
-          TotalExpensesCard(
-            height: MediaQuery.of(context).size.height * 0.22,
-            totalExpense: "₹ 5000",
-          ),
-          Container(
-            alignment: Alignment.centerLeft,
-            padding: const EdgeInsets.only(left: 24.0, top: 20.0),
-            child: Text(
-              "Expense Summary",
-              style: GoogleFonts.montserrat(
-                fontSize: 20.0,
-                letterSpacing: 1.2,
-                fontWeight: FontWeight.w500,
-                color: Colors.black.withOpacity(0.8),
+      body: SafeArea(
+        child: Column(
+          children: [
+            const HomeScreenTopBar(),
+            TotalExpensesCard(
+              height: MediaQuery.of(context).size.height * 0.22,
+              totalExpense: "₹ 5000",
+            ),
+            Container(
+              alignment: Alignment.centerLeft,
+              padding: const EdgeInsets.only(left: 24.0, top: 20.0),
+              child: Text(
+                "Expense Summary",
+                style: GoogleFonts.montserrat(
+                  fontSize: 20.0,
+                  letterSpacing: 1.2,
+                  fontWeight: FontWeight.w500,
+                  color: Colors.black.withOpacity(0.8),
+                ),
               ),
             ),
-          ),
-          const SizedBox(height: 12.0),
-          const ToggleLabelsRow(),
-          const TimewiseExpensesList()
-        ],
+            const SizedBox(height: 12.0),
+            const ToggleLabelsRow(),
+            TimewiseExpensesList(
+              height: MediaQuery.of(context).size.height * 0.38,
+            )
+          ],
+        ),
       ),
-    ));
+      floatingActionButton: FloatingActionButton(
+        onPressed: () {},
+        backgroundColor: moneyBoyPurple,
+        elevation: 1.0,
+        child: const Icon(
+          Icons.add,
+          size: 42.0,
+        ),
+      ),
+    );
   }
 }
 
