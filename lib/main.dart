@@ -1,3 +1,4 @@
+import 'package:bot_toast/bot_toast.dart';
 import 'package:flutter/material.dart';
 import 'package:moneyboi/Screens/login_page.dart';
 
@@ -12,6 +13,8 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       title: 'MoneyBoi',
+      builder: BotToastInit(),
+      navigatorObservers: [BotToastNavigatorObserver()],
       home: LoginPage(),
     );
   }

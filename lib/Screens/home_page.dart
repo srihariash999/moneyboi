@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:moneyboi/Constants/colors.dart';
+import 'package:moneyboi/Screens/login_page.dart';
 import 'package:moneyboi/Widgets/profile_avatar.dart';
 import 'package:moneyboi/Widgets/timewise_expense_list.dart';
 import 'package:moneyboi/Widgets/toggle_label.dart';
@@ -89,19 +90,42 @@ class HomeScreenTopBar extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Row(
+      mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
-        const ProfileAvatar(
-          profileImage:
-              "https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=580&q=80",
+        Row(
+          children: [
+            const ProfileAvatar(
+              profileImage:
+                  "https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=580&q=80",
+            ),
+            Text(
+              "Srihari Ayapilla",
+              style: GoogleFonts.montserrat(
+                fontSize: 18.0,
+                fontWeight: FontWeight.w500,
+                color: Colors.black.withOpacity(0.8),
+              ),
+            )
+          ],
         ),
-        Text(
-          "Srihari Ayapilla",
-          style: GoogleFonts.montserrat(
-            fontSize: 18.0,
-            fontWeight: FontWeight.w500,
-            color: Colors.black.withOpacity(0.8),
+        Padding(
+          padding: const EdgeInsets.only(right: 16.0),
+          child: IconButton(
+            onPressed: () {
+              Navigator.pop(context);
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (_) => LoginPage(),
+                ),
+              );
+            },
+            icon: const Icon(
+              Icons.logout,
+              color: moneyBoyPurple,
+            ),
           ),
-        )
+        ),
       ],
     );
   }

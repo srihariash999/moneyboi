@@ -21,8 +21,10 @@ environment:
   sdk: ">=2.12.0 <3.0.0"
 
 dependencies:
-  bloc: ^7.2.1  
+  bloc: ^7.2.1
+  bot_toast: ^4.0.1  
   cupertino_icons: ^1.0.2
+  dio: ^4.0.3
   flutter:
     sdk: flutter
   flutter_bloc: ^7.3.3
