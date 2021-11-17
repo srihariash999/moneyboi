@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:moneyboi/Constants/colors.dart';
 
 class TotalExpensesCard extends StatelessWidget {
   final double height;
@@ -25,7 +26,7 @@ class TotalExpensesCard extends StatelessWidget {
           )
         ],
         borderRadius: BorderRadius.circular(16.0),
-        color: const Color(0xFF877BEB),
+        color: moneyBoyPurple,
       ),
       child: Stack(
         children: [
@@ -37,10 +38,10 @@ class TotalExpensesCard extends StatelessWidget {
               height: height * 0.9,
               width: height,
               decoration: const BoxDecoration(
-                color: Color(0xFF9C91ED),
+                color: moneyBoyPurpleLight,
                 borderRadius: BorderRadius.only(
                   bottomLeft: Radius.circular(10.0),
-                  bottomRight: Radius.circular(90.0),
+                  bottomRight: Radius.circular(60.0),
                   topRight: Radius.circular(10.0),
                 ),
               ),
