@@ -4,7 +4,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:moneyboi/Blocs/LoginBloc/login_bloc.dart';
 import 'package:moneyboi/Constants/colors.dart';
-import 'package:moneyboi/Screens/signup_page.dart';
+import 'package:moneyboi/Screens/signup/signup_page.dart';
 import 'package:moneyboi/Widgets/big_bar_button.dart';
 import 'package:moneyboi/Widgets/text_field_widget.dart';
 

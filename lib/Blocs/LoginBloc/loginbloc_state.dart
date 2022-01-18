@@ -10,3 +10,4 @@ class LoginBlocLoading extends LoginBlocState {}
 class LoginBlocLoaded extends LoginBlocState {}
 
 class LoginBlocError extends LoginBlocState {}
+
