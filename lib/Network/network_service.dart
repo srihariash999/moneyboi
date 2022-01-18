@@ -30,6 +30,7 @@ class NetworkService {
         );
       }
     } on DioError catch (e) {
+      debugPrint("Dio Error: $e");
       return ApiResponseModel(
         statusCode: e.response?.statusCode ?? 404,
         endPoint: loginEndPoint,
