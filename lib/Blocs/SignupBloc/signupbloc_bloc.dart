@@ -1,7 +1,6 @@
 import 'package:bloc/bloc.dart';
 import 'package:bot_toast/bot_toast.dart';
 import 'package:flutter/material.dart';
-import 'package:meta/meta.dart';
 // import 'package:moneyboi/Blocs/LoginBloc/login_bloc.dart';
 import 'package:moneyboi/Data%20Models/api_response_model.dart';
 import 'package:moneyboi/Network/network_service.dart';
@@ -27,7 +26,7 @@ class SignupBloc extends Bloc<SignupBlocEvent, SignupBlocState> {
         emit.call(SignupBlocPasswordState(email: _email, name: _name));
       } else if (event is SignupEvent) {
         emit.call(SignupBlocLoadingState());
-        print("name : $_name, email: $_email password:${event.password}");
+        debugPrint("name : $_name, email: $_email password:${event.password}");
         final ApiResponseModel _signUpResult = await _apiService.signup(
             name: _name, email: _email, password: event.password);
         if (_signUpResult.statusCode == 200) {

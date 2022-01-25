@@ -11,7 +11,7 @@ const catClothes =
     ExpenseCategory(name: "Clothes", categoryImage: "assets/clothes.png");
 const catEducation =
     ExpenseCategory(name: "Education", categoryImage: "assets/education.png");
-const catFood = ExpenseCategory(name: "Food", categoryImage: "assets/food.png");
+const catFood = ExpenseCategory(name: "Education", categoryImage: "assets/food.png");
 const catGroceries =
     ExpenseCategory(name: "Groceries", categoryImage: "assets/groceries.png");
 const catHome = ExpenseCategory(name: "Home", categoryImage: "assets/home.png");
@@ -25,3 +25,6 @@ const catSports =
     ExpenseCategory(name: "Sports", categoryImage: "assets/sports.png");
 const catTravel =
     ExpenseCategory(name: "Travel", categoryImage: "assets/travel.png");
+
+const catMisc =
+    ExpenseCategory(name: 'Misc', categoryImage: 'assets/sports.png');
