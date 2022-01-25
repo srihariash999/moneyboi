@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:hive/hive.dart';
 import 'package:moneyboi/Blocs/HomeScreenBloc/homescreen_bloc.dart';
 import 'package:moneyboi/Constants/colors.dart';
 import 'package:moneyboi/Constants/enums.dart';
@@ -171,8 +172,12 @@ class HomeScreenTopBar extends StatelessWidget {
         Padding(
           padding: const EdgeInsets.only(right: 16.0),
           child: IconButton(
-            onPressed: () {
+            onPressed: () async {
+              final Box _authBox = Hive.box('authBox');
+              await _authBox.clear();
+              // ignore: use_build_context_synchronously
               Navigator.pop(context);
+              // ignore: use_build_context_synchronously
               Navigator.push(
                 context,
                 MaterialPageRoute(

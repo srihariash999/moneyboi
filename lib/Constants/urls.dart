@@ -1,6 +1,6 @@
-// const String baseUrl = "https://money-boi.herokuapp.com/api";
+const String baseUrl = "https://moneyboi-backend.herokuapp.com/api";
 
-const String baseUrl = "http://192.168.0.123:3000/api";
+// const String baseUrl = "http://192.168.0.123:3000/api";
 
 /*
 POST 
@@ -22,7 +22,6 @@ example body:
 }
 */
 const String signupEndPoint = "/users";
-
 
 /*
 GET 
