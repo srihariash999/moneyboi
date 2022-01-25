@@ -33,3 +33,15 @@ example body:
 }
 */
 const String expenseRecordsListingEndPoint = "/expenses";
+
+/*
+POST 
+Auth Required : yes,
+example body:
+{
+    "category": "Alcohol",
+    "amount": 500,
+    "record_date": <utc date string>
+}
+*/
+const String expenseRecordCreateEndPoint = "/expenses";

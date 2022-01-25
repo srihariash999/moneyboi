@@ -11,7 +11,7 @@ const catClothes =
     ExpenseCategory(name: "Clothes", categoryImage: "assets/clothes.png");
 const catEducation =
     ExpenseCategory(name: "Education", categoryImage: "assets/education.png");
-const catFood = ExpenseCategory(name: "Education", categoryImage: "assets/food.png");
+const catFood = ExpenseCategory(name: "Food", categoryImage: "assets/food.png");
 const catGroceries =
     ExpenseCategory(name: "Groceries", categoryImage: "assets/groceries.png");
 const catHome = ExpenseCategory(name: "Home", categoryImage: "assets/home.png");
@@ -28,3 +28,22 @@ const catTravel =
 
 const catMisc =
     ExpenseCategory(name: 'Misc', categoryImage: 'assets/sports.png');
+
+List<ExpenseCategory> listOfCategories = [
+  catAlcohol,
+  catBooks,
+  catCar,
+  catCigarette,
+  catClothes,
+  catEducation,
+  catFood,
+  catGroceries,
+  catHome,
+  catMovie,
+  catPets,
+  catPhone,
+  catRent,
+  catSports,
+  catTravel,
+  catMisc,
+];

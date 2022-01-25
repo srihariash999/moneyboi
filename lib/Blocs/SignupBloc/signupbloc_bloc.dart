@@ -35,6 +35,8 @@ class SignupBloc extends Bloc<SignupBlocEvent, SignupBlocState> {
           emit.call(SignupBlocInitial());
           BotToast.showText(text: "SignUp Successful");
           // ignore: use_build_context_synchronously
+          Navigator.pop(event.context);
+          // ignore: use_build_context_synchronously
           Navigator.pushReplacement(
             event.context,
             MaterialPageRoute(

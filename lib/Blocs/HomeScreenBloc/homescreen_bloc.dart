@@ -1,5 +1,6 @@
 import 'package:bloc/bloc.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:moneyboi/Constants/enums.dart';
 // import 'package:meta/meta.dart';
 import 'package:moneyboi/Data%20Models/api_response_model.dart';
@@ -13,6 +14,9 @@ part 'homescreen_state.dart';
 final NetworkService _apiService = NetworkService();
 
 ToggleLabelEnum _toggleEnum = ToggleLabelEnum.weekly;
+
+HomeScreenLoaded _loadedState =
+    HomeScreenLoaded(expenseRecords: const [], toggleLabel: _toggleEnum);
 
 class HomeScreenBloc extends Bloc<HomeScreenEvent, HomeScreenState> {
   HomeScreenBloc() : super(HomeScreenInitial()) {
@@ -52,22 +56,55 @@ class HomeScreenBloc extends Bloc<HomeScreenEvent, HomeScreenState> {
               );
             }
             _toggleEnum = event.toggleLabel;
-            emit.call(HomeScreenLoaded(
+            _loadedState = HomeScreenLoaded(
               expenseRecords: _expenseRecords,
               toggleLabel: _toggleEnum,
-            ));
+            );
+            emit.call(_loadedState);
           } else {
-            emit.call(HomeScreenLoaded(
+            _loadedState = HomeScreenLoaded(
               expenseRecords: _expenseRecords,
               toggleLabel: _toggleEnum,
-            ));
+            );
+            emit.call(_loadedState);
           }
         } catch (e) {
           debugPrint(e.toString());
-          emit.call(HomeScreenLoaded(
+          _loadedState = HomeScreenLoaded(
             expenseRecords: const [],
             toggleLabel: _toggleEnum,
-          ));
+          );
+          emit.call(_loadedState);
+        }
+      } else if (event is CreateExpenseRecordEvent) {
+        emit.call(HomeScreenLoading());
+
+        final ApiResponseModel _expRecsResp;
+
+        try {
+          _expRecsResp = await _apiService.createExpenseRecords(
+            recordDate: event.recordDate,
+            amount: event.amount,
+            category: event.category,
+            remarks: event.remarks,
+          );
+
+          if (_expRecsResp.statusCode == 200) {
+            emit.call(_loadedState);
+            // ignore: use_build_context_synchronously
+            Navigator.pop(event.context, 'true');
+            // ignore: use_build_context_synchronously
+            BlocProvider.of<HomeScreenBloc>(event.context)
+                .add(GetExpenseRecordsEvent(
+              toggleLabel: ToggleLabelEnum.weekly,
+            ));
+          } else {
+            // ignore: use_build_context_synchronously
+            emit.call(_loadedState);
+          }
+        } catch (e) {
+          debugPrint(e.toString());
+          emit.call(_loadedState);
         }
       }
     });

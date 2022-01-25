@@ -159,4 +159,53 @@ class NetworkService {
       );
     }
   }
+
+  Future<ApiResponseModel> createExpenseRecords({
+    required String recordDate,
+    required String category,
+    required int amount,
+    required String remarks,
+  }) async {
+    final Dio _dio = Dio();
+    final String _token = _authBox.get('token').toString();
+    _dio.options.headers['x-auth-token'] = _token;
+    try {
+      final Response _expenseRecordResp;
+
+      _expenseRecordResp = await _dio
+          .post('$baseUrl$expenseRecordCreateEndPoint', data: {
+        "category": category,
+        "amount": amount,
+        "record_date": recordDate
+      });
+
+      if (_expenseRecordResp.statusCode == 200) {
+        return ApiResponseModel(
+          statusCode: _expenseRecordResp.statusCode!,
+          endPoint: expenseRecordCreateEndPoint,
+          responseJson: _expenseRecordResp,
+        );
+      } else {
+        return ApiResponseModel(
+          statusCode: _expenseRecordResp.statusCode ?? 400,
+          endPoint: expenseRecordCreateEndPoint,
+        );
+      }
+    } on DioError catch (e) {
+      debugPrint("Dio Error: $e");
+      debugPrint(e.response?.data.toString());
+      return ApiResponseModel(
+        statusCode: e.response?.statusCode ?? 404,
+        endPoint: expenseRecordCreateEndPoint,
+        specificMessage: e.response?.data.toString(),
+      );
+    } catch (e) {
+      debugPrint(" unknown error : $e");
+      return ApiResponseModel(
+        statusCode: 400,
+        endPoint: expenseRecordCreateEndPoint,
+        specificMessage: " unknown error",
+      );
+    }
+  }
 }

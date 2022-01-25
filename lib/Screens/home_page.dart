@@ -6,6 +6,7 @@ import 'package:moneyboi/Blocs/HomeScreenBloc/homescreen_bloc.dart';
 import 'package:moneyboi/Constants/colors.dart';
 import 'package:moneyboi/Constants/enums.dart';
 import 'package:moneyboi/Screens/login_page.dart';
+import 'package:moneyboi/Screens/new_expense_category_screen.dart';
 import 'package:moneyboi/Widgets/profile_avatar.dart';
 import 'package:moneyboi/Widgets/timewise_expense_list.dart';
 import 'package:moneyboi/Widgets/toggle_label.dart';
@@ -73,7 +74,13 @@ class _HomePageState extends State<HomePage> {
                     ],
                   );
                 } else {
-                  return Container();
+                  return Container(
+                    height: MediaQuery.of(context).size.height * 0.38,
+                    alignment: Alignment.center,
+                    child: const CircularProgressIndicator(
+                      color: moneyBoyPurple,
+                    ),
+                  );
                 }
               },
             )
@@ -81,7 +88,14 @@ class _HomePageState extends State<HomePage> {
         ),
       ),
       floatingActionButton: FloatingActionButton(
-        onPressed: () {},
+        onPressed: () {
+          Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder: (context) => const NewExpenseCategoryScreen(),
+            ),
+          );
+        },
         backgroundColor: moneyBoyPurple,
         elevation: 1.0,
         child: const Icon(
