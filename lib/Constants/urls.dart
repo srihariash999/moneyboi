@@ -1,6 +1,6 @@
-// const String baseUrl = "https://money-boi.herokuapp.com/api";
+const String baseUrl = "https://money-boi.herokuapp.com/api";
 
-const String baseUrl = "http://192.168.0.157:3000/api";
+// const String baseUrl = "http://192.168.0.157:3000/api";
 
 /*
 POST 

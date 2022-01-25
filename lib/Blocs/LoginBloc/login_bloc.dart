@@ -6,7 +6,7 @@ import 'package:meta/meta.dart';
 import 'package:moneyboi/Data%20Models/api_response_model.dart';
 import 'package:moneyboi/Network/network_service.dart';
 import 'package:moneyboi/Screens/home_page.dart';
-import 'package:moneyboi/Screens/login_page.dart';
+// import 'package:moneyboi/Screens/login_page.dart';
 
 part 'loginbloc_event.dart';
 part 'loginbloc_state.dart';
@@ -42,30 +42,7 @@ class LoginBloc extends Bloc<LoginBlocEvent, LoginBlocState> {
           }
         }
 
-        if (event is SignupEvent) {
-          emit.call(LoginBlocLoading());
-
-          final ApiResponseModel _signUpResult = await _apiService.signup(
-              name: event.name, email: event.email, password: event.password);
-          if (_signUpResult.statusCode == 200) {
-            debugPrint("signup success");
-
-            emit.call(LoginBlocLoaded());
-            BotToast.showText(text: "SignUp Successful");
-            // ignore: use_build_context_synchronously
-            Navigator.pushReplacement(
-              event.context,
-              MaterialPageRoute(
-                builder: (_) => LoginPage(),
-              ),
-            );
-          } else {
-            emit.call(LoginBlocLoaded());
-            debugPrint(_signUpResult.specificMessage);
-            BotToast.showText(
-                text: _signUpResult.specificMessage ?? " Cannot sign you up");
-          }
-        }
+        
       },
     );
   }
