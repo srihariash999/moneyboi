@@ -1,6 +1,6 @@
-const String baseUrl = "https://money-boi.herokuapp.com/api";
+// const String baseUrl = "https://money-boi.herokuapp.com/api";
 
-// const String baseUrl = "http://192.168.0.157:3000/api";
+const String baseUrl = "http://192.168.0.123:3000/api";
 
 /*
 POST 
@@ -22,3 +22,15 @@ example body:
 }
 */
 const String signupEndPoint = "/users";
+
+
+/*
+GET 
+Auth Required : yes,
+example body:
+{
+    "date_in": <utc date string> (optional),
+    "date_out":<utc date string> (optional),
+}
+*/
+const String expenseRecordsListingEndPoint = "/expenses";

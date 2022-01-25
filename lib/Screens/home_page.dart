@@ -1,14 +1,30 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:moneyboi/Blocs/HomeScreenBloc/homescreen_bloc.dart';
 import 'package:moneyboi/Constants/colors.dart';
+import 'package:moneyboi/Constants/enums.dart';
 import 'package:moneyboi/Screens/login_page.dart';
 import 'package:moneyboi/Widgets/profile_avatar.dart';
 import 'package:moneyboi/Widgets/timewise_expense_list.dart';
 import 'package:moneyboi/Widgets/toggle_label.dart';
 import 'package:moneyboi/Widgets/total_expenses_card.dart';
 
-class HomePage extends StatelessWidget {
+class HomePage extends StatefulWidget {
   const HomePage({Key? key}) : super(key: key);
+
+  @override
+  State<HomePage> createState() => _HomePageState();
+}
+
+class _HomePageState extends State<HomePage> {
+  @override
+  void initState() {
+    BlocProvider.of<HomeScreenBloc>(context).add(GetExpenseRecordsEvent(
+      toggleLabel: ToggleLabelEnum.weekly,
+    ));
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -35,9 +51,30 @@ class HomePage extends StatelessWidget {
               ),
             ),
             const SizedBox(height: 12.0),
-            const ToggleLabelsRow(),
-            TimewiseExpensesList(
-              height: MediaQuery.of(context).size.height * 0.38,
+            BlocBuilder<HomeScreenBloc, HomeScreenState>(
+              builder: (context, state) {
+                if (state is HomeScreenLoaded) {
+                  return Column(
+                    children: [
+                      ToggleLabelsRow(
+                        toggleLabel: state.toggleLabel,
+                      ),
+                      TimewiseExpensesList(
+                        height: MediaQuery.of(context).size.height * 0.38,
+                        listOfExpenses: state.expenseRecords,
+                        refreshFunction: () async {
+                          BlocProvider.of<HomeScreenBloc>(context)
+                              .add(GetExpenseRecordsEvent(
+                            toggleLabel: state.toggleLabel,
+                          ));
+                        },
+                      ),
+                    ],
+                  );
+                } else {
+                  return Container();
+                }
+              },
             )
           ],
         ),
@@ -56,26 +93,49 @@ class HomePage extends StatelessWidget {
 }
 
 class ToggleLabelsRow extends StatelessWidget {
+  final ToggleLabelEnum toggleLabel;
   const ToggleLabelsRow({
     Key? key,
+    required this.toggleLabel,
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-      children: const [
-        ToggleLabel(
-          label: "Weekly",
-          isActive: true,
+      children: [
+        GestureDetector(
+          onTap: () {
+            BlocProvider.of<HomeScreenBloc>(context).add(GetExpenseRecordsEvent(
+              toggleLabel: ToggleLabelEnum.weekly,
+            ));
+          },
+          child: ToggleLabel(
+            label: "Weekly",
+            isActive: toggleLabel == ToggleLabelEnum.weekly,
+          ),
         ),
-        ToggleLabel(
-          label: "Monthly",
-          isActive: false,
+        GestureDetector(
+          onTap: () {
+            BlocProvider.of<HomeScreenBloc>(context).add(GetExpenseRecordsEvent(
+              toggleLabel: ToggleLabelEnum.monthly,
+            ));
+          },
+          child: ToggleLabel(
+            label: "Monthly",
+            isActive: toggleLabel == ToggleLabelEnum.monthly,
+          ),
         ),
-        ToggleLabel(
-          label: "All Time",
-          isActive: false,
+        GestureDetector(
+          onTap: () {
+            BlocProvider.of<HomeScreenBloc>(context).add(GetExpenseRecordsEvent(
+              toggleLabel: ToggleLabelEnum.allTime,
+            ));
+          },
+          child: ToggleLabel(
+            label: "All Time",
+            isActive: toggleLabel == ToggleLabelEnum.allTime,
+          ),
         ),
       ],
     );

@@ -140,7 +140,7 @@ class LoginPage extends StatelessWidget {
                       Navigator.push(
                         context,
                         MaterialPageRoute(
-                          builder: (_) => SignupPage(),
+                          builder: (_) => const SignupPage(),
                         ),
                       );
                     },
