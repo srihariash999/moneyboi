@@ -4,6 +4,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:hive/hive.dart';
 import 'package:moneyboi/Blocs/HomeScreenBloc/homescreen_bloc.dart';
 import 'package:moneyboi/Blocs/LoginBloc/login_bloc.dart';
+import 'package:moneyboi/Blocs/ProfileBloc/profile_bloc.dart';
 import 'package:moneyboi/Blocs/SignupBloc/signupbloc_bloc.dart';
 import 'package:moneyboi/Screens/home_page.dart';
 import 'package:moneyboi/Screens/login_page.dart';
@@ -40,6 +41,9 @@ class MyApp extends StatelessWidget {
             ),
             BlocProvider<HomeScreenBloc>(create: (context) {
               return HomeScreenBloc();
+            }),
+            BlocProvider<ProfileBloc>(create: (context) {
+              return ProfileBloc();
             }),
           ],
           child: MaterialApp(

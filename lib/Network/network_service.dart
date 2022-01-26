@@ -79,6 +79,7 @@ class NetworkService {
         );
       }
     } on DioError catch (e) {
+      debugPrint("Dio Error $loginEndPoint $e");
       return ApiResponseModel(
         statusCode: e.response?.statusCode ?? 404,
         endPoint: loginEndPoint,
@@ -143,7 +144,7 @@ class NetworkService {
         );
       }
     } on DioError catch (e) {
-      debugPrint("Dio Error: $e");
+      debugPrint("Dio Error: $expenseRecordsListingEndPoint $e");
       debugPrint(e.response?.data.toString());
       return ApiResponseModel(
         statusCode: e.response?.statusCode ?? 404,
@@ -205,6 +206,46 @@ class NetworkService {
       return ApiResponseModel(
         statusCode: 400,
         endPoint: expenseRecordCreateEndPoint,
+        specificMessage: " unknown error",
+      );
+    }
+  }
+
+  Future<ApiResponseModel> getUserProfile() async {
+    final Dio _dio = Dio();
+    final String _token = _authBox.get('token').toString();
+    _dio.options.headers['x-auth-token'] = _token;
+    try {
+      final Response _profileResp =
+          await _dio.get('$baseUrl$profileGetEndPoint');
+
+      if (_profileResp.statusCode == 200) {
+        return ApiResponseModel(
+          statusCode: _profileResp.statusCode ?? 200,
+          endPoint: profileGetEndPoint,
+          specificMessage: '',
+          responseJson: _profileResp,
+        );
+      }
+
+      return ApiResponseModel(
+        statusCode: 404,
+        endPoint: profileGetEndPoint,
+        specificMessage: _profileResp.data.toString(),
+      );
+    } on DioError catch (e) {
+      debugPrint("Dio Error: $profileGetEndPoint $e");
+      debugPrint(e.response?.data.toString());
+      return ApiResponseModel(
+        statusCode: e.response?.statusCode ?? 404,
+        endPoint: profileGetEndPoint,
+        specificMessage: e.response?.data.toString(),
+      );
+    } catch (e) {
+      debugPrint(" unknown error : $e");
+      return ApiResponseModel(
+        statusCode: 400,
+        endPoint: profileGetEndPoint,
         specificMessage: " unknown error",
       );
     }
