@@ -3,11 +3,14 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:hive/hive.dart';
 import 'package:moneyboi/Blocs/HomeScreenBloc/homescreen_bloc.dart';
+import 'package:moneyboi/Blocs/ProfileBloc/profile_bloc.dart';
 import 'package:moneyboi/Constants/colors.dart';
 import 'package:moneyboi/Constants/enums.dart';
 import 'package:moneyboi/Screens/login_page.dart';
 import 'package:moneyboi/Screens/new_expense_category_screen.dart';
+import 'package:moneyboi/Screens/profile_page.dart';
 import 'package:moneyboi/Widgets/profile_avatar.dart';
+// import 'package:moneyboi/Widgets/profile_avatar.dart';
 import 'package:moneyboi/Widgets/timewise_expense_list.dart';
 import 'package:moneyboi/Widgets/toggle_label.dart';
 import 'package:moneyboi/Widgets/total_expenses_card.dart';
@@ -25,6 +28,7 @@ class _HomePageState extends State<HomePage> {
     BlocProvider.of<HomeScreenBloc>(context).add(GetExpenseRecordsEvent(
       toggleLabel: ToggleLabelEnum.weekly,
     ));
+    BlocProvider.of<ProfileBloc>(context).add(GetUserProfileEvent());
     super.initState();
   }
 
@@ -167,21 +171,53 @@ class HomeScreenTopBar extends StatelessWidget {
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
-        Row(
-          children: [
-            const ProfileAvatar(
-              profileImage:
-                  "https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=580&q=80",
-            ),
-            Text(
-              "Srihari Ayapilla",
-              style: GoogleFonts.montserrat(
-                fontSize: 18.0,
-                fontWeight: FontWeight.w500,
-                color: Colors.black.withOpacity(0.8),
-              ),
-            )
-          ],
+        BlocBuilder<ProfileBloc, ProfileState>(
+          builder: (context, state) {
+            if (state is ProfileLoaded) {
+              return Padding(
+                padding: const EdgeInsets.only(left: 20.0),
+                child: GestureDetector(
+                  onTap: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => const ProfilePage(),
+                      ),
+                    );
+                  },
+                  child: Row(
+                    children: [
+                      CircleAvatar(
+                        backgroundColor: Colors.grey.withOpacity(0.2),
+                        child: const Icon(
+                          Icons.person,
+                          color: moneyBoyPurple,
+                        ),
+                      ),
+                      const SizedBox(width: 10.0),
+                      Text(
+                        state.name,
+                        style: GoogleFonts.montserrat(
+                          fontSize: 20.0,
+                          fontWeight: FontWeight.w500,
+                          color: Colors.black.withOpacity(0.8),
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+              );
+            } else {
+              return Container(
+                margin: const EdgeInsets.only(left: 20.0),
+                alignment: Alignment.center,
+                width: MediaQuery.of(context).size.width * 0.3,
+                child: const LinearProgressIndicator(
+                  color: moneyBoyPurple,
+                ),
+              );
+            }
+          },
         ),
         Padding(
           padding: const EdgeInsets.only(right: 16.0),

@@ -45,3 +45,12 @@ example body:
 }
 */
 const String expenseRecordCreateEndPoint = "/expenses";
+
+
+/*
+GET 
+Auth Required : yes,
+example body:
+
+*/
+const String profileGetEndPoint = "/users/me";
