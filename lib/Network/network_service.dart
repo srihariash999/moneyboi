@@ -172,11 +172,12 @@ class NetworkService {
     try {
       final Response _expenseRecordResp;
 
-      _expenseRecordResp = await _dio
-          .post('$baseUrl$expenseRecordCreateEndPoint', data: {
+      _expenseRecordResp =
+          await _dio.post('$baseUrl$expenseRecordCreateEndPoint', data: {
         "category": category,
         "amount": amount,
-        "record_date": recordDate
+        "record_date": recordDate,
+        "remarks": remarks
       });
 
       if (_expenseRecordResp.statusCode == 200) {
