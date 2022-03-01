@@ -250,4 +250,93 @@ class NetworkService {
       );
     }
   }
+
+  Future<ApiResponseModel> forgotPasswordOtpGenerate({
+    required String email,
+  }) async {
+    final Dio _dio = Dio();
+    try {
+      final Response _frgtPswdGenRes = await _dio.post(
+          '$baseUrl$forgotPasswordOtpGetEndPoint',
+          data: {'email': email});
+
+      if (_frgtPswdGenRes.statusCode == 200) {
+        return ApiResponseModel(
+          statusCode: _frgtPswdGenRes.statusCode ?? 200,
+          endPoint: forgotPasswordOtpGetEndPoint,
+          specificMessage: '',
+          responseJson: _frgtPswdGenRes,
+        );
+      }
+
+      return ApiResponseModel(
+        statusCode: 404,
+        endPoint: forgotPasswordOtpGetEndPoint,
+        specificMessage: _frgtPswdGenRes.data.toString(),
+      );
+    } on DioError catch (e) {
+      debugPrint("Dio Error: $forgotPasswordOtpGetEndPoint $e");
+      debugPrint(e.response?.data.toString());
+      return ApiResponseModel(
+        statusCode: e.response?.statusCode ?? 404,
+        endPoint: forgotPasswordOtpGetEndPoint,
+        specificMessage: e.response?.data.toString(),
+      );
+    } catch (e) {
+      debugPrint(" unknown error : $e");
+      return ApiResponseModel(
+        statusCode: 400,
+        endPoint: forgotPasswordOtpGetEndPoint,
+        specificMessage: " unknown error",
+      );
+    }
+  }
+
+  Future<ApiResponseModel> forgotPasswordOtpVerify({
+    required String email,
+    required String otp,
+    required String newPassword,
+  }) async {
+    final Dio _dio = Dio();
+    try {
+      final Response _frgtPswdVerifyRes = await _dio.post(
+        '$baseUrl$forgotPasswordOtpVerifyEndPoint',
+        data: {
+          'email': email,
+          'otp': otp,
+          'new_password': newPassword,
+        },
+      );
+
+      if (_frgtPswdVerifyRes.statusCode == 200) {
+        return ApiResponseModel(
+          statusCode: _frgtPswdVerifyRes.statusCode ?? 200,
+          endPoint: forgotPasswordOtpVerifyEndPoint,
+          specificMessage: '',
+          responseJson: _frgtPswdVerifyRes,
+        );
+      }
+
+      return ApiResponseModel(
+        statusCode: 404,
+        endPoint: forgotPasswordOtpVerifyEndPoint,
+        specificMessage: _frgtPswdVerifyRes.data.toString(),
+      );
+    } on DioError catch (e) {
+      debugPrint("Dio Error: $forgotPasswordOtpVerifyEndPoint $e");
+      debugPrint(e.response?.data.toString());
+      return ApiResponseModel(
+        statusCode: e.response?.statusCode ?? 404,
+        endPoint: forgotPasswordOtpVerifyEndPoint,
+        specificMessage: e.response?.data.toString(),
+      );
+    } catch (e) {
+      debugPrint(" unknown error : $e");
+      return ApiResponseModel(
+        statusCode: 400,
+        endPoint: forgotPasswordOtpVerifyEndPoint,
+        specificMessage: " unknown error",
+      );
+    }
+  }
 }

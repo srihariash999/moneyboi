@@ -1,9 +1,11 @@
 import 'package:bot_toast/bot_toast.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:get/route_manager.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:moneyboi/Blocs/LoginBloc/login_bloc.dart';
 import 'package:moneyboi/Constants/colors.dart';
+import 'package:moneyboi/Screens/forgot_password_screen.dart';
 import 'package:moneyboi/Screens/signup/signup_page.dart';
 import 'package:moneyboi/Widgets/big_bar_button.dart';
 import 'package:moneyboi/Widgets/text_field_widget.dart';
@@ -63,20 +65,25 @@ class LoginPage extends StatelessWidget {
                 label: "Password",
                 obscure: true,
               ),
-              // Align(
-              //   alignment: Alignment.topRight,
-              //   child: Padding(
-              //     padding: const EdgeInsets.only(right: 30.0, top: 12.0),
-              //     child: Text(
-              //       "Forgot password?",
-              //       style: GoogleFonts.lato(
-              //         fontSize: 14.0,
-              //         fontWeight: FontWeight.w500,
-              //         color: moneyBoyPurple.withOpacity(0.8),
-              //       ),
-              //     ),
-              //   ),
-              // ),
+              GestureDetector(
+                onTap: () {
+                  Get.to(ForgotPasswordScreen());
+                },
+                child: Align(
+                  alignment: Alignment.topRight,
+                  child: Padding(
+                    padding: const EdgeInsets.only(right: 30.0, top: 12.0),
+                    child: Text(
+                      "Forgot password?",
+                      style: GoogleFonts.lato(
+                        fontSize: 14.0,
+                        fontWeight: FontWeight.w500,
+                        color: moneyBoyPurple.withOpacity(0.8),
+                      ),
+                    ),
+                  ),
+                ),
+              ),
               const SizedBox(height: 52.0),
               BlocBuilder<LoginBloc, LoginBlocState>(
                 builder: (context, state) {
