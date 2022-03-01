@@ -91,8 +91,10 @@ class SignupNameWidget extends StatelessWidget {
                     backgroundColor: moneyBoyPurple.withOpacity(0.3),
                   ),
                   onPressed: () {
-                    BlocProvider.of<SignupBloc>(context)
-                        .add(MoveToEmailEvent(name: _nameController.text));
+                    if (_nameController.text.isNotEmpty) {
+                      BlocProvider.of<SignupBloc>(context)
+                          .add(MoveToEmailEvent(name: _nameController.text));
+                    }
                   },
                   child: const Icon(
                     Icons.chevron_right,

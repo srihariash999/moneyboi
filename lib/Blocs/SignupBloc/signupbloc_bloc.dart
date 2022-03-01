@@ -1,6 +1,7 @@
 import 'package:bloc/bloc.dart';
 import 'package:bot_toast/bot_toast.dart';
 import 'package:flutter/material.dart';
+import 'package:get/route_manager.dart';
 // import 'package:moneyboi/Blocs/LoginBloc/login_bloc.dart';
 import 'package:moneyboi/Data%20Models/api_response_model.dart';
 import 'package:moneyboi/Network/network_service.dart';
@@ -34,15 +35,9 @@ class SignupBloc extends Bloc<SignupBlocEvent, SignupBlocState> {
 
           emit.call(SignupBlocInitial());
           BotToast.showText(text: "SignUp Successful");
-          // ignore: use_build_context_synchronously
-          Navigator.pop(event.context);
-          // ignore: use_build_context_synchronously
-          Navigator.pushReplacement(
-            event.context,
-            MaterialPageRoute(
-              builder: (_) => LoginPage(),
-            ),
-          );
+
+          Get.back();
+          Get.off(LoginPage());
         } else {
           emit.call(SignupBlocInitial());
           debugPrint(_signUpResult.specificMessage);

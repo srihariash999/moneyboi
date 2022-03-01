@@ -63,20 +63,20 @@ class LoginPage extends StatelessWidget {
                 label: "Password",
                 obscure: true,
               ),
-              Align(
-                alignment: Alignment.topRight,
-                child: Padding(
-                  padding: const EdgeInsets.only(right: 30.0, top: 12.0),
-                  child: Text(
-                    "Forgot password?",
-                    style: GoogleFonts.lato(
-                      fontSize: 14.0,
-                      fontWeight: FontWeight.w500,
-                      color: moneyBoyPurple.withOpacity(0.8),
-                    ),
-                  ),
-                ),
-              ),
+              // Align(
+              //   alignment: Alignment.topRight,
+              //   child: Padding(
+              //     padding: const EdgeInsets.only(right: 30.0, top: 12.0),
+              //     child: Text(
+              //       "Forgot password?",
+              //       style: GoogleFonts.lato(
+              //         fontSize: 14.0,
+              //         fontWeight: FontWeight.w500,
+              //         color: moneyBoyPurple.withOpacity(0.8),
+              //       ),
+              //     ),
+              //   ),
+              // ),
               const SizedBox(height: 52.0),
               BlocBuilder<LoginBloc, LoginBlocState>(
                 builder: (context, state) {
@@ -98,7 +98,6 @@ class LoginPage extends StatelessWidget {
                             LoginEvent(
                               email: _emailController.text.trim(),
                               password: _passwordController.text.trim(),
-                              context: context,
                             ),
                           );
                         } else {

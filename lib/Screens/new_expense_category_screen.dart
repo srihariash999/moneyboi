@@ -89,8 +89,8 @@ class _NewExpenseCategoryScreenState extends State<NewExpenseCategoryScreen> {
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: [
                             Container(
-                              height: 42.0,
-                              width: 42.0,
+                              height: 41.0,
+                              width: 41.0,
                               padding: const EdgeInsets.all(8.0),
                               decoration: BoxDecoration(
                                 shape: BoxShape.circle,

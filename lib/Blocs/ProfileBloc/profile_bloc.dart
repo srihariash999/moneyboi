@@ -1,5 +1,4 @@
 import 'package:bloc/bloc.dart';
-import 'package:dio/dio.dart';
 import 'package:meta/meta.dart';
 import 'package:moneyboi/Data%20Models/api_response_model.dart';
 import 'package:moneyboi/Network/network_service.dart';
@@ -19,7 +18,7 @@ class ProfileBloc extends Bloc<ProfileEvent, ProfileState> {
 
           if (_profRes.statusCode == 200) {
             final _res = _profRes.responseJson!.data;
-            print(_res['name']);
+            // print(_res['name']);
             emit.call(
               ProfileLoaded(
                 name: _res['name'].toString(),

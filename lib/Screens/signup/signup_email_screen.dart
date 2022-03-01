@@ -86,8 +86,12 @@ class SignupEmailWidget extends StatelessWidget {
                     backgroundColor: moneyBoyPurple.withOpacity(0.3),
                   ),
                   onPressed: () {
-                    BlocProvider.of<SignupBloc>(context)
-                        .add(MoveToPasswordEvent(email: _emailController.text));
+                    final regex = RegExp(
+                        r'^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$');
+                    if (regex.hasMatch(_emailController.text.trim())) {
+                      BlocProvider.of<SignupBloc>(context).add(
+                          MoveToPasswordEvent(email: _emailController.text));
+                    } else {}
                   },
                   child: const Icon(
                     Icons.chevron_right,

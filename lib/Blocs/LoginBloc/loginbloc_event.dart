@@ -6,11 +6,12 @@ abstract class LoginBlocEvent {}
 class LoginEvent extends LoginBlocEvent {
   final String email;
   final String password;
-  final BuildContext context;
-  LoginEvent(
-      {required this.email, required this.password, required this.context});
-}
 
+  LoginEvent({
+    required this.email,
+    required this.password,
+  });
+}
 
 class LogoutEvent extends LoginBlocEvent {
   final BuildContext context;
