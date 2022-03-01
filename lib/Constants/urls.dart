@@ -46,7 +46,6 @@ example body:
 */
 const String expenseRecordCreateEndPoint = "/expenses";
 
-
 /*
 GET 
 Auth Required : yes,
@@ -54,3 +53,33 @@ example body:
 
 */
 const String profileGetEndPoint = "/users/me";
+
+/*
+POST
+
+Auth Required : no,
+example body:
+{  
+    "email": "person@email.com"   (requried)
+}
+
+*/
+
+const String forgotPasswordOtpGetEndPoint =
+    "/users/forgotpassword/otp/generate";
+
+/*
+POST
+
+Auth Required : no,
+example body:
+{  
+    "email"        : "person@email.com"   (requried),
+    "otp"          : "1234"   (requried),
+    "new_password" : "qwerty123"   (requried)
+}
+
+*/
+
+const String forgotPasswordOtpVerifyEndPoint =
+    "/users/forgotpassword/otp/verify";

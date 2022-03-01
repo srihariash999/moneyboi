@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get/get_navigation/src/root/get_material_app.dart';
 import 'package:hive/hive.dart';
+import 'package:moneyboi/Blocs/ForgotPasswordBloc/forgotpassword_bloc.dart';
 import 'package:moneyboi/Blocs/HomeScreenBloc/homescreen_bloc.dart';
 import 'package:moneyboi/Blocs/LoginBloc/login_bloc.dart';
 import 'package:moneyboi/Blocs/ProfileBloc/profile_bloc.dart';
@@ -45,6 +46,9 @@ class MyApp extends StatelessWidget {
             }),
             BlocProvider<ProfileBloc>(create: (context) {
               return ProfileBloc();
+            }),
+            BlocProvider<ForgotPasswordBloc>(create: (context) {
+              return ForgotPasswordBloc();
             }),
           ],
           child: GetMaterialApp(
