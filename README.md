@@ -2,11 +2,11 @@
 
 # MoneyBoi
 
-<!-- <p float="left">
+<p float="left">
   
-<img src="./Screenshots/podboi_logo.png" width="512" height="512"> 
+<img src="./Screenshots/MoneyBoi.png" width="500" height="500"> 
 
-</p> -->
+</p> 
 
  
 
@@ -56,21 +56,14 @@ $ flutter run
 ## Interested in contributing ?
 
 See the [contributor's guide!](contributing.md)
-<!-- 
+
 
 ## Screenshots
- <img src="./Screenshots/home.jpeg" width="250"> | <img src="./Screenshots/home_playing.jpeg" width="250"> |  <img src="./Screenshots/subs.jpeg" width="250">
+ <img src="./Screenshots/login.png" width="250"> | <img src="./Screenshots/home.png" width="250"> 
 
 
-  <img src="./Screenshots/search.jpeg" width="250"> | <img src="./Screenshots/profile.jpeg" width="250"> |  <img src="./Screenshots/listening_history.jpeg" width="250">  
+  <img src="./Screenshots/expense.png" width="250"> | <img src="./Screenshots/chart.png" width="250">   
 
-
-  <img src="./Screenshots/home_dark.jpeg" width="250"> | <img src="./Screenshots/subs_dark.jpeg" width="250"> |  <img src="./Screenshots/profile_dark.jpeg" width="250">  
-
-
-
-
- -->
 
 ## Questions or issues ?
 
