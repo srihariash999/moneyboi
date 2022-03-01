@@ -10,7 +10,7 @@
 
  
 
-MoneyBoi is a expense tracker app made with flutter. Moneyboi's uses a custom backend made in node js found here.
+MoneyBoi is an expense tracker app made with flutter. Moneyboi uses a custom backend made in node js found [here](https://github.com/srihariash999/moneyboi_backend) .
 
 ## Tech Stack:
 
