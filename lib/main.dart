@@ -1,6 +1,7 @@
 import 'package:bot_toast/bot_toast.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:get/get_navigation/src/root/get_material_app.dart';
 import 'package:hive/hive.dart';
 import 'package:moneyboi/Blocs/HomeScreenBloc/homescreen_bloc.dart';
 import 'package:moneyboi/Blocs/LoginBloc/login_bloc.dart';
@@ -46,7 +47,7 @@ class MyApp extends StatelessWidget {
               return ProfileBloc();
             }),
           ],
-          child: MaterialApp(
+          child: GetMaterialApp(
             home: _token != null ? const HomePage() : LoginPage(),
           ),
         ));

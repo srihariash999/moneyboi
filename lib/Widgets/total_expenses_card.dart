@@ -5,9 +5,13 @@ import 'package:moneyboi/Constants/colors.dart';
 class TotalExpensesCard extends StatelessWidget {
   final double height;
   final String totalExpense;
-  const TotalExpensesCard(
-      {Key? key, required this.height, required this.totalExpense})
-      : super(key: key);
+  final String period;
+  const TotalExpensesCard({
+    Key? key,
+    required this.height,
+    required this.totalExpense,
+    required this.period,
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -36,12 +40,12 @@ class TotalExpensesCard extends StatelessWidget {
             alignment: Alignment.topLeft,
             child: Container(
               height: height * 0.9,
-              width: height,
+              width: height + 24,
               decoration: const BoxDecoration(
                 color: moneyBoyPurpleLight,
                 borderRadius: BorderRadius.only(
                   bottomLeft: Radius.circular(10.0),
-                  bottomRight: Radius.circular(60.0),
+                  bottomRight: Radius.circular(38.0),
                   topRight: Radius.circular(10.0),
                 ),
               ),
@@ -69,7 +73,7 @@ class TotalExpensesCard extends StatelessWidget {
                         ),
                       ),
                       Text(
-                        "Total Expenses",
+                        "$period Expenses",
                         style: GoogleFonts.montserrat(
                           fontSize: 18.0,
                           fontWeight: FontWeight.w600,

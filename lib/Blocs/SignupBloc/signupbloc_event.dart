@@ -19,6 +19,5 @@ class MoveToPasswordEvent extends SignupBlocEvent {
 
 class SignupEvent extends SignupBlocEvent {
   final String password;
-  final BuildContext context;
-  SignupEvent({required this.password, required this.context});
+  SignupEvent({required this.password, });
 }

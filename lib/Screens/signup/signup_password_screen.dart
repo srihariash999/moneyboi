@@ -91,12 +91,15 @@ class SignupPasswordWidget extends StatelessWidget {
                     backgroundColor: moneyBoyPurple.withOpacity(0.3),
                   ),
                   onPressed: () {
-                    BlocProvider.of<SignupBloc>(context).add(
-                      SignupEvent(
-                        password: _passwordController.text,
-                        context: context,
-                      ),
-                    );
+                    if (_passwordController.text ==
+                            _confirmPasswordController.text &&
+                        _passwordController.text.trim().isNotEmpty) {
+                      BlocProvider.of<SignupBloc>(context).add(
+                        SignupEvent(
+                          password: _passwordController.text,
+                        ),
+                      );
+                    }
                   },
                   child: const Icon(
                     Icons.chevron_right,

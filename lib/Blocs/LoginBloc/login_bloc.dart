@@ -1,6 +1,7 @@
 import 'package:bloc/bloc.dart';
 import 'package:bot_toast/bot_toast.dart';
 import 'package:flutter/material.dart';
+import 'package:get/route_manager.dart';
 import 'package:moneyboi/Data%20Models/api_response_model.dart';
 import 'package:moneyboi/Network/network_service.dart';
 import 'package:moneyboi/Screens/home_page.dart';
@@ -24,13 +25,8 @@ class LoginBloc extends Bloc<LoginBlocEvent, LoginBlocState> {
             debugPrint("Login success");
             BotToast.showText(text: "Login Successful");
             emit.call(LoginBlocLoaded());
-            // ignore: use_build_context_synchronously
-            Navigator.pushReplacement(
-              event.context,
-              MaterialPageRoute(
-                builder: (_) => const HomePage(),
-              ),
-            );
+
+            Get.off(const HomePage());
           } else {
             emit.call(LoginBlocLoaded());
             debugPrint(_loginResult.specificMessage);
@@ -39,8 +35,6 @@ class LoginBloc extends Bloc<LoginBlocEvent, LoginBlocState> {
                     _loginResult.specificMessage ?? " Cannot login right now.");
           }
         }
-
-        
       },
     );
   }

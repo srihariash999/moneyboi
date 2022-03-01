@@ -1,16 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:get/route_manager.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:hive/hive.dart';
 import 'package:moneyboi/Blocs/HomeScreenBloc/homescreen_bloc.dart';
 import 'package:moneyboi/Blocs/ProfileBloc/profile_bloc.dart';
 import 'package:moneyboi/Constants/colors.dart';
 import 'package:moneyboi/Constants/enums.dart';
+import 'package:moneyboi/Screens/expense_chart_screen.dart';
 import 'package:moneyboi/Screens/login_page.dart';
 import 'package:moneyboi/Screens/new_expense_category_screen.dart';
 import 'package:moneyboi/Screens/profile_page.dart';
-import 'package:moneyboi/Widgets/profile_avatar.dart';
-// import 'package:moneyboi/Widgets/profile_avatar.dart';
 import 'package:moneyboi/Widgets/timewise_expense_list.dart';
 import 'package:moneyboi/Widgets/toggle_label.dart';
 import 'package:moneyboi/Widgets/total_expenses_card.dart';
@@ -39,9 +39,39 @@ class _HomePageState extends State<HomePage> {
         child: Column(
           children: [
             const HomeScreenTopBar(),
-            TotalExpensesCard(
-              height: MediaQuery.of(context).size.height * 0.22,
-              totalExpense: "₹ 5000",
+            BlocBuilder<HomeScreenBloc, HomeScreenState>(
+              builder: (context, state) {
+                if (state is HomeScreenLoaded) {
+                  return GestureDetector(
+                    onTap: () {
+                      Get.to(ExpenseChartScreen(
+                        expenseRecordItem: state.expenseRecords,
+                        totalExpense: state.totalExpense,
+                        title: state.toggleLabel.name == 'weekly'
+                            ? 'Weekly'
+                            : state.toggleLabel.name == 'monthly'
+                                ? 'Monthly'
+                                : 'All Time',
+                      ));
+                    },
+                    child: TotalExpensesCard(
+                      height: MediaQuery.of(context).size.height * 0.22,
+                      totalExpense: "₹ ${state.totalExpense}",
+                      period: state.toggleLabel.name == 'weekly'
+                          ? 'Weekly'
+                          : state.toggleLabel.name == 'monthly'
+                              ? 'Monthly'
+                              : 'All Time',
+                    ),
+                  );
+                } else {
+                  return TotalExpensesCard(
+                    height: MediaQuery.of(context).size.height * 0.22,
+                    totalExpense: "₹ 0",
+                    period: ' -- ',
+                  );
+                }
+              },
             ),
             Container(
               alignment: Alignment.centerLeft,
