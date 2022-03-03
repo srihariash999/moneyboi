@@ -211,6 +211,99 @@ class NetworkService {
     }
   }
 
+  Future<ApiResponseModel> updateExpenseRecords({
+    required String recordDate,
+    required String category,
+    required int amount,
+    required String remarks,
+    required String id,
+  }) async {
+    final Dio _dio = Dio();
+    final String _token = _authBox.get('token').toString();
+    _dio.options.headers['x-auth-token'] = _token;
+    try {
+      final Response _expenseRecordResp;
+
+      _expenseRecordResp =
+          await _dio.put('$baseUrl$expenseRecordCreateEndPoint/$id', data: {
+        "category": category,
+        "amount": amount,
+        "record_date": recordDate,
+        "remarks": remarks
+      });
+
+      if (_expenseRecordResp.statusCode == 200) {
+        return ApiResponseModel(
+          statusCode: _expenseRecordResp.statusCode!,
+          endPoint: expenseRecordCreateEndPoint,
+          responseJson: _expenseRecordResp,
+        );
+      } else {
+        return ApiResponseModel(
+          statusCode: _expenseRecordResp.statusCode ?? 400,
+          endPoint: expenseRecordCreateEndPoint,
+        );
+      }
+    } on DioError catch (e) {
+      debugPrint("Dio Error: $e");
+      debugPrint(e.response?.data.toString());
+      return ApiResponseModel(
+        statusCode: e.response?.statusCode ?? 404,
+        endPoint: expenseRecordCreateEndPoint,
+        specificMessage: e.response?.data.toString(),
+      );
+    } catch (e) {
+      debugPrint(" unknown error : $e");
+      return ApiResponseModel(
+        statusCode: 400,
+        endPoint: expenseRecordCreateEndPoint,
+        specificMessage: " unknown error",
+      );
+    }
+  }
+
+  Future<ApiResponseModel> deleteExpenseRecords({required String id}) async {
+    final Dio _dio = Dio();
+    final String _token = _authBox.get('token').toString();
+    _dio.options.headers['x-auth-token'] = _token;
+    try {
+      final Response _expenseRecordResp;
+
+      _expenseRecordResp =
+          await _dio.delete('$baseUrl$expenseRecordCreateEndPoint/$id');
+
+      debugPrint(_expenseRecordResp.data.toString());
+
+      if (_expenseRecordResp.statusCode == 200) {
+        return ApiResponseModel(
+          statusCode: 200,
+          endPoint: "$expenseRecordCreateEndPoint/$id",
+          responseJson: _expenseRecordResp,
+        );
+      } else {
+        return ApiResponseModel(
+          statusCode: _expenseRecordResp.statusCode ?? 400,
+          endPoint: "$expenseRecordCreateEndPoint/$id",
+        );
+      }
+    } on DioError catch (e) {
+      debugPrint("Dio Error: $e");
+      debugPrint(e.response?.data.toString());
+      return ApiResponseModel(
+        statusCode: e.response?.statusCode ?? 404,
+        endPoint: "$expenseRecordCreateEndPoint/$id",
+        specificMessage: e.response?.data.toString(),
+      );
+    } catch (e) {
+      debugPrint(" unknown error : $e");
+      return ApiResponseModel(
+        statusCode: 400,
+        endPoint: "$expenseRecordCreateEndPoint/$id",
+        specificMessage: " unknown error",
+      );
+    }
+  }
+
   Future<ApiResponseModel> getUserProfile() async {
     final Dio _dio = Dio();
     final String _token = _authBox.get('token').toString();
