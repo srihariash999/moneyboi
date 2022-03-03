@@ -6,12 +6,19 @@ import 'package:intl/intl.dart';
 import 'package:moneyboi/Blocs/HomeScreenBloc/homescreen_bloc.dart';
 import 'package:moneyboi/Constants/colors.dart';
 import 'package:moneyboi/Data%20Models/expense_category.dart';
+import 'package:moneyboi/Data%20Models/expense_record.dart';
 import 'package:moneyboi/Mock%20Data/mock_categories.dart';
 import 'package:moneyboi/Widgets/big_bar_button.dart';
 // import 'package:moneyboi/Widgets/text_field_widget.dart';
 
 class NewExpenseCategoryScreen extends StatefulWidget {
-  const NewExpenseCategoryScreen({Key? key}) : super(key: key);
+  final ExpenseRecordItem? expenseItem;
+  final bool isUpdate;
+  const NewExpenseCategoryScreen({
+    Key? key,
+    required this.isUpdate,
+    this.expenseItem,
+  }) : super(key: key);
 
   @override
   State<NewExpenseCategoryScreen> createState() =>
@@ -19,10 +26,23 @@ class NewExpenseCategoryScreen extends StatefulWidget {
 }
 
 class _NewExpenseCategoryScreenState extends State<NewExpenseCategoryScreen> {
-  DateTime _recordDate = DateTime.now();
-  ExpenseCategory _selectedCategory = catHome;
+  late DateTime _recordDate;
+  late ExpenseCategory _selectedCategory;
   final TextEditingController _remarksCont = TextEditingController();
   final TextEditingController _amountCont = TextEditingController();
+
+  @override
+  void initState() {
+    super.initState();
+    _selectedCategory =
+        widget.isUpdate ? widget.expenseItem!.category : catHome;
+    _recordDate =
+        widget.isUpdate ? widget.expenseItem!.createdDate : DateTime.now();
+    if (widget.isUpdate) {
+      _amountCont.text = widget.expenseItem!.expense.toString();
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -31,7 +51,7 @@ class _NewExpenseCategoryScreenState extends State<NewExpenseCategoryScreen> {
         backgroundColor: Colors.white,
         iconTheme: const IconThemeData(color: Colors.black),
         title: Text(
-          'ADD EXPENSES',
+          widget.isUpdate ? 'EDIT EXPENSE RECORD' : 'ADD EXPENSES',
           style: GoogleFonts.inter(
             fontSize: 18.0,
             fontWeight: FontWeight.w700,
@@ -271,15 +291,29 @@ class _NewExpenseCategoryScreenState extends State<NewExpenseCategoryScreen> {
                     padding: const EdgeInsets.symmetric(vertical: 12.0),
                     child: GestureDetector(
                       onTap: () {
-                        if (_amountCont.text != '') {
-                          BlocProvider.of<HomeScreenBloc>(context).add(
-                            CreateExpenseRecordEvent(
-                                recordDate: _recordDate.toUtc().toString(),
-                                category: _selectedCategory.name,
-                                remarks: _remarksCont.text,
-                                amount: int.parse(_amountCont.text),
-                                context: context),
-                          );
+                        if (widget.isUpdate) {
+                          if (_amountCont.text != '') {
+                            BlocProvider.of<HomeScreenBloc>(context).add(
+                              UpdateExpenseRecordEvent(
+                                  id: widget.expenseItem!.id,
+                                  recordDate: _recordDate.toUtc().toString(),
+                                  category: _selectedCategory.name,
+                                  remarks: _remarksCont.text,
+                                  amount: int.parse(_amountCont.text),
+                                  context: context),
+                            );
+                          }
+                        } else {
+                          if (_amountCont.text != '') {
+                            BlocProvider.of<HomeScreenBloc>(context).add(
+                              CreateExpenseRecordEvent(
+                                  recordDate: _recordDate.toUtc().toString(),
+                                  category: _selectedCategory.name,
+                                  remarks: _remarksCont.text,
+                                  amount: int.parse(_amountCont.text),
+                                  context: context),
+                            );
+                          }
                         }
                       },
                       child: BigBarButtonBody(

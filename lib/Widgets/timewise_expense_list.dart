@@ -1,8 +1,14 @@
+import 'package:expandable/expandable.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:get/route_manager.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:intl/intl.dart';
+import 'package:moneyboi/Blocs/HomeScreenBloc/homescreen_bloc.dart';
 import 'package:moneyboi/Constants/colors.dart';
 import 'package:moneyboi/Data%20Models/expense_record.dart';
+import 'package:moneyboi/Screens/new_expense_category_screen.dart';
 
 class TimewiseExpensesList extends StatelessWidget {
   final double height;
@@ -41,60 +47,99 @@ class TimewiseExpensesList extends StatelessWidget {
             itemBuilder: (context, index) {
               final ExpenseRecordItem _eri = listOfExpenses[index];
               return Padding(
-                padding: const EdgeInsets.all(12.0),
-                child: Row(
-                  children: [
-                    Image.asset(
-                      _eri.category.categoryImage,
-                      height: 45.0,
-                      width: 45.0,
-                      fit: BoxFit.cover,
-                    ),
-                    Expanded(
-                      child: Padding(
-                        padding: const EdgeInsets.only(left: 18.0),
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                          children: [
-                            Padding(
-                              padding:
-                                  const EdgeInsets.only(top: 6.0, bottom: 4.0),
-                              child: Text(
-                                _eri.category.name,
-                                style: GoogleFonts.montserrat(
-                                  fontSize: 18.0,
-                                  fontWeight: FontWeight.w500,
-                                  color: Colors.black.withOpacity(0.8),
-                                ),
+                  padding: const EdgeInsets.all(12.0),
+                  child: ExpandablePanel(
+                      header: Row(
+                        children: [
+                          Image.asset(
+                            _eri.category.categoryImage,
+                            height: 45.0,
+                            width: 45.0,
+                            fit: BoxFit.cover,
+                          ),
+                          Expanded(
+                            child: Padding(
+                              padding: const EdgeInsets.only(left: 18.0),
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceEvenly,
+                                children: [
+                                  Padding(
+                                    padding: const EdgeInsets.only(
+                                        top: 6.0, bottom: 4.0),
+                                    child: Text(
+                                      _eri.category.name,
+                                      style: GoogleFonts.montserrat(
+                                        fontSize: 18.0,
+                                        fontWeight: FontWeight.w500,
+                                        color: Colors.black.withOpacity(0.8),
+                                      ),
+                                    ),
+                                  ),
+                                  Text(
+                                    DateFormat('yMMMd')
+                                        .format(_eri.createdDate),
+                                    style: GoogleFonts.montserrat(
+                                      fontSize: 14.0,
+                                      fontWeight: FontWeight.w300,
+                                      color: Colors.black.withOpacity(0.4),
+                                    ),
+                                  ),
+                                ],
                               ),
                             ),
-                            Text(
-                              DateFormat('yMMMd').format(_eri.createdDate),
+                          ),
+                          Padding(
+                            padding: const EdgeInsets.only(right: 16.0),
+                            child: Text(
+                              "₹ ${_eri.expense}",
                               style: GoogleFonts.montserrat(
-                                fontSize: 14.0,
-                                fontWeight: FontWeight.w300,
-                                color: Colors.black.withOpacity(0.4),
+                                fontSize: 18.0,
+                                fontWeight: FontWeight.w700,
+                                color: moneyBoyPurple,
+                              ),
+                            ),
+                          ),
+                        ],
+                      ),
+                      collapsed: Container(),
+                      expanded: Padding(
+                        padding: const EdgeInsets.only(top: 12.0),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                          children: [
+                            IconButton(
+                              onPressed: () {
+                                Get.to(NewExpenseCategoryScreen(
+                                  isUpdate: true,
+                                  expenseItem: _eri,
+                                ));
+                              },
+                              icon: const Icon(
+                                CupertinoIcons.pencil_circle,
+                                size: 36.0,
+                                color: moneyBoyPurple,
+                              ),
+                            ),
+                            IconButton(
+                              onPressed: () {
+                                context.read<HomeScreenBloc>().add(
+                                      DeleteExpenseRecordEvent(
+                                        id: _eri.id,
+                                        context: context,
+                                      ),
+                                    );
+                              },
+                              icon: Icon(
+                                CupertinoIcons.trash_circle,
+                                size: 36.0,
+                                color: Colors.red.withOpacity(0.7),
                               ),
                             ),
                           ],
                         ),
-                      ),
-                    ),
-                    Padding(
-                      padding: const EdgeInsets.only(right: 16.0),
-                      child: Text(
-                        "₹ ${_eri.expense}",
-                        style: GoogleFonts.montserrat(
-                          fontSize: 18.0,
-                          fontWeight: FontWeight.w700,
-                          color: moneyBoyPurple,
-                        ),
-                      ),
-                    ),
-                  ],
-                ),
-              );
+                      )));
             },
           ),
         ),
