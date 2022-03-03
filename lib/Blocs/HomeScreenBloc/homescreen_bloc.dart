@@ -158,7 +158,7 @@ class HomeScreenBloc extends Bloc<HomeScreenEvent, HomeScreenState> {
           );
 
           if (_expRecsResp.statusCode == 200) {
-            emit.call(_loadedState);
+            
 
             final ApiResponseModel _expRecsResp;
 
