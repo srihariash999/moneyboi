@@ -6,8 +6,10 @@ import 'package:moneyboi/Data%20Models/api_response_model.dart';
 
 class NetworkService {
   final Box _authBox = Hive.box('authBox');
-  Future<ApiResponseModel> login(
-      {required String email, required String password}) async {
+  Future<ApiResponseModel> login({
+    required String email,
+    required String password,
+  }) async {
     final Dio _dio = Dio();
 
     try {
@@ -20,12 +22,13 @@ class NetworkService {
       );
 
       if (_loginResp.statusCode == 200) {
-        _authBox.put('token', _loginResp.data['token']);
-        debugPrint(_loginResp.data['token'].toString());
+        _authBox.put('token', (_loginResp.data as Map)['token']);
+        debugPrint((_loginResp.data as Map)['token'].toString());
         return ApiResponseModel(
-            statusCode: _loginResp.statusCode!,
-            endPoint: loginEndPoint,
-            specificMessage: "Login Successful");
+          statusCode: _loginResp.statusCode!,
+          endPoint: loginEndPoint,
+          specificMessage: "Login Successful",
+        );
       } else {
         return ApiResponseModel(
           statusCode: _loginResp.statusCode ?? 400,
@@ -50,10 +53,11 @@ class NetworkService {
     }
   }
 
-  Future<ApiResponseModel> signup(
-      {required String name,
-      required String email,
-      required String password}) async {
+  Future<ApiResponseModel> signup({
+    required String name,
+    required String email,
+    required String password,
+  }) async {
     final Dio _dio = Dio();
 
     try {
@@ -68,9 +72,10 @@ class NetworkService {
 
       if (_signupResp.statusCode == 200) {
         return ApiResponseModel(
-            statusCode: _signupResp.statusCode!,
-            endPoint: loginEndPoint,
-            specificMessage: "Signup Successful");
+          statusCode: _signupResp.statusCode!,
+          endPoint: loginEndPoint,
+          specificMessage: "Signup Successful",
+        );
       } else {
         return ApiResponseModel(
           statusCode: _signupResp.statusCode ?? 400,
@@ -95,8 +100,10 @@ class NetworkService {
     }
   }
 
-  Future<ApiResponseModel> getExpenseRecords(
-      {String? dateIn, String? dateOut}) async {
+  Future<ApiResponseModel> getExpenseRecords({
+    String? dateIn,
+    String? dateOut,
+  }) async {
     final Dio _dio = Dio();
     final String _token = _authBox.get('token').toString();
     _dio.options.headers['x-auth-token'] = _token;
@@ -173,13 +180,15 @@ class NetworkService {
     try {
       final Response _expenseRecordResp;
 
-      _expenseRecordResp =
-          await _dio.post('$baseUrl$expenseRecordCreateEndPoint', data: {
-        "category": category,
-        "amount": amount,
-        "record_date": recordDate,
-        "remarks": remarks
-      });
+      _expenseRecordResp = await _dio.post(
+        '$baseUrl$expenseRecordCreateEndPoint',
+        data: {
+          "category": category,
+          "amount": amount,
+          "record_date": recordDate,
+          "remarks": remarks
+        },
+      );
 
       if (_expenseRecordResp.statusCode == 200) {
         return ApiResponseModel(
@@ -224,13 +233,15 @@ class NetworkService {
     try {
       final Response _expenseRecordResp;
 
-      _expenseRecordResp =
-          await _dio.put('$baseUrl$expenseRecordCreateEndPoint/$id', data: {
-        "category": category,
-        "amount": amount,
-        "record_date": recordDate,
-        "remarks": remarks
-      });
+      _expenseRecordResp = await _dio.put(
+        '$baseUrl$expenseRecordCreateEndPoint/$id',
+        data: {
+          "category": category,
+          "amount": amount,
+          "record_date": recordDate,
+          "remarks": remarks
+        },
+      );
 
       if (_expenseRecordResp.statusCode == 200) {
         return ApiResponseModel(
@@ -350,8 +361,11 @@ class NetworkService {
     final Dio _dio = Dio();
     try {
       final Response _frgtPswdGenRes = await _dio.post(
-          '$baseUrl$forgotPasswordOtpGetEndPoint',
-          data: {'email': email});
+        '$baseUrl$forgotPasswordOtpGetEndPoint',
+        data: {
+          'email': email,
+        },
+      );
 
       if (_frgtPswdGenRes.statusCode == 200) {
         return ApiResponseModel(
