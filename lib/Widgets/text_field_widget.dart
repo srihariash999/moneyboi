@@ -6,18 +6,24 @@ class TextFieldWidget extends StatelessWidget {
   const TextFieldWidget({
     Key? key,
     required this.controller,
-    this.horizontalPadding,
+    this.horizontalMargin,
+    this.verticalPadding,
     this.inputType,
     this.hint,
     this.label,
     this.obscure,
+    this.fontSize,
+    this.hintFontSize,
   }) : super(key: key);
   final TextEditingController controller;
-  final double? horizontalPadding;
+  final double? horizontalMargin;
+  final double? verticalPadding;
   final TextInputType? inputType;
   final String? label;
   final String? hint;
   final bool? obscure;
+  final double? fontSize;
+  final double? hintFontSize;
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -25,8 +31,13 @@ class TextFieldWidget extends StatelessWidget {
         color: moneyBoyPurpleLight.withOpacity(0.2),
         borderRadius: BorderRadius.circular(18.0),
       ),
-      padding: const EdgeInsets.only(left: 12.0),
-      margin: EdgeInsets.symmetric(horizontal: horizontalPadding ?? 30.0),
+      padding: EdgeInsets.symmetric(
+        horizontal: 12.0,
+        vertical: verticalPadding ?? 0.0,
+      ),
+      margin: EdgeInsets.symmetric(
+        horizontal: horizontalMargin ?? 30.0,
+      ),
       child: Theme(
         data: ThemeData(
           primaryColor: moneyBoyPurple,
@@ -37,7 +48,7 @@ class TextFieldWidget extends StatelessWidget {
           obscureText: obscure ?? false,
           obscuringCharacter: "*",
           style: GoogleFonts.lato(
-            fontSize: 18.0,
+            fontSize: fontSize ?? 18.0,
             fontWeight: FontWeight.w600,
             color: moneyBoyPurple.withOpacity(0.8),
           ),
@@ -53,7 +64,7 @@ class TextFieldWidget extends StatelessWidget {
             ),
             hintStyle: GoogleFonts.lato(
               fontWeight: FontWeight.w400,
-              fontSize: 14.0,
+              fontSize: hintFontSize ?? 14.0,
               color: moneyBoyPurple.withOpacity(0.5),
             ),
           ),
