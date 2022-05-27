@@ -1,6 +1,10 @@
-const String baseUrl = "https://moneyboi-backend.herokuapp.com/api";
+import 'package:flutter/foundation.dart';
 
-// const String baseUrl = "http://192.168.0.123:3000/api";
+const String baseUrl = kDebugMode
+    ? "http://192.168.0.133:3000/api"
+    : "https://moneyboi-backend.herokuapp.com/api";
+
+// const String baseUrl = "http://192.168.0.133:3000/api";
 
 /*
 POST 
