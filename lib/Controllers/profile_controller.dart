@@ -35,10 +35,13 @@ class ProfileController extends GetxController {
   }
 
   Future<void> getUserProfileAndFriendData() async {
+    _friends.clear();
+    _pending.clear();
+    _requested.clear();
     isProfileLoading.value = true;
     isFriendsLoading.value = true;
     update();
-
+    // await Future.delayed(Duration(seconds: 4));
     _apiService.getUserProfile().then((ApiResponseModel _profRes) {
       if (_profRes.statusCode == 200) {
         final _res = _profRes.responseJson!.data as Map;

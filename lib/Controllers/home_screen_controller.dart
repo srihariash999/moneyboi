@@ -56,6 +56,7 @@ class HomeScreenController extends GetxController {
               createdDate:
                   DateTime.parse(i['record_date'].toString()).toLocal(),
               id: i['_id'] as String,
+              remark: "${i['remarks'] ?? "--"}",
             ),
           );
         }

@@ -64,7 +64,9 @@ class ExpenseChartScreen extends StatelessWidget {
                           touchCallback:
                               (FlTouchEvent event, pieTouchResponse) {
                             _controller.updateChartTouch(
-                                event, pieTouchResponse);
+                              event,
+                              pieTouchResponse,
+                            );
                           },
                         ),
                         borderData: FlBorderData(
