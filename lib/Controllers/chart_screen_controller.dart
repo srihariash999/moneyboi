@@ -43,7 +43,9 @@ class ChartScreenController extends GetxController {
   }
 
   void updateChartTouch(
-      FlTouchEvent event, PieTouchResponse? pieTouchResponse) {
+    FlTouchEvent event,
+    PieTouchResponse? pieTouchResponse,
+  ) {
     if (!event.isInterestedForInteractions ||
         pieTouchResponse == null ||
         pieTouchResponse.touchedSection == null) {

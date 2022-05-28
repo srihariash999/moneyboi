@@ -40,6 +40,7 @@ class _NewExpenseCategoryScreenState extends State<NewExpenseCategoryScreen> {
         widget.isUpdate ? widget.expenseItem!.createdDate : DateTime.now();
     if (widget.isUpdate) {
       _amountCont.text = widget.expenseItem!.expense.toString();
+      _remarksCont.text = widget.expenseItem!.remark;
     }
     super.initState();
   }

@@ -29,6 +29,34 @@ class FriendsPage extends StatelessWidget {
             color: moneyBoyPurple,
           ),
         ),
+        actions: [
+          PopupMenuButton(
+            icon: const Icon(
+              Icons.more_vert,
+              color: moneyBoyPurple,
+            ),
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(16.0),
+            ),
+            itemBuilder: (context) {
+              return [
+                PopupMenuItem(
+                  onTap: () {
+                    Get.find<ProfileController>().getUserProfileAndFriendData();
+                  },
+                  child: Text(
+                    "Refresh Data",
+                    style: GoogleFonts.inter(
+                      fontSize: 18.0,
+                      fontWeight: FontWeight.w500,
+                      color: Colors.black.withOpacity(0.8),
+                    ),
+                  ),
+                ),
+              ];
+            },
+          ),
+        ],
       ),
       backgroundColor: Colors.white,
       floatingActionButton: FloatingActionButton(
@@ -39,71 +67,73 @@ class FriendsPage extends StatelessWidget {
             builder: (context) {
               return SizedBox(
                 height: MediaQuery.of(context).size.height * 0.6,
-                child: GetBuilder<ProfileController>(builder: (controller) {
-                  return Column(
-                    children: [
-                      Padding(
-                        padding: const EdgeInsets.symmetric(vertical: 16.0),
-                        child: Text(
-                          "Search for friends",
-                          style: GoogleFonts.inter(
-                            fontSize: 24.0,
-                            fontWeight: FontWeight.w700,
-                            color: moneyBoyPurple,
-                          ),
-                        ),
-                      ),
-                      Padding(
-                        padding: const EdgeInsets.symmetric(
-                          vertical: 16.0,
-                          horizontal: 24.0,
-                        ),
-                        child: Text(
-                          "It's always more fun with friends. You can search for friends using their registered email id.",
-                          textAlign: TextAlign.left,
-                          style: GoogleFonts.montserrat(
-                            fontSize: 16.0,
-                            fontWeight: FontWeight.w400,
-                            color: Colors.black.withOpacity(0.85),
-                          ),
-                        ),
-                      ),
-                      const SizedBox(
-                        height: 16.0,
-                      ),
-                      TextFieldWidget(
-                        controller: _emailController,
-                        hint: "Enter Friend's Email",
-                        inputType: TextInputType.emailAddress,
-                        horizontalMargin: 24.0,
-                        verticalPadding: 8.0,
-                        fontSize: 20.0,
-                        hintFontSize: 18.0,
-                      ),
-                      const SizedBox(height: 24.0),
-                      GestureDetector(
-                        onTap: () {
-                          if (_emailController.text.isNotEmpty) {
-                            controller.sendRequest(
-                              email: _emailController.text.trim(),
-                            );
-                          }
-                        },
-                        child: BigBarButtonBody(
-                          horizontalPadding: 32.0,
+                child: GetBuilder<ProfileController>(
+                  builder: (controller) {
+                    return Column(
+                      children: [
+                        Padding(
+                          padding: const EdgeInsets.symmetric(vertical: 16.0),
                           child: Text(
-                            "Search",
+                            "Search for friends",
                             style: GoogleFonts.inter(
-                              fontSize: 18.0,
+                              fontSize: 24.0,
                               fontWeight: FontWeight.w700,
-                              color: Colors.white,
+                              color: moneyBoyPurple,
                             ),
                           ),
                         ),
-                      )
-                    ],
-                  );
-                }),
+                        Padding(
+                          padding: const EdgeInsets.symmetric(
+                            vertical: 16.0,
+                            horizontal: 24.0,
+                          ),
+                          child: Text(
+                            "It's always more fun with friends. You can search for friends using their registered email id.",
+                            textAlign: TextAlign.left,
+                            style: GoogleFonts.montserrat(
+                              fontSize: 16.0,
+                              fontWeight: FontWeight.w400,
+                              color: Colors.black.withOpacity(0.85),
+                            ),
+                          ),
+                        ),
+                        const SizedBox(
+                          height: 16.0,
+                        ),
+                        TextFieldWidget(
+                          controller: _emailController,
+                          hint: "Enter Friend's Email",
+                          inputType: TextInputType.emailAddress,
+                          horizontalMargin: 24.0,
+                          verticalPadding: 8.0,
+                          fontSize: 20.0,
+                          hintFontSize: 18.0,
+                        ),
+                        const SizedBox(height: 24.0),
+                        GestureDetector(
+                          onTap: () {
+                            if (_emailController.text.isNotEmpty) {
+                              controller.sendRequest(
+                                email: _emailController.text.trim(),
+                              );
+                            }
+                          },
+                          child: BigBarButtonBody(
+                            horizontalPadding: 32.0,
+                            child: Text(
+                              "Search",
+                              style: GoogleFonts.inter(
+                                fontSize: 18.0,
+                                fontWeight: FontWeight.w700,
+                                color: Colors.white,
+                              ),
+                            ),
+                          ),
+                        )
+                      ],
+                    );
+                  },
+                ),
               );
             },
           );
@@ -151,92 +181,105 @@ class FriendsPage extends StatelessWidget {
   Expanded buildFriends(ProfileController controller) {
     return Expanded(
       child: controller.isFriendsLoading.value
-          ? Container()
-          : SingleChildScrollView(
-              child: Column(
-                mainAxisSize: MainAxisSize.min,
-                children: controller.friendList
-                    .map(
-                      (friend) => Padding(
-                        padding: const EdgeInsets.symmetric(
-                          vertical: 12.0,
-                          horizontal: 18.0,
-                        ),
-                        child: Container(
-                          width: double.maxFinite,
-                          decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(16.0),
-                            color: Colors.grey.withOpacity(0.25),
+          ? Container(
+              alignment: Alignment.center,
+              child: const CircularProgressIndicator(
+                color: moneyBoyPurple,
+                strokeWidth: 2.0,
+              ),
+            )
+          : RefreshIndicator(
+              onRefresh: () async {
+                controller.getUserProfileAndFriendData();
+              },
+              child: SingleChildScrollView(
+                child: Column(
+                  mainAxisSize: MainAxisSize.min,
+                  children: controller.friendList
+                      .map(
+                        (friend) => Padding(
+                          padding: const EdgeInsets.symmetric(
+                            vertical: 12.0,
+                            horizontal: 18.0,
                           ),
-                          padding: const EdgeInsets.all(18.0),
-                          child: Row(
-                            children: [
-                              const Icon(
-                                CupertinoIcons.person_circle_fill,
-                                size: 42.0,
-                              ),
-                              const SizedBox(
-                                width: 16.0,
-                              ),
-                              Expanded(
-                                child: Column(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
-                                    Text(
-                                      friend.name,
-                                      style: GoogleFonts.inter(
-                                        fontSize: 18.0,
-                                        fontWeight: FontWeight.w500,
-                                        color: Colors.black.withOpacity(0.8),
-                                      ),
-                                    ),
-                                    Text(
-                                      friend.email,
-                                      style: GoogleFonts.inter(
-                                        fontSize: 18.0,
-                                        fontWeight: FontWeight.w500,
-                                        color: Colors.black.withOpacity(0.8),
-                                      ),
-                                    ),
-                                  ],
+                          child: Container(
+                            width: double.maxFinite,
+                            decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(16.0),
+                              color: Colors.grey.withOpacity(0.25),
+                            ),
+                            padding: const EdgeInsets.all(18.0),
+                            child: Row(
+                              children: [
+                                const Icon(
+                                  CupertinoIcons.person_circle_fill,
+                                  size: 42.0,
                                 ),
-                              ),
-                              PopupMenuButton(
-                                icon: const Icon(
-                                  Icons.more_vert,
-                                  color: moneyBoyPurple,
+                                const SizedBox(
+                                  width: 16.0,
                                 ),
-                                shape: RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.circular(16.0),
-                                ),
-                                itemBuilder: (context) {
-                                  return [
-                                    PopupMenuItem(
-                                      onTap: () {
-                                        // 2 --> Remove Friend
-                                        controller.deleteRequest(
-                                          id: friend.friendshipId,
-                                          type: 2,
-                                        );
-                                      },
-                                      child: Text(
-                                        "Remove Friend",
+                                Expanded(
+                                  child: Column(
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
+                                    children: [
+                                      Text(
+                                        friend.name,
                                         style: GoogleFonts.inter(
                                           fontSize: 18.0,
                                           fontWeight: FontWeight.w500,
                                           color: Colors.black.withOpacity(0.8),
                                         ),
                                       ),
-                                    ),
-                                  ];
-                                },
-                              ),
-                            ],
+                                      Text(
+                                        friend.email,
+                                        style: GoogleFonts.inter(
+                                          fontSize: 18.0,
+                                          fontWeight: FontWeight.w500,
+                                          color: Colors.black.withOpacity(0.8),
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                                PopupMenuButton(
+                                  icon: const Icon(
+                                    Icons.more_vert,
+                                    color: moneyBoyPurple,
+                                  ),
+                                  shape: RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(16.0),
+                                  ),
+                                  itemBuilder: (context) {
+                                    return [
+                                      PopupMenuItem(
+                                        onTap: () {
+                                          // 2 --> Remove Friend
+                                          controller.deleteRequest(
+                                            id: friend.friendshipId,
+                                            type: 2,
+                                          );
+                                        },
+                                        child: Text(
+                                          "Remove Friend",
+                                          style: GoogleFonts.inter(
+                                            fontSize: 18.0,
+                                            fontWeight: FontWeight.w500,
+                                            color:
+                                                Colors.black.withOpacity(0.8),
+                                          ),
+                                        ),
+                                      ),
+                                    ];
+                                  },
+                                ),
+                              ],
+                            ),
                           ),
                         ),
-                      ),
-                    )
-                    .toList(),
+                      )
+                      .toList(),
+                ),
               ),
             ),
     );
@@ -245,165 +288,49 @@ class FriendsPage extends StatelessWidget {
   Expanded buildRequests(ProfileController controller) {
     return Expanded(
       child: controller.isFriendsLoading.value
-          ? Container()
-          : SingleChildScrollView(
-              child: Column(
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  // PENDING items
-                  Column(
-                    children: controller.pendingList
-                        .map(
-                          (friend) => Padding(
-                            padding: const EdgeInsets.symmetric(
-                              vertical: 12.0,
-                              horizontal: 18.0,
-                            ),
-                            child: Container(
-                              width: double.maxFinite,
-                              decoration: BoxDecoration(
-                                borderRadius: BorderRadius.circular(16.0),
-                                color: Colors.grey.withOpacity(0.25),
+          ? Container(
+              alignment: Alignment.center,
+              child: const CircularProgressIndicator(
+                color: moneyBoyPurple,
+                strokeWidth: 2.0,
+              ),
+            )
+          : RefreshIndicator(
+              onRefresh: () async {
+                controller.getUserProfileAndFriendData();
+              },
+              child: SingleChildScrollView(
+                child: Column(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    // PENDING items
+                    Column(
+                      children: controller.pendingList
+                          .map(
+                            (friend) => Padding(
+                              padding: const EdgeInsets.symmetric(
+                                vertical: 12.0,
+                                horizontal: 18.0,
                               ),
-                              padding: const EdgeInsets.all(18.0),
-                              child: Column(
-                                children: [
-                                  Row(
-                                    children: [
-                                      const Icon(
-                                        CupertinoIcons.person_circle_fill,
-                                        size: 42.0,
-                                      ),
-                                      const SizedBox(
-                                        width: 16.0,
-                                      ),
-                                      Column(
-                                        crossAxisAlignment:
-                                            CrossAxisAlignment.start,
-                                        children: [
-                                          Text(
-                                            friend.name,
-                                            style: GoogleFonts.inter(
-                                              fontSize: 18.0,
-                                              fontWeight: FontWeight.w500,
-                                              color:
-                                                  Colors.black.withOpacity(0.8),
-                                            ),
-                                          ),
-                                          Text(
-                                            friend.email,
-                                            style: GoogleFonts.inter(
-                                              fontSize: 18.0,
-                                              fontWeight: FontWeight.w500,
-                                              color:
-                                                  Colors.black.withOpacity(0.8),
-                                            ),
-                                          ),
-                                        ],
-                                      ),
-                                    ],
-                                  ),
-                                  const SizedBox(
-                                    height: 12.0,
-                                  ),
-                                  Row(
-                                    mainAxisAlignment:
-                                        MainAxisAlignment.spaceEvenly,
-                                    children: [
-                                      ElevatedButton(
-                                        style: ElevatedButton.styleFrom(
-                                          elevation: 0.0,
-                                          primary: moneyBoyPurple,
-                                          padding: const EdgeInsets.symmetric(
-                                            horizontal: 18.0,
-                                            vertical: 10.0,
-                                          ),
-                                          shape: RoundedRectangleBorder(
-                                            borderRadius:
-                                                BorderRadius.circular(12.0),
-                                          ),
+                              child: Container(
+                                width: double.maxFinite,
+                                decoration: BoxDecoration(
+                                  borderRadius: BorderRadius.circular(16.0),
+                                  color: Colors.grey.withOpacity(0.25),
+                                ),
+                                padding: const EdgeInsets.all(18.0),
+                                child: Column(
+                                  children: [
+                                    Row(
+                                      children: [
+                                        const Icon(
+                                          CupertinoIcons.person_circle_fill,
+                                          size: 42.0,
                                         ),
-                                        onPressed: () {
-                                          controller.acceptRequest(
-                                            friend.friendshipId,
-                                          );
-                                        },
-                                        child: Text(
-                                          'Accept',
-                                          style: GoogleFonts.inter(
-                                            fontSize: 16.0,
-                                            fontWeight: FontWeight.w500,
-                                            color: Colors.white,
-                                          ),
+                                        const SizedBox(
+                                          width: 16.0,
                                         ),
-                                      ),
-                                      ElevatedButton(
-                                        style: ElevatedButton.styleFrom(
-                                          elevation: 0.0,
-                                          primary: Colors.red.withOpacity(0.7),
-                                          padding: const EdgeInsets.symmetric(
-                                            horizontal: 18.0,
-                                            vertical: 10.0,
-                                          ),
-                                          shape: RoundedRectangleBorder(
-                                            borderRadius:
-                                                BorderRadius.circular(12.0),
-                                          ),
-                                        ),
-                                        onPressed: () {
-                                          // 0 --> Delete incoming request.
-                                          controller.deleteRequest(
-                                            id: friend.friendshipId,
-                                            type: 0,
-                                          );
-                                        },
-                                        child: Text(
-                                          'Decline',
-                                          style: GoogleFonts.inter(
-                                            fontSize: 16.0,
-                                            fontWeight: FontWeight.w500,
-                                            color: Colors.white,
-                                          ),
-                                        ),
-                                      ),
-                                    ],
-                                  ),
-                                ],
-                              ),
-                            ),
-                          ),
-                        )
-                        .toList(),
-                  ),
-                  // REQUESTED items.
-                  Column(
-                    children: controller.requestedList
-                        .map(
-                          (friend) => Padding(
-                            padding: const EdgeInsets.symmetric(
-                              vertical: 12.0,
-                              horizontal: 18.0,
-                            ),
-                            child: Container(
-                              width: double.maxFinite,
-                              decoration: BoxDecoration(
-                                borderRadius: BorderRadius.circular(16.0),
-                                color: Colors.grey.withOpacity(0.25),
-                              ),
-                              padding: const EdgeInsets.all(18.0),
-                              child: Column(
-                                children: [
-                                  Row(
-                                    children: [
-                                      const Icon(
-                                        CupertinoIcons.person_circle_fill,
-                                        size: 42.0,
-                                      ),
-                                      const SizedBox(
-                                        width: 16.0,
-                                      ),
-                                      Expanded(
-                                        child: Column(
+                                        Column(
                                           crossAxisAlignment:
                                               CrossAxisAlignment.start,
                                           children: [
@@ -427,28 +354,115 @@ class FriendsPage extends StatelessWidget {
                                             ),
                                           ],
                                         ),
-                                      ),
-                                      PopupMenuButton(
-                                        icon: const Icon(
-                                          Icons.more_vert,
-                                          color: moneyBoyPurple,
+                                      ],
+                                    ),
+                                    const SizedBox(
+                                      height: 12.0,
+                                    ),
+                                    Row(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.spaceEvenly,
+                                      children: [
+                                        ElevatedButton(
+                                          style: ElevatedButton.styleFrom(
+                                            elevation: 0.0,
+                                            primary: moneyBoyPurple,
+                                            padding: const EdgeInsets.symmetric(
+                                              horizontal: 18.0,
+                                              vertical: 10.0,
+                                            ),
+                                            shape: RoundedRectangleBorder(
+                                              borderRadius:
+                                                  BorderRadius.circular(12.0),
+                                            ),
+                                          ),
+                                          onPressed: () {
+                                            controller.acceptRequest(
+                                              friend.friendshipId,
+                                            );
+                                          },
+                                          child: Text(
+                                            'Accept',
+                                            style: GoogleFonts.inter(
+                                              fontSize: 16.0,
+                                              fontWeight: FontWeight.w500,
+                                              color: Colors.white,
+                                            ),
+                                          ),
                                         ),
-                                        shape: RoundedRectangleBorder(
-                                          borderRadius:
-                                              BorderRadius.circular(16.0),
+                                        ElevatedButton(
+                                          style: ElevatedButton.styleFrom(
+                                            elevation: 0.0,
+                                            primary:
+                                                Colors.red.withOpacity(0.7),
+                                            padding: const EdgeInsets.symmetric(
+                                              horizontal: 18.0,
+                                              vertical: 10.0,
+                                            ),
+                                            shape: RoundedRectangleBorder(
+                                              borderRadius:
+                                                  BorderRadius.circular(12.0),
+                                            ),
+                                          ),
+                                          onPressed: () {
+                                            // 0 --> Delete incoming request.
+                                            controller.deleteRequest(
+                                              id: friend.friendshipId,
+                                              type: 0,
+                                            );
+                                          },
+                                          child: Text(
+                                            'Decline',
+                                            style: GoogleFonts.inter(
+                                              fontSize: 16.0,
+                                              fontWeight: FontWeight.w500,
+                                              color: Colors.white,
+                                            ),
+                                          ),
                                         ),
-                                        itemBuilder: (context) {
-                                          return [
-                                            PopupMenuItem(
-                                              onTap: () {
-                                                // 1 --> Delete Sent Request
-                                                controller.deleteRequest(
-                                                  id: friend.friendshipId,
-                                                  type: 1,
-                                                );
-                                              },
-                                              child: Text(
-                                                "Delete Request",
+                                      ],
+                                    ),
+                                  ],
+                                ),
+                              ),
+                            ),
+                          )
+                          .toList(),
+                    ),
+                    // REQUESTED items.
+                    Column(
+                      children: controller.requestedList
+                          .map(
+                            (friend) => Padding(
+                              padding: const EdgeInsets.symmetric(
+                                vertical: 12.0,
+                                horizontal: 18.0,
+                              ),
+                              child: Container(
+                                width: double.maxFinite,
+                                decoration: BoxDecoration(
+                                  borderRadius: BorderRadius.circular(16.0),
+                                  color: Colors.grey.withOpacity(0.25),
+                                ),
+                                padding: const EdgeInsets.all(18.0),
+                                child: Column(
+                                  children: [
+                                    Row(
+                                      children: [
+                                        const Icon(
+                                          CupertinoIcons.person_circle_fill,
+                                          size: 42.0,
+                                        ),
+                                        const SizedBox(
+                                          width: 16.0,
+                                        ),
+                                        Expanded(
+                                          child: Column(
+                                            crossAxisAlignment:
+                                                CrossAxisAlignment.start,
+                                            children: [
+                                              Text(
+                                                friend.name,
                                                 style: GoogleFonts.inter(
                                                   fontSize: 18.0,
                                                   fontWeight: FontWeight.w500,
@@ -456,55 +470,98 @@ class FriendsPage extends StatelessWidget {
                                                       .withOpacity(0.8),
                                                 ),
                                               ),
-                                            ),
-                                          ];
-                                        },
-                                      ),
-                                    ],
-                                  ),
-                                  const SizedBox(
-                                    height: 12.0,
-                                  ),
-                                  Container(
-                                    margin: const EdgeInsets.symmetric(
-                                      horizontal: 32.0,
-                                    ),
-                                    padding: const EdgeInsets.symmetric(
-                                      vertical: 12.0,
-                                    ),
-                                    decoration: BoxDecoration(
-                                      borderRadius: BorderRadius.circular(12.0),
-                                      color: Colors.grey.withOpacity(0.35),
-                                    ),
-                                    child: Row(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.center,
-                                      children: [
-                                        Text(
-                                          "Friend request sent ",
-                                          style: GoogleFonts.inter(
-                                            fontSize: 18.0,
-                                            fontWeight: FontWeight.w500,
-                                            color:
-                                                Colors.black.withOpacity(0.5),
+                                              Text(
+                                                friend.email,
+                                                style: GoogleFonts.inter(
+                                                  fontSize: 18.0,
+                                                  fontWeight: FontWeight.w500,
+                                                  color: Colors.black
+                                                      .withOpacity(0.8),
+                                                ),
+                                              ),
+                                            ],
                                           ),
                                         ),
-                                        Icon(
-                                          Icons.check,
-                                          color: Colors.black.withOpacity(0.5),
-                                          size: 20.0,
+                                        PopupMenuButton(
+                                          icon: const Icon(
+                                            Icons.more_vert,
+                                            color: moneyBoyPurple,
+                                          ),
+                                          shape: RoundedRectangleBorder(
+                                            borderRadius:
+                                                BorderRadius.circular(16.0),
+                                          ),
+                                          itemBuilder: (context) {
+                                            return [
+                                              PopupMenuItem(
+                                                onTap: () {
+                                                  // 1 --> Delete Sent Request
+                                                  controller.deleteRequest(
+                                                    id: friend.friendshipId,
+                                                    type: 1,
+                                                  );
+                                                },
+                                                child: Text(
+                                                  "Delete Request",
+                                                  style: GoogleFonts.inter(
+                                                    fontSize: 18.0,
+                                                    fontWeight: FontWeight.w500,
+                                                    color: Colors.black
+                                                        .withOpacity(0.8),
+                                                  ),
+                                                ),
+                                              ),
+                                            ];
+                                          },
                                         ),
                                       ],
                                     ),
-                                  ),
-                                ],
+                                    const SizedBox(
+                                      height: 12.0,
+                                    ),
+                                    Container(
+                                      margin: const EdgeInsets.symmetric(
+                                        horizontal: 32.0,
+                                      ),
+                                      padding: const EdgeInsets.symmetric(
+                                        vertical: 12.0,
+                                      ),
+                                      decoration: BoxDecoration(
+                                        borderRadius:
+                                            BorderRadius.circular(12.0),
+                                        color: Colors.grey.withOpacity(0.35),
+                                      ),
+                                      child: Row(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.center,
+                                        children: [
+                                          Text(
+                                            "Friend request sent ",
+                                            style: GoogleFonts.inter(
+                                              fontSize: 18.0,
+                                              fontWeight: FontWeight.w500,
+                                              color:
+                                                  Colors.black.withOpacity(0.5),
+                                            ),
+                                          ),
+                                          Icon(
+                                            Icons.check,
+                                            color:
+                                                Colors.black.withOpacity(0.5),
+                                            size: 20.0,
+                                          ),
+                                        ],
+                                      ),
+                                    ),
+                                  ],
+                                ),
                               ),
                             ),
-                          ),
-                        )
-                        .toList(),
-                  ),
-                ],
+                          )
+                          .toList(),
+                    ),
+                  ],
+                ),
               ),
             ),
     );

@@ -110,6 +110,50 @@ class TimewiseExpensesList extends StatelessWidget {
                       children: [
                         IconButton(
                           onPressed: () {
+                            Get.defaultDialog(
+                              title: "Expense Details",
+                              titleStyle: GoogleFonts.montserrat(
+                                fontSize: 22.0,
+                                fontWeight: FontWeight.w700,
+                                color: Colors.black.withOpacity(0.8),
+                              ),
+                              content: Container(
+                                height: 350.0,
+                                color: Colors.white,
+                                child: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  mainAxisSize: MainAxisSize.min,
+                                  children: [
+                                    ExpenseInfoWidget(
+                                      title: "Category",
+                                      value: "${_eri.category.name} ",
+                                    ),
+                                    ExpenseInfoWidget(
+                                      title: "Amount",
+                                      value: "₹ ${_eri.expense} ",
+                                    ),
+                                    ExpenseInfoWidget(
+                                      title: "Remarks",
+                                      value: "${_eri.remark} ",
+                                    ),
+                                    ExpenseInfoWidget(
+                                      title: "Added on ",
+                                      value: DateFormat('yMMMd')
+                                          .format(_eri.createdDate),
+                                    ),
+                                  ],
+                                ),
+                              ),
+                            );
+                          },
+                          icon: const Icon(
+                            CupertinoIcons.info,
+                            size: 36.0,
+                            color: moneyBoyPurple,
+                          ),
+                        ),
+                        IconButton(
+                          onPressed: () {
                             Get.to(
                               NewExpenseCategoryScreen(
                                 isUpdate: true,
@@ -120,7 +164,7 @@ class TimewiseExpensesList extends StatelessWidget {
                           icon: const Icon(
                             CupertinoIcons.pencil_circle,
                             size: 36.0,
-                            color: moneyBoyPurple,
+                            color: moneyBoyPurpleLight,
                           ),
                         ),
                         IconButton(
@@ -142,6 +186,62 @@ class TimewiseExpensesList extends StatelessWidget {
             },
           ),
         ),
+      ),
+    );
+  }
+}
+
+class ExpenseInfoWidget extends StatelessWidget {
+  const ExpenseInfoWidget({
+    Key? key,
+    required this.title,
+    required this.value,
+  }) : super(key: key);
+  final String title;
+  final String value;
+  @override
+  Widget build(BuildContext context) {
+    return Padding(
+      padding: const EdgeInsets.symmetric(vertical: 8.0),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Padding(
+            padding: const EdgeInsets.only(
+              left: 8.0,
+              bottom: 8.0,
+            ),
+            child: Text(
+              title,
+              style: GoogleFonts.inter(
+                fontSize: 14.0,
+                fontWeight: FontWeight.w500,
+                color: Colors.black.withOpacity(0.8),
+              ),
+            ),
+          ),
+          Container(
+            width: double.maxFinite,
+            padding: const EdgeInsets.symmetric(
+              vertical: 12.0,
+              horizontal: 16.0,
+            ),
+            decoration: BoxDecoration(
+              color: Colors.grey.withOpacity(0.2),
+              borderRadius: BorderRadius.circular(14.0),
+            ),
+            child: Text(
+              value,
+              maxLines: 3,
+              overflow: TextOverflow.fade,
+              style: GoogleFonts.montserrat(
+                fontSize: 16.0,
+                fontWeight: FontWeight.w500,
+                color: Colors.black.withOpacity(0.8),
+              ),
+            ),
+          ),
+        ],
       ),
     );
   }
