@@ -135,3 +135,14 @@ body {
 */
 
 const String sendFriendRequestEndPoint = "/friends/";
+
+/*
+DELETE
+
+Auth Required : yes,
+
+:id  = <String> (required)
+
+*/
+
+const String deleteFriendRequestEndPoint = "/friends/delete_request";

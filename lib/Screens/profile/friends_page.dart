@@ -8,6 +8,7 @@ import 'package:moneyboi/Widgets/big_bar_button.dart';
 import 'package:moneyboi/Widgets/text_field_widget.dart';
 
 final scaffoldState = GlobalKey<ScaffoldState>();
+final _emailController = TextEditingController();
 
 class FriendsPage extends StatelessWidget {
   const FriendsPage({Key? key}) : super(key: key);
@@ -38,63 +39,71 @@ class FriendsPage extends StatelessWidget {
             builder: (context) {
               return SizedBox(
                 height: MediaQuery.of(context).size.height * 0.6,
-                child: Column(
-                  children: [
-                    Padding(
-                      padding: const EdgeInsets.symmetric(vertical: 16.0),
-                      child: Text(
-                        "Search for friends",
-                        style: GoogleFonts.inter(
-                          fontSize: 24.0,
-                          fontWeight: FontWeight.w700,
-                          color: moneyBoyPurple,
-                        ),
-                      ),
-                    ),
-                    Padding(
-                      padding: const EdgeInsets.symmetric(
-                        vertical: 16.0,
-                        horizontal: 24.0,
-                      ),
-                      child: Text(
-                        "It's always more fun with friends. You can search for friends using their registered email id.",
-                        textAlign: TextAlign.left,
-                        style: GoogleFonts.montserrat(
-                          fontSize: 16.0,
-                          fontWeight: FontWeight.w400,
-                          color: Colors.black.withOpacity(0.85),
-                        ),
-                      ),
-                    ),
-                    const SizedBox(
-                      height: 16.0,
-                    ),
-                    TextFieldWidget(
-                      controller: TextEditingController(),
-                      hint: "Enter Friend's Email",
-                      inputType: TextInputType.emailAddress,
-                      horizontalMargin: 24.0,
-                      verticalPadding: 8.0,
-                      fontSize: 20.0,
-                      hintFontSize: 18.0,
-                    ),
-                    const SizedBox(height: 24.0),
-                    GestureDetector(
-                      onTap: () {},
-                      child: BigBarButtonBody(
-                        horizontalPadding: 32.0,
+                child: GetBuilder<ProfileController>(builder: (controller) {
+                  return Column(
+                    children: [
+                      Padding(
+                        padding: const EdgeInsets.symmetric(vertical: 16.0),
                         child: Text(
-                          "Search",
+                          "Search for friends",
                           style: GoogleFonts.inter(
-                            fontSize: 18.0,
+                            fontSize: 24.0,
                             fontWeight: FontWeight.w700,
-                            color: Colors.white,
+                            color: moneyBoyPurple,
                           ),
                         ),
                       ),
-                    )
-                  ],
-                ),
+                      Padding(
+                        padding: const EdgeInsets.symmetric(
+                          vertical: 16.0,
+                          horizontal: 24.0,
+                        ),
+                        child: Text(
+                          "It's always more fun with friends. You can search for friends using their registered email id.",
+                          textAlign: TextAlign.left,
+                          style: GoogleFonts.montserrat(
+                            fontSize: 16.0,
+                            fontWeight: FontWeight.w400,
+                            color: Colors.black.withOpacity(0.85),
+                          ),
+                        ),
+                      ),
+                      const SizedBox(
+                        height: 16.0,
+                      ),
+                      TextFieldWidget(
+                        controller: _emailController,
+                        hint: "Enter Friend's Email",
+                        inputType: TextInputType.emailAddress,
+                        horizontalMargin: 24.0,
+                        verticalPadding: 8.0,
+                        fontSize: 20.0,
+                        hintFontSize: 18.0,
+                      ),
+                      const SizedBox(height: 24.0),
+                      GestureDetector(
+                        onTap: () {
+                          if (_emailController.text.isNotEmpty) {
+                            controller.sendRequest(
+                              email: _emailController.text.trim(),
+                            );
+                          }
+                        },
+                        child: BigBarButtonBody(
+                          horizontalPadding: 32.0,
+                          child: Text(
+                            "Search",
+                            style: GoogleFonts.inter(
+                              fontSize: 18.0,
+                              fontWeight: FontWeight.w700,
+                              color: Colors.white,
+                            ),
+                          ),
+                        ),
+                      )
+                    ],
+                  );
+                }),
               );
             },
           );
@@ -169,26 +178,58 @@ class FriendsPage extends StatelessWidget {
                               const SizedBox(
                                 width: 16.0,
                               ),
-                              Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  Text(
-                                    friend.name,
-                                    style: GoogleFonts.inter(
-                                      fontSize: 18.0,
-                                      fontWeight: FontWeight.w500,
-                                      color: Colors.black.withOpacity(0.8),
+                              Expanded(
+                                child: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    Text(
+                                      friend.name,
+                                      style: GoogleFonts.inter(
+                                        fontSize: 18.0,
+                                        fontWeight: FontWeight.w500,
+                                        color: Colors.black.withOpacity(0.8),
+                                      ),
                                     ),
-                                  ),
-                                  Text(
-                                    friend.email,
-                                    style: GoogleFonts.inter(
-                                      fontSize: 18.0,
-                                      fontWeight: FontWeight.w500,
-                                      color: Colors.black.withOpacity(0.8),
+                                    Text(
+                                      friend.email,
+                                      style: GoogleFonts.inter(
+                                        fontSize: 18.0,
+                                        fontWeight: FontWeight.w500,
+                                        color: Colors.black.withOpacity(0.8),
+                                      ),
                                     ),
-                                  ),
-                                ],
+                                  ],
+                                ),
+                              ),
+                              PopupMenuButton(
+                                icon: const Icon(
+                                  Icons.more_vert,
+                                  color: moneyBoyPurple,
+                                ),
+                                shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(16.0),
+                                ),
+                                itemBuilder: (context) {
+                                  return [
+                                    PopupMenuItem(
+                                      onTap: () {
+                                        // 2 --> Remove Friend
+                                        controller.deleteRequest(
+                                          id: friend.friendshipId,
+                                          type: 2,
+                                        );
+                                      },
+                                      child: Text(
+                                        "Remove Friend",
+                                        style: GoogleFonts.inter(
+                                          fontSize: 18.0,
+                                          fontWeight: FontWeight.w500,
+                                          color: Colors.black.withOpacity(0.8),
+                                        ),
+                                      ),
+                                    ),
+                                  ];
+                                },
                               ),
                             ],
                           ),
@@ -209,6 +250,7 @@ class FriendsPage extends StatelessWidget {
               child: Column(
                 mainAxisSize: MainAxisSize.min,
                 children: [
+                  // PENDING items
                   Column(
                     children: controller.pendingList
                         .map(
@@ -281,7 +323,11 @@ class FriendsPage extends StatelessWidget {
                                                 BorderRadius.circular(12.0),
                                           ),
                                         ),
-                                        onPressed: () {},
+                                        onPressed: () {
+                                          controller.acceptRequest(
+                                            friend.friendshipId,
+                                          );
+                                        },
                                         child: Text(
                                           'Accept',
                                           style: GoogleFonts.inter(
@@ -304,7 +350,13 @@ class FriendsPage extends StatelessWidget {
                                                 BorderRadius.circular(12.0),
                                           ),
                                         ),
-                                        onPressed: () {},
+                                        onPressed: () {
+                                          // 0 --> Delete incoming request.
+                                          controller.deleteRequest(
+                                            id: friend.friendshipId,
+                                            type: 0,
+                                          );
+                                        },
                                         child: Text(
                                           'Decline',
                                           style: GoogleFonts.inter(
@@ -323,6 +375,7 @@ class FriendsPage extends StatelessWidget {
                         )
                         .toList(),
                   ),
+                  // REQUESTED items.
                   Column(
                     children: controller.requestedList
                         .map(
@@ -349,29 +402,63 @@ class FriendsPage extends StatelessWidget {
                                       const SizedBox(
                                         width: 16.0,
                                       ),
-                                      Column(
-                                        crossAxisAlignment:
-                                            CrossAxisAlignment.start,
-                                        children: [
-                                          Text(
-                                            friend.name,
-                                            style: GoogleFonts.inter(
-                                              fontSize: 18.0,
-                                              fontWeight: FontWeight.w500,
-                                              color:
-                                                  Colors.black.withOpacity(0.8),
+                                      Expanded(
+                                        child: Column(
+                                          crossAxisAlignment:
+                                              CrossAxisAlignment.start,
+                                          children: [
+                                            Text(
+                                              friend.name,
+                                              style: GoogleFonts.inter(
+                                                fontSize: 18.0,
+                                                fontWeight: FontWeight.w500,
+                                                color: Colors.black
+                                                    .withOpacity(0.8),
+                                              ),
                                             ),
-                                          ),
-                                          Text(
-                                            friend.email,
-                                            style: GoogleFonts.inter(
-                                              fontSize: 18.0,
-                                              fontWeight: FontWeight.w500,
-                                              color:
-                                                  Colors.black.withOpacity(0.8),
+                                            Text(
+                                              friend.email,
+                                              style: GoogleFonts.inter(
+                                                fontSize: 18.0,
+                                                fontWeight: FontWeight.w500,
+                                                color: Colors.black
+                                                    .withOpacity(0.8),
+                                              ),
                                             ),
-                                          ),
-                                        ],
+                                          ],
+                                        ),
+                                      ),
+                                      PopupMenuButton(
+                                        icon: const Icon(
+                                          Icons.more_vert,
+                                          color: moneyBoyPurple,
+                                        ),
+                                        shape: RoundedRectangleBorder(
+                                          borderRadius:
+                                              BorderRadius.circular(16.0),
+                                        ),
+                                        itemBuilder: (context) {
+                                          return [
+                                            PopupMenuItem(
+                                              onTap: () {
+                                                // 1 --> Delete Sent Request
+                                                controller.deleteRequest(
+                                                  id: friend.friendshipId,
+                                                  type: 1,
+                                                );
+                                              },
+                                              child: Text(
+                                                "Delete Request",
+                                                style: GoogleFonts.inter(
+                                                  fontSize: 18.0,
+                                                  fontWeight: FontWeight.w500,
+                                                  color: Colors.black
+                                                      .withOpacity(0.8),
+                                                ),
+                                              ),
+                                            ),
+                                          ];
+                                        },
                                       ),
                                     ],
                                   ),

@@ -68,48 +68,51 @@ class ProfilePage extends StatelessWidget {
                     ),
                   ),
                   if (!_profileController.isFriendsLoading.value)
-                    GestureDetector(
-                      onTap: () {
-                        Get.to(FriendsPage());
-                      },
-                      child: Padding(
-                        padding: const EdgeInsets.symmetric(
-                          vertical: 12.0,
-                          horizontal: 18.0,
-                        ),
-                        child: Container(
-                          width: double.maxFinite,
-                          decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(16.0),
-                            color: Colors.grey.withOpacity(0.25),
+                    Padding(
+                      padding: const EdgeInsets.only(top: 18.0),
+                      child: GestureDetector(
+                        onTap: () {
+                          Get.to(const FriendsPage());
+                        },
+                        child: Padding(
+                          padding: const EdgeInsets.symmetric(
+                            vertical: 12.0,
+                            horizontal: 18.0,
                           ),
-                          padding: const EdgeInsets.all(18.0),
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: [
-                              Expanded(
-                                child: Row(
-                                  children: [
-                                    const Icon(
-                                      CupertinoIcons.person_3,
-                                      size: 38.0,
-                                    ),
-                                    Text(
-                                      " View Friends ",
-                                      style: GoogleFonts.inter(
-                                        fontSize: 18.0,
-                                        fontWeight: FontWeight.w700,
-                                        color: Colors.black.withOpacity(0.8),
+                          child: Container(
+                            width: double.maxFinite,
+                            decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(16.0),
+                              color: Colors.grey.withOpacity(0.25),
+                            ),
+                            padding: const EdgeInsets.all(18.0),
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                Expanded(
+                                  child: Row(
+                                    children: [
+                                      const Icon(
+                                        CupertinoIcons.person_3,
+                                        size: 38.0,
                                       ),
-                                    ),
-                                  ],
+                                      Text(
+                                        " View Friends ",
+                                        style: GoogleFonts.inter(
+                                          fontSize: 18.0,
+                                          fontWeight: FontWeight.w700,
+                                          color: Colors.black.withOpacity(0.8),
+                                        ),
+                                      ),
+                                    ],
+                                  ),
                                 ),
-                              ),
-                              const Icon(
-                                CupertinoIcons.arrow_right_circle,
-                                size: 32.0,
-                              ),
-                            ],
+                                const Icon(
+                                  CupertinoIcons.arrow_right_circle,
+                                  size: 32.0,
+                                ),
+                              ],
+                            ),
                           ),
                         ),
                       ),

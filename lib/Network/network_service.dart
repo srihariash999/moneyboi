@@ -624,4 +624,48 @@ class NetworkService {
       );
     }
   }
+
+  /// API function to delete a friend request.
+  Future<ApiResponseModel> deleteFriendRequest({
+    required String friendRequestId,
+  }) async {
+    final Dio _dio = Dio();
+    final String _token = _authBox.get('token').toString();
+    _dio.options.headers['x-auth-token'] = _token;
+    try {
+      final Response _delRequest = await _dio.delete(
+        '$baseUrl$deleteFriendRequestEndPoint' + '/$friendRequestId',
+      );
+
+      if (_delRequest.statusCode == 204) {
+        return ApiResponseModel(
+          statusCode: _delRequest.statusCode ?? 204,
+          endPoint: deleteFriendRequestEndPoint,
+          specificMessage: '',
+          responseJson: _delRequest,
+        );
+      }
+
+      return ApiResponseModel(
+        statusCode: 404,
+        endPoint: deleteFriendRequestEndPoint,
+        specificMessage: _delRequest.data.toString(),
+      );
+    } on DioError catch (e) {
+      debugPrint("Dio Error: $deleteFriendRequestEndPoint $e");
+      debugPrint(e.response?.data.toString());
+      return ApiResponseModel(
+        statusCode: e.response?.statusCode ?? 404,
+        endPoint: deleteFriendRequestEndPoint,
+        specificMessage: e.response?.data.toString(),
+      );
+    } catch (e) {
+      debugPrint(" unknown error : $e");
+      return ApiResponseModel(
+        statusCode: 400,
+        endPoint: deleteFriendRequestEndPoint,
+        specificMessage: " unknown error",
+      );
+    }
+  }
 }
