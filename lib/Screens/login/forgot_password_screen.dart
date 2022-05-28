@@ -54,7 +54,7 @@ class ForgotPasswordScreen extends StatelessWidget {
                     ),
                     const SizedBox(height: 32.0),
                     TextFieldWidget(
-                      horizontalPadding: 0,
+                      horizontalMargin: 0,
                       controller: _emailController,
                       inputType: TextInputType.emailAddress,
                       hint: "Enter your email address",
@@ -117,7 +117,7 @@ class ForgotPasswordScreen extends StatelessWidget {
                     ),
                     const SizedBox(height: 32.0),
                     TextFieldWidget(
-                      horizontalPadding: 0,
+                      horizontalMargin: 0,
                       controller: _otpController,
                       inputType: TextInputType.number,
                       hint: "Enter the OTP sent to your email",
@@ -125,7 +125,7 @@ class ForgotPasswordScreen extends StatelessWidget {
                     ),
                     const SizedBox(height: 28.0),
                     TextFieldWidget(
-                      horizontalPadding: 0,
+                      horizontalMargin: 0,
                       controller: _newPasswordController,
                       inputType: TextInputType.visiblePassword,
                       hint: "Enter a new password",
@@ -134,7 +134,7 @@ class ForgotPasswordScreen extends StatelessWidget {
                     ),
                     const SizedBox(height: 28.0),
                     TextFieldWidget(
-                      horizontalPadding: 0,
+                      horizontalMargin: 0,
                       controller: _newPasswordConfirmController,
                       inputType: TextInputType.visiblePassword,
                       hint: "Confirm your new password",

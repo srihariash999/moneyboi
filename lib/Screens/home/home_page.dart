@@ -41,7 +41,7 @@ class HomePage extends StatelessWidget {
                   ToggleLabelEnum.weekly,
                   init: true,
                 );
-                Get.find<ProfileController>().getUserProfile();
+                Get.find<ProfileController>().getUserProfileAndFriendData();
               },
               builder: (controller) => Column(
                 children: [
@@ -195,7 +195,7 @@ class HomeScreenTopBar extends StatelessWidget {
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
-       GetBuilder<ProfileController>(
+        GetBuilder<ProfileController>(
           builder: (controller) {
             if (!controller.isProfileLoading.value) {
               return Padding(

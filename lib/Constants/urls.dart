@@ -87,3 +87,62 @@ example body:
 
 const String forgotPasswordOtpVerifyEndPoint =
     "/users/forgotpassword/otp/verify";
+
+/*
+GET
+
+Auth Required : yes,
+
+query params: none.
+
+*/
+
+const String getFriendsListEndPoint = "/friends";
+
+/*
+GET
+
+Auth Required : yes,
+
+query params: none.
+
+*/
+
+const String getPendingActionsFriendsListEndPoint = "/friends/pending_action";
+
+/*
+POST
+
+Auth Required : yes,
+
+body {
+  "id" : <String>  (required) 
+}
+
+*/
+
+const String acceptFriendRequestEndPoint = "/friends/accept_request";
+
+/*
+POST
+
+Auth Required : yes,
+
+body {
+  "email" : <Email>  (required) 
+}
+
+*/
+
+const String sendFriendRequestEndPoint = "/friends/";
+
+/*
+DELETE
+
+Auth Required : yes,
+
+:id  = <String> (required)
+
+*/
+
+const String deleteFriendRequestEndPoint = "/friends/delete_request";
