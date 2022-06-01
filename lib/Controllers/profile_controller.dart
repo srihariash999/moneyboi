@@ -15,6 +15,7 @@ class ProfileController extends GetxController {
 
   final RxString name = ''.obs;
   final RxString email = ''.obs;
+  final RxString id = ''.obs;
 
   // ignore: prefer_final_fields
   final _friends = <Friend>[].obs;
@@ -49,6 +50,7 @@ class ProfileController extends GetxController {
         isProfileLoading.value = false;
         name.value = _res['name'].toString();
         email.value = _res['email'].toString();
+        id.value = _res['_id'].toString();
         update();
       } else {
         isProfileLoading.value = false;

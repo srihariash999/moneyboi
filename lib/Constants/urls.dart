@@ -146,3 +146,22 @@ Auth Required : yes,
 */
 
 const String deleteFriendRequestEndPoint = "/friends/delete_request";
+
+/*
+GET
+
+Auth Required : yes,
+
+
+*/
+
+const String getRepaymentAccountsEndPoint = "/repayments/";
+
+/*
+GET
+
+Auth Required : yes,
+
+*/
+
+const String getRepaymentTransactionsEndPoint = "/repayments/transactions";

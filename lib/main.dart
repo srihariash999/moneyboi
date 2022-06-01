@@ -9,6 +9,8 @@ import 'package:moneyboi/Controllers/chart_screen_controller.dart';
 import 'package:moneyboi/Controllers/home_screen_controller.dart';
 import 'package:moneyboi/Controllers/login_controller.dart';
 import 'package:moneyboi/Controllers/profile_controller.dart';
+import 'package:moneyboi/Controllers/repayment_single_controller.dart';
+import 'package:moneyboi/Controllers/repayments_main_controller.dart';
 import 'package:moneyboi/Screens/home/home_page.dart';
 import 'package:moneyboi/Screens/login/login_page.dart';
 import 'package:path_provider/path_provider.dart';
@@ -40,6 +42,15 @@ class MyApp extends StatelessWidget {
     );
     Get.lazyPut<ChartScreenController>(
       () => ChartScreenController(),
+      fenix: true,
+    );
+    Get.lazyPut<RepaymentsMainController>(
+      () => RepaymentsMainController(),
+      fenix: true,
+    );
+
+    Get.lazyPut<RepaymentsSingleController>(
+      () => RepaymentsSingleController(),
       fenix: true,
     );
 
