@@ -48,4 +48,25 @@ class RepaymentsMainController extends GetxController {
       );
     }
   }
+
+  Future<void> addRepaymentAcc(String email) async {
+    Get.back();
+    isLoading = true;
+    update();
+
+    final ApiResponseModel _result =
+        await _apiService.addRepaymentAccount(email);
+    if (_result.statusCode == 200 && _result.responseJson != null) {
+      _getRepaymentAccs();
+    } else {
+      isLoading = false;
+      update();
+
+      debugPrint(_result.specificMessage);
+      BotToast.showText(
+        text: _result.specificMessage ??
+            " Cannot add repayment account right now.",
+      );
+    }
+  }
 }

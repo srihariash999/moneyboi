@@ -709,6 +709,50 @@ class NetworkService {
     }
   }
 
+  Future<ApiResponseModel> addRepaymentAccount(String email) async {
+    final Dio _dio = Dio();
+    final String _token = _authBox.get('token').toString();
+    _dio.options.headers['x-auth-token'] = _token;
+    try {
+      final Response _result = await _dio.post(
+        '$baseUrl$getRepaymentAccountsEndPoint',
+        data: {
+          'friend': email,
+        },
+      );
+
+      if (_result.statusCode == 200) {
+        return ApiResponseModel(
+          statusCode: _result.statusCode ?? 200,
+          endPoint: getRepaymentAccountsEndPoint,
+          specificMessage: '',
+          responseJson: _result,
+        );
+      }
+
+      return ApiResponseModel(
+        statusCode: 404,
+        endPoint: getRepaymentAccountsEndPoint,
+        specificMessage: _result.data.toString(),
+      );
+    } on DioError catch (e) {
+      debugPrint("Dio Error: $getRepaymentAccountsEndPoint $e");
+      debugPrint(e.response?.data.toString());
+      return ApiResponseModel(
+        statusCode: e.response?.statusCode ?? 404,
+        endPoint: getRepaymentAccountsEndPoint,
+        specificMessage: e.response?.data.toString(),
+      );
+    } catch (e) {
+      debugPrint(" unknown error : $e");
+      return ApiResponseModel(
+        statusCode: 400,
+        endPoint: getRepaymentAccountsEndPoint,
+        specificMessage: " unknown error",
+      );
+    }
+  }
+
   Future<ApiResponseModel> getRepaymentTransactions(String id) async {
     final Dio _dio = Dio();
     final String _token = _authBox.get('token').toString();

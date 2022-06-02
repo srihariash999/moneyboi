@@ -214,7 +214,7 @@ class RepaymentSingleScreen extends StatelessWidget {
         backgroundColor: Colors.white,
         iconTheme: const IconThemeData(color: Colors.black),
         title: Text(
-          'REPAYMENT HISTORY',
+          "You + ${repayAccount.friend.name}",
           style: GoogleFonts.inter(
             fontSize: 18.0,
             fontWeight: FontWeight.w700,
@@ -239,20 +239,6 @@ class RepaymentSingleScreen extends StatelessWidget {
             } else {
               return Column(
                 children: [
-                  Align(
-                    alignment: Alignment.centerLeft,
-                    child: Padding(
-                      padding: const EdgeInsets.only(bottom: 8.0),
-                      child: Text(
-                        ' Your Repayment Accounts',
-                        style: GoogleFonts.inter(
-                          fontSize: 20.0,
-                          fontWeight: FontWeight.w600,
-                          color: Colors.black.withOpacity(0.7),
-                        ),
-                      ),
-                    ),
-                  ),
                   Expanded(
                     child: ListView.builder(
                       reverse: true,
@@ -289,9 +275,11 @@ class RepaymentSingleScreen extends StatelessWidget {
                               color: Colors.black.withOpacity(0.4),
                             ),
                             borderRadius: BorderRadius.circular(14.0),
-                            color: controller.repayAccount.value.balance > 0
-                                ? Colors.green.withOpacity(0.25)
-                                : Colors.red.withOpacity(0.25),
+                            color: controller.repayAccount.value.balance == 0
+                                ? Colors.white
+                                : controller.repayAccount.value.balance > 0
+                                    ? Colors.green.withOpacity(0.25)
+                                    : Colors.red.withOpacity(0.25),
                           ),
                           padding: const EdgeInsets.only(
                             left: 8.0,
@@ -307,14 +295,16 @@ class RepaymentSingleScreen extends StatelessWidget {
                             controller.repayAccount.value.balance == 0
                                 ? "You owe each other nothing."
                                 : controller.repayAccount.value.balance > 0
-                                    ? "${controller.repayAccount.value.friend.name} owes you ₹ ${controller.repayAccount.value.balance}"
-                                    : "You owe ${controller.repayAccount.value.friend.name} ₹ ${controller.repayAccount.value.balance} ",
+                                    ? "${controller.repayAccount.value.friend.name} owes you ₹ ${controller.repayAccount.value.balance.abs()}"
+                                    : "You owe ${controller.repayAccount.value.friend.name} ₹ ${controller.repayAccount.value.balance.abs()} ",
                             style: GoogleFonts.inter(
                               fontSize: 18.0,
                               fontWeight: FontWeight.w600,
-                              color: controller.repayAccount.value.balance > 0
-                                  ? Colors.green
-                                  : Colors.red,
+                              color: controller.repayAccount.value.balance == 0
+                                  ? Colors.black
+                                  : controller.repayAccount.value.balance > 0
+                                      ? Colors.green
+                                      : Colors.red,
                             ),
                           ),
                         ),

@@ -3,9 +3,12 @@ import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:intl/intl.dart';
 import 'package:moneyboi/Constants/colors.dart';
+import 'package:moneyboi/Controllers/profile_controller.dart';
 import 'package:moneyboi/Controllers/repayments_main_controller.dart';
 import 'package:moneyboi/Data%20Models/repayment_detail.dart';
 import 'package:moneyboi/Screens/repayments/repayments_single_screen.dart';
+import 'package:moneyboi/Widgets/big_bar_button.dart';
+import 'package:moneyboi/Widgets/text_field_widget.dart';
 
 class RepaymentsMainScreen extends StatelessWidget {
   const RepaymentsMainScreen({Key? key}) : super(key: key);
@@ -27,6 +30,141 @@ class RepaymentsMainScreen extends StatelessWidget {
         ),
       ),
       backgroundColor: Colors.white,
+      floatingActionButton: FloatingActionButton(
+        onPressed: () {
+          showModalBottomSheet(
+            context: context,
+            isScrollControlled: true,
+            builder: (context) {
+              var list = Get.find<ProfileController>().friendList;
+              return SizedBox(
+                height: MediaQuery.of(context).size.height * 0.75,
+                child: GetBuilder<RepaymentsMainController>(
+                  builder: (controller) {
+                    return Column(
+                      children: [
+                        Padding(
+                          padding: const EdgeInsets.symmetric(vertical: 16.0),
+                          child: Text(
+                            "Start new repayment account",
+                            style: GoogleFonts.inter(
+                              fontSize: 24.0,
+                              fontWeight: FontWeight.w700,
+                              color: moneyBoyPurple,
+                            ),
+                          ),
+                        ),
+                        Padding(
+                          padding: const EdgeInsets.symmetric(
+                            vertical: 16.0,
+                            horizontal: 24.0,
+                          ),
+                          child: Text(
+                            "Create a new repayment account to track your transactions. Select a friend and we will create a repayment account for both of you.",
+                            textAlign: TextAlign.left,
+                            style: GoogleFonts.montserrat(
+                              fontSize: 16.0,
+                              fontWeight: FontWeight.w400,
+                              color: Colors.black.withOpacity(0.85),
+                            ),
+                          ),
+                        ),
+                        const SizedBox(
+                          height: 16.0,
+                        ),
+                        const SizedBox(height: 24.0),
+                        Expanded(
+                          child: SingleChildScrollView(
+                            child: Column(
+                              children: list.map((friend) {
+                                return Container(
+                                  decoration: BoxDecoration(
+                                    borderRadius: BorderRadius.circular(16.0),
+                                    color: Colors.grey.withOpacity(0.2),
+                                  ),
+                                  margin: const EdgeInsets.symmetric(
+                                    horizontal: 12.0,
+                                  ),
+                                  padding: const EdgeInsets.symmetric(
+                                    vertical: 24.0,
+                                    horizontal: 12.0,
+                                  ),
+                                  child: Row(
+                                    children: [
+                                      Expanded(
+                                        child: Column(
+                                          crossAxisAlignment:
+                                              CrossAxisAlignment.start,
+                                          children: [
+                                            Text(
+                                              friend.name,
+                                              style: GoogleFonts.inter(
+                                                fontSize: 20.0,
+                                                fontWeight: FontWeight.w700,
+                                                color: Colors.black
+                                                    .withOpacity(0.85),
+                                              ),
+                                            ),
+                                            Text(
+                                              friend.email,
+                                              style: GoogleFonts.inter(
+                                                fontSize: 16.0,
+                                                fontWeight: FontWeight.w600,
+                                                color: Colors.black
+                                                    .withOpacity(0.75),
+                                              ),
+                                            ),
+                                          ],
+                                        ),
+                                      ),
+                                      GestureDetector(
+                                        onTap: () {
+                                          controller
+                                              .addRepaymentAcc(friend.email);
+                                        },
+                                        child: Container(
+                                          padding: const EdgeInsets.symmetric(
+                                            horizontal: 16.0,
+                                            vertical: 8.0,
+                                          ),
+                                          decoration: BoxDecoration(
+                                            color: moneyBoyPurple,
+                                            borderRadius: BorderRadius.circular(
+                                              18.0,
+                                            ),
+                                          ),
+                                          child: Text(
+                                            "Select",
+                                            style: GoogleFonts.inter(
+                                              fontSize: 18.0,
+                                              fontWeight: FontWeight.w700,
+                                              color: Colors.white,
+                                            ),
+                                          ),
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                );
+                              }).toList(),
+                            ),
+                          ),
+                        )
+                      ],
+                    );
+                  },
+                ),
+              );
+            },
+          );
+        },
+        backgroundColor: moneyBoyPurple,
+        elevation: 1.0,
+        child: const Icon(
+          Icons.add,
+          size: 42.0,
+        ),
+      ),
       body: GetBuilder<RepaymentsMainController>(
         initState: (_) {
           Get.find<RepaymentsMainController>().init();
@@ -37,36 +175,41 @@ class RepaymentsMainScreen extends StatelessWidget {
               child: CircularProgressIndicator(),
             );
           } else {
-            return ListView.builder(
-              itemCount: controller.repaymentAccounts.length + 1,
-              itemBuilder: (context, index) {
-                if (index == 0) {
-                  return Padding(
-                    padding: const EdgeInsets.all(8.0),
-                    child: Text(
-                      ' Your Repayment Accounts',
-                      style: GoogleFonts.inter(
-                        fontSize: 20.0,
-                        fontWeight: FontWeight.w600,
-                        color: Colors.black.withOpacity(0.7),
-                      ),
-                    ),
-                  );
-                }
-                return GestureDetector(
-                  onTap: () async {
-                    await Get.to(
-                      RepaymentSingleScreen(
-                        repayAccount: controller.repaymentAccounts[index - 1],
+            return RefreshIndicator(
+              onRefresh: () async {
+                controller.init();
+              },
+              child: ListView.builder(
+                itemCount: controller.repaymentAccounts.length + 1,
+                itemBuilder: (context, index) {
+                  if (index == 0) {
+                    return Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: Text(
+                        ' Your Repayment Accounts',
+                        style: GoogleFonts.inter(
+                          fontSize: 20.0,
+                          fontWeight: FontWeight.w600,
+                          color: Colors.black.withOpacity(0.7),
+                        ),
                       ),
                     );
-                    controller.init();
-                  },
-                  child: RepaymentListTile(
-                    account: controller.repaymentAccounts[index - 1],
-                  ),
-                );
-              },
+                  }
+                  return GestureDetector(
+                    onTap: () async {
+                      await Get.to(
+                        RepaymentSingleScreen(
+                          repayAccount: controller.repaymentAccounts[index - 1],
+                        ),
+                      );
+                      controller.init();
+                    },
+                    child: RepaymentListTile(
+                      account: controller.repaymentAccounts[index - 1],
+                    ),
+                  );
+                },
+              ),
             );
           }
         },
@@ -131,7 +274,7 @@ class RepaymentListTile extends StatelessWidget {
             ),
           ),
           Text(
-            " ${account.balance > 0 ? '+' : '-'} ${account.balance.abs()} ₹",
+            " ${account.balance == 0 ? '' : account.balance > 0 ? '+' : '-'} ${account.balance.abs()} ₹",
             style: GoogleFonts.montserrat(
               fontSize: 20.0,
               fontWeight: FontWeight.w600,
