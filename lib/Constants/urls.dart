@@ -1,6 +1,10 @@
-const String baseUrl = "https://moneyboi-backend.herokuapp.com/api";
+import 'package:flutter/foundation.dart';
 
-// const String baseUrl = "http://192.168.0.123:3000/api";
+const String baseUrl = kDebugMode
+    ? "http://192.168.0.133:3000/api"
+    : "https://moneyboi-backend.herokuapp.com/api";
+
+// const String baseUrl = "http://192.168.0.133:3000/api";
 
 /*
 POST 
@@ -83,3 +87,90 @@ example body:
 
 const String forgotPasswordOtpVerifyEndPoint =
     "/users/forgotpassword/otp/verify";
+
+/*
+GET
+
+Auth Required : yes,
+
+query params: none.
+
+*/
+
+const String getFriendsListEndPoint = "/friends";
+
+/*
+GET
+
+Auth Required : yes,
+
+query params: none.
+
+*/
+
+const String getPendingActionsFriendsListEndPoint = "/friends/pending_action";
+
+/*
+POST
+
+Auth Required : yes,
+
+body {
+  "id" : <String>  (required) 
+}
+
+*/
+
+const String acceptFriendRequestEndPoint = "/friends/accept_request";
+
+/*
+POST
+
+Auth Required : yes,
+
+body {
+  "email" : <Email>  (required) 
+}
+
+*/
+
+const String sendFriendRequestEndPoint = "/friends/";
+
+/*
+DELETE
+
+Auth Required : yes,
+
+:id  = <String> (required)
+
+*/
+
+const String deleteFriendRequestEndPoint = "/friends/delete_request";
+
+/*
+GET
+
+Auth Required : yes,
+
+
+*/
+
+const String getRepaymentAccountsEndPoint = "/repayments/";
+
+/*
+GET
+
+Auth Required : yes,
+
+*/
+
+const String getRepaymentTransactionsEndPoint = "/repayments/transactions";
+
+/*
+GET
+
+Auth Required : yes,
+
+*/
+
+const String newRepaymentTransactionEndPoint = "/repayments/transaction";

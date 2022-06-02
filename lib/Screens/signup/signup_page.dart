@@ -18,28 +18,32 @@ class SignupPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: SafeArea(child: BlocBuilder<SignupBloc, SignupBlocState>(
-        builder: (context, state) {
-          return AnimatedSwitcher(
-            duration: const Duration(milliseconds: 600),
-            child: state is SignupBlocInitial
-                ? SignupNameWidget()
-                : state is SignupBlocEmailState
-                    ? SignupEmailWidget(name: state.name)
-                    : state is SignupBlocPasswordState
-                        ? SignupPasswordWidget(
-                            name: state.name, email: state.email)
-                        : state is SignupBlocLoadingState
-                            ? Container(
-                                alignment: Alignment.center,
-                                child: const CircularProgressIndicator(
-                                  color: moneyBoyPurple,
-                                ),
-                              )
-                            : Container(),
-          );
-        },
-      )),
+      body: SafeArea(
+        child: BlocBuilder<SignupBloc, SignupBlocState>(
+          builder: (context, state) {
+            return AnimatedSwitcher(
+              duration: const Duration(milliseconds: 600),
+              child: state is SignupBlocInitial
+                  ? SignupNameWidget()
+                  : state is SignupBlocEmailState
+                      ? SignupEmailWidget(name: state.name)
+                      : state is SignupBlocPasswordState
+                          ? SignupPasswordWidget(
+                              name: state.name,
+                              email: state.email,
+                            )
+                          : state is SignupBlocLoadingState
+                              ? Container(
+                                  alignment: Alignment.center,
+                                  child: const CircularProgressIndicator(
+                                    color: moneyBoyPurple,
+                                  ),
+                                )
+                              : Container(),
+            );
+          },
+        ),
+      ),
     );
   }
 }
