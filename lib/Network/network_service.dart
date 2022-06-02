@@ -6,8 +6,10 @@ import 'package:moneyboi/Data%20Models/api_response_model.dart';
 
 class NetworkService {
   final Box _authBox = Hive.box('authBox');
-  Future<ApiResponseModel> login(
-      {required String email, required String password}) async {
+  Future<ApiResponseModel> login({
+    required String email,
+    required String password,
+  }) async {
     final Dio _dio = Dio();
 
     try {
@@ -20,12 +22,13 @@ class NetworkService {
       );
 
       if (_loginResp.statusCode == 200) {
-        _authBox.put('token', _loginResp.data['token']);
-        debugPrint(_loginResp.data['token'].toString());
+        _authBox.put('token', (_loginResp.data as Map)['token']);
+        debugPrint((_loginResp.data as Map)['token'].toString());
         return ApiResponseModel(
-            statusCode: _loginResp.statusCode!,
-            endPoint: loginEndPoint,
-            specificMessage: "Login Successful");
+          statusCode: _loginResp.statusCode!,
+          endPoint: loginEndPoint,
+          specificMessage: "Login Successful",
+        );
       } else {
         return ApiResponseModel(
           statusCode: _loginResp.statusCode ?? 400,
@@ -50,10 +53,11 @@ class NetworkService {
     }
   }
 
-  Future<ApiResponseModel> signup(
-      {required String name,
-      required String email,
-      required String password}) async {
+  Future<ApiResponseModel> signup({
+    required String name,
+    required String email,
+    required String password,
+  }) async {
     final Dio _dio = Dio();
 
     try {
@@ -68,9 +72,10 @@ class NetworkService {
 
       if (_signupResp.statusCode == 200) {
         return ApiResponseModel(
-            statusCode: _signupResp.statusCode!,
-            endPoint: loginEndPoint,
-            specificMessage: "Signup Successful");
+          statusCode: _signupResp.statusCode!,
+          endPoint: loginEndPoint,
+          specificMessage: "Signup Successful",
+        );
       } else {
         return ApiResponseModel(
           statusCode: _signupResp.statusCode ?? 400,
@@ -95,8 +100,10 @@ class NetworkService {
     }
   }
 
-  Future<ApiResponseModel> getExpenseRecords(
-      {String? dateIn, String? dateOut}) async {
+  Future<ApiResponseModel> getExpenseRecords({
+    String? dateIn,
+    String? dateOut,
+  }) async {
     final Dio _dio = Dio();
     final String _token = _authBox.get('token').toString();
     _dio.options.headers['x-auth-token'] = _token;
@@ -173,13 +180,15 @@ class NetworkService {
     try {
       final Response _expenseRecordResp;
 
-      _expenseRecordResp =
-          await _dio.post('$baseUrl$expenseRecordCreateEndPoint', data: {
-        "category": category,
-        "amount": amount,
-        "record_date": recordDate,
-        "remarks": remarks
-      });
+      _expenseRecordResp = await _dio.post(
+        '$baseUrl$expenseRecordCreateEndPoint',
+        data: {
+          "category": category,
+          "amount": amount,
+          "record_date": recordDate,
+          "remarks": remarks
+        },
+      );
 
       if (_expenseRecordResp.statusCode == 200) {
         return ApiResponseModel(
@@ -224,13 +233,15 @@ class NetworkService {
     try {
       final Response _expenseRecordResp;
 
-      _expenseRecordResp =
-          await _dio.put('$baseUrl$expenseRecordCreateEndPoint/$id', data: {
-        "category": category,
-        "amount": amount,
-        "record_date": recordDate,
-        "remarks": remarks
-      });
+      _expenseRecordResp = await _dio.put(
+        '$baseUrl$expenseRecordCreateEndPoint/$id',
+        data: {
+          "category": category,
+          "amount": amount,
+          "record_date": recordDate,
+          "remarks": remarks
+        },
+      );
 
       if (_expenseRecordResp.statusCode == 200) {
         return ApiResponseModel(
@@ -350,8 +361,11 @@ class NetworkService {
     final Dio _dio = Dio();
     try {
       final Response _frgtPswdGenRes = await _dio.post(
-          '$baseUrl$forgotPasswordOtpGetEndPoint',
-          data: {'email': email});
+        '$baseUrl$forgotPasswordOtpGetEndPoint',
+        data: {
+          'email': email,
+        },
+      );
 
       if (_frgtPswdGenRes.statusCode == 200) {
         return ApiResponseModel(
@@ -428,6 +442,360 @@ class NetworkService {
       return ApiResponseModel(
         statusCode: 400,
         endPoint: forgotPasswordOtpVerifyEndPoint,
+        specificMessage: " unknown error",
+      );
+    }
+  }
+
+  /// API function to get friends List of the user. (Only accepted ones)
+  Future<ApiResponseModel> getFriendsList() async {
+    final Dio _dio = Dio();
+    final String _token = _authBox.get('token').toString();
+    _dio.options.headers['x-auth-token'] = _token;
+    try {
+      final Response _friendsListRes = await _dio.get(
+        '$baseUrl$getFriendsListEndPoint',
+      );
+
+      if (_friendsListRes.statusCode == 200) {
+        return ApiResponseModel(
+          statusCode: _friendsListRes.statusCode ?? 200,
+          endPoint: forgotPasswordOtpVerifyEndPoint,
+          specificMessage: '',
+          responseJson: _friendsListRes,
+        );
+      }
+
+      return ApiResponseModel(
+        statusCode: 404,
+        endPoint: forgotPasswordOtpVerifyEndPoint,
+        specificMessage: _friendsListRes.data.toString(),
+      );
+    } on DioError catch (e) {
+      debugPrint("Dio Error: $forgotPasswordOtpVerifyEndPoint $e");
+      debugPrint(e.response?.data.toString());
+      return ApiResponseModel(
+        statusCode: e.response?.statusCode ?? 404,
+        endPoint: forgotPasswordOtpVerifyEndPoint,
+        specificMessage: e.response?.data.toString(),
+      );
+    } catch (e) {
+      debugPrint(" unknown error : $e");
+      return ApiResponseModel(
+        statusCode: 400,
+        endPoint: forgotPasswordOtpVerifyEndPoint,
+        specificMessage: " unknown error",
+      );
+    }
+  }
+
+  /// API function to get pending action friends List of the user. (pending, requested)
+  Future<ApiResponseModel> getPendingActionFriendsList() async {
+    final Dio _dio = Dio();
+    final String _token = _authBox.get('token').toString();
+    _dio.options.headers['x-auth-token'] = _token;
+    try {
+      final Response _friendsListRes = await _dio.get(
+        '$baseUrl$getPendingActionsFriendsListEndPoint',
+      );
+
+      if (_friendsListRes.statusCode == 200) {
+        return ApiResponseModel(
+          statusCode: _friendsListRes.statusCode ?? 200,
+          endPoint: forgotPasswordOtpVerifyEndPoint,
+          specificMessage: '',
+          responseJson: _friendsListRes,
+        );
+      }
+
+      return ApiResponseModel(
+        statusCode: 404,
+        endPoint: forgotPasswordOtpVerifyEndPoint,
+        specificMessage: _friendsListRes.data.toString(),
+      );
+    } on DioError catch (e) {
+      debugPrint("Dio Error: $forgotPasswordOtpVerifyEndPoint $e");
+      debugPrint(e.response?.data.toString());
+      return ApiResponseModel(
+        statusCode: e.response?.statusCode ?? 404,
+        endPoint: forgotPasswordOtpVerifyEndPoint,
+        specificMessage: e.response?.data.toString(),
+      );
+    } catch (e) {
+      debugPrint(" unknown error : $e");
+      return ApiResponseModel(
+        statusCode: 400,
+        endPoint: forgotPasswordOtpVerifyEndPoint,
+        specificMessage: " unknown error",
+      );
+    }
+  }
+
+  /// API function to accept a pending friend request.
+  Future<ApiResponseModel> acceptFriendRequest({
+    required String friendRequestId,
+  }) async {
+    final Dio _dio = Dio();
+    final String _token = _authBox.get('token').toString();
+    _dio.options.headers['x-auth-token'] = _token;
+    try {
+      final Response _acceptReqRes = await _dio.post(
+        '$baseUrl$acceptFriendRequestEndPoint',
+        data: {
+          'id': friendRequestId,
+        },
+      );
+
+      if (_acceptReqRes.statusCode == 200) {
+        return ApiResponseModel(
+          statusCode: _acceptReqRes.statusCode ?? 200,
+          endPoint: acceptFriendRequestEndPoint,
+          specificMessage: '',
+          responseJson: _acceptReqRes,
+        );
+      }
+
+      return ApiResponseModel(
+        statusCode: 404,
+        endPoint: acceptFriendRequestEndPoint,
+        specificMessage: _acceptReqRes.data.toString(),
+      );
+    } on DioError catch (e) {
+      debugPrint("Dio Error: $acceptFriendRequestEndPoint $e");
+      debugPrint(e.response?.data.toString());
+      return ApiResponseModel(
+        statusCode: e.response?.statusCode ?? 404,
+        endPoint: acceptFriendRequestEndPoint,
+        specificMessage: e.response?.data.toString(),
+      );
+    } catch (e) {
+      debugPrint(" unknown error : $e");
+      return ApiResponseModel(
+        statusCode: 400,
+        endPoint: acceptFriendRequestEndPoint,
+        specificMessage: " unknown error",
+      );
+    }
+  }
+
+  /// API function to send a friend request.
+  Future<ApiResponseModel> sendFriendRequest({
+    required String friendEmail,
+  }) async {
+    final Dio _dio = Dio();
+    final String _token = _authBox.get('token').toString();
+    _dio.options.headers['x-auth-token'] = _token;
+    try {
+      final Response _sendReqRes = await _dio.post(
+        '$baseUrl$sendFriendRequestEndPoint',
+        data: {
+          'email': friendEmail,
+        },
+      );
+
+      if (_sendReqRes.statusCode == 200) {
+        return ApiResponseModel(
+          statusCode: _sendReqRes.statusCode ?? 200,
+          endPoint: sendFriendRequestEndPoint,
+          specificMessage: '',
+          responseJson: _sendReqRes,
+        );
+      }
+
+      return ApiResponseModel(
+        statusCode: 404,
+        endPoint: sendFriendRequestEndPoint,
+        specificMessage: _sendReqRes.data.toString(),
+      );
+    } on DioError catch (e) {
+      debugPrint("Dio Error: $sendFriendRequestEndPoint $e");
+      debugPrint(e.response?.data.toString());
+      return ApiResponseModel(
+        statusCode: e.response?.statusCode ?? 404,
+        endPoint: sendFriendRequestEndPoint,
+        specificMessage: e.response?.data.toString(),
+      );
+    } catch (e) {
+      debugPrint(" unknown error : $e");
+      return ApiResponseModel(
+        statusCode: 400,
+        endPoint: sendFriendRequestEndPoint,
+        specificMessage: " unknown error",
+      );
+    }
+  }
+
+  /// API function to delete a friend request.
+  Future<ApiResponseModel> deleteFriendRequest({
+    required String friendRequestId,
+  }) async {
+    final Dio _dio = Dio();
+    final String _token = _authBox.get('token').toString();
+    _dio.options.headers['x-auth-token'] = _token;
+    try {
+      final Response _delRequest = await _dio.delete(
+        '$baseUrl$deleteFriendRequestEndPoint' + '/$friendRequestId',
+      );
+
+      if (_delRequest.statusCode == 204) {
+        return ApiResponseModel(
+          statusCode: _delRequest.statusCode ?? 204,
+          endPoint: deleteFriendRequestEndPoint,
+          specificMessage: '',
+          responseJson: _delRequest,
+        );
+      }
+
+      return ApiResponseModel(
+        statusCode: 404,
+        endPoint: deleteFriendRequestEndPoint,
+        specificMessage: _delRequest.data.toString(),
+      );
+    } on DioError catch (e) {
+      debugPrint("Dio Error: $deleteFriendRequestEndPoint $e");
+      debugPrint(e.response?.data.toString());
+      return ApiResponseModel(
+        statusCode: e.response?.statusCode ?? 404,
+        endPoint: deleteFriendRequestEndPoint,
+        specificMessage: e.response?.data.toString(),
+      );
+    } catch (e) {
+      debugPrint(" unknown error : $e");
+      return ApiResponseModel(
+        statusCode: 400,
+        endPoint: deleteFriendRequestEndPoint,
+        specificMessage: " unknown error",
+      );
+    }
+  }
+
+  Future<ApiResponseModel> getRepaymentAccounts() async {
+    final Dio _dio = Dio();
+    final String _token = _authBox.get('token').toString();
+    _dio.options.headers['x-auth-token'] = _token;
+    try {
+      final Response _repayAccsResp =
+          await _dio.get('$baseUrl$getRepaymentAccountsEndPoint');
+
+      if (_repayAccsResp.statusCode == 200) {
+        return ApiResponseModel(
+          statusCode: _repayAccsResp.statusCode ?? 200,
+          endPoint: getRepaymentAccountsEndPoint,
+          specificMessage: '',
+          responseJson: _repayAccsResp,
+        );
+      }
+
+      return ApiResponseModel(
+        statusCode: 404,
+        endPoint: getRepaymentAccountsEndPoint,
+        specificMessage: _repayAccsResp.data.toString(),
+      );
+    } on DioError catch (e) {
+      debugPrint("Dio Error: $getRepaymentAccountsEndPoint $e");
+      debugPrint(e.response?.data.toString());
+      return ApiResponseModel(
+        statusCode: e.response?.statusCode ?? 404,
+        endPoint: getRepaymentAccountsEndPoint,
+        specificMessage: e.response?.data.toString(),
+      );
+    } catch (e) {
+      debugPrint(" unknown error : $e");
+      return ApiResponseModel(
+        statusCode: 400,
+        endPoint: getRepaymentAccountsEndPoint,
+        specificMessage: " unknown error",
+      );
+    }
+  }
+
+  Future<ApiResponseModel> getRepaymentTransactions(String id) async {
+    final Dio _dio = Dio();
+    final String _token = _authBox.get('token').toString();
+    _dio.options.headers['x-auth-token'] = _token;
+    try {
+      final Response _result = await _dio.get(
+        '$baseUrl$getRepaymentTransactionsEndPoint',
+        queryParameters: {
+          'id': id,
+        },
+      );
+
+      if (_result.statusCode == 200) {
+        return ApiResponseModel(
+          statusCode: _result.statusCode ?? 200,
+          endPoint: getRepaymentTransactionsEndPoint,
+          specificMessage: '',
+          responseJson: _result,
+        );
+      }
+
+      return ApiResponseModel(
+        statusCode: 404,
+        endPoint: getRepaymentTransactionsEndPoint,
+        specificMessage: _result.data.toString(),
+      );
+    } on DioError catch (e) {
+      debugPrint("Dio Error: $getRepaymentTransactionsEndPoint $e");
+      debugPrint(e.response?.data.toString());
+      return ApiResponseModel(
+        statusCode: e.response?.statusCode ?? 404,
+        endPoint: getRepaymentTransactionsEndPoint,
+        specificMessage: e.response?.data.toString(),
+      );
+    } catch (e) {
+      debugPrint(" unknown error : $e");
+      return ApiResponseModel(
+        statusCode: 400,
+        endPoint: getRepaymentTransactionsEndPoint,
+        specificMessage: " unknown error",
+      );
+    }
+  }
+
+  Future<ApiResponseModel> newRepaymentTransaction(
+    String id,
+    int amount,
+  ) async {
+    final Dio _dio = Dio();
+    final String _token = _authBox.get('token').toString();
+    _dio.options.headers['x-auth-token'] = _token;
+    try {
+      final Response _result = await _dio.post(
+        '$baseUrl$newRepaymentTransactionEndPoint',
+        data: {
+          'id': id,
+          'amount': amount,
+        },
+      );
+
+      if (_result.statusCode == 200) {
+        return ApiResponseModel(
+          statusCode: _result.statusCode ?? 200,
+          endPoint: getRepaymentTransactionsEndPoint,
+          specificMessage: '',
+          responseJson: _result,
+        );
+      }
+
+      return ApiResponseModel(
+        statusCode: 404,
+        endPoint: getRepaymentTransactionsEndPoint,
+        specificMessage: _result.data.toString(),
+      );
+    } on DioError catch (e) {
+      debugPrint("Dio Error: $getRepaymentTransactionsEndPoint $e");
+      debugPrint(e.response?.data.toString());
+      return ApiResponseModel(
+        statusCode: e.response?.statusCode ?? 404,
+        endPoint: getRepaymentTransactionsEndPoint,
+        specificMessage: e.response?.data.toString(),
+      );
+    } catch (e) {
+      debugPrint(" unknown error : $e");
+      return ApiResponseModel(
+        statusCode: 400,
+        endPoint: getRepaymentTransactionsEndPoint,
         specificMessage: " unknown error",
       );
     }

@@ -3,7 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:moneyboi/Blocs/SignupBloc/signupbloc_bloc.dart';
 import 'package:moneyboi/Constants/colors.dart';
-import 'package:moneyboi/Screens/login_page.dart';
+import 'package:moneyboi/Screens/login/login_page.dart';
 import 'package:moneyboi/Widgets/text_field_widget.dart';
 
 class SignupNameWidget extends StatelessWidget {

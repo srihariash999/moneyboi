@@ -1,7 +1,8 @@
+// ignore: depend_on_referenced_packages
 import 'package:bloc/bloc.dart';
 import 'package:bot_toast/bot_toast.dart';
+import 'package:flutter/material.dart';
 import 'package:get/route_manager.dart';
-import 'package:meta/meta.dart';
 import 'package:moneyboi/Data%20Models/api_response_model.dart';
 import 'package:moneyboi/Network/network_service.dart';
 
@@ -46,7 +47,8 @@ class ForgotPasswordBloc
         if (_otpVerifyRes.statusCode == 200) {
           try {
             BotToast.showText(
-                text: _otpVerifyRes.responseJson!.data.toString());
+              text: _otpVerifyRes.responseJson!.data.toString(),
+            );
           } catch (e) {
             BotToast.showText(text: "Otp sent to your email");
           }
@@ -55,7 +57,8 @@ class ForgotPasswordBloc
         } else {
           try {
             BotToast.showText(
-                text: _otpVerifyRes.responseJson!.data.toString());
+              text: _otpVerifyRes.responseJson!.data.toString(),
+            );
           } catch (e) {
             BotToast.showText(text: "Error changing password");
           }
