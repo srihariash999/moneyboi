@@ -46,3 +46,6 @@ app.*.map.json
 /android/app/release
 
 /android/app/google-services.json
+pubspec.lock
+windows/flutter/generated_plugin_registrant.cc
+windows/flutter/generated_plugin_registrant.h
