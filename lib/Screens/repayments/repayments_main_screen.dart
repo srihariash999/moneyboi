@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:get/get_state_manager/get_state_manager.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:intl/intl.dart';
 import 'package:moneyboi/Constants/colors.dart';
@@ -55,12 +54,13 @@ class RepaymentsMainScreen extends StatelessWidget {
                   );
                 }
                 return GestureDetector(
-                  onTap: () {
-                    Get.to(
+                  onTap: () async {
+                    await Get.to(
                       RepaymentSingleScreen(
-                        repayId: controller.repaymentAccounts[index - 1].id,
+                        repayAccount: controller.repaymentAccounts[index - 1],
                       ),
                     );
+                    controller.init();
                   },
                   child: RepaymentListTile(
                     account: controller.repaymentAccounts[index - 1],
@@ -131,7 +131,7 @@ class RepaymentListTile extends StatelessWidget {
             ),
           ),
           Text(
-            " ${account.balance > 0 ? '+' : '-'} ${account.balance} ₹",
+            " ${account.balance > 0 ? '+' : '-'} ${account.balance.abs()} ₹",
             style: GoogleFonts.montserrat(
               fontSize: 20.0,
               fontWeight: FontWeight.w600,

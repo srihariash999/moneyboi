@@ -30,50 +30,57 @@ class HomePage extends StatelessWidget {
                   left: 12.0,
                   right: 12.0,
                 ),
-                child: Container(
-                  decoration: BoxDecoration(
-                    color: Colors.grey.withOpacity(0.2),
-                    borderRadius: BorderRadius.circular(16.0),
-                  ),
-                  padding: const EdgeInsets.all(10.0),
-                  child: Row(
-                    children: [
-                      Image.asset(
-                        "assets/repay_logo.png",
-                        height: 64.0,
-                        width: MediaQuery.of(context).size.width * 0.2,
-                        fit: BoxFit.contain,
-                      ),
-                      Expanded(
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Text(
-                              "Introducing Repay by Moneyboi",
-                              overflow: TextOverflow.fade,
-                              softWrap: false,
-                              style: GoogleFonts.lato(
-                                fontSize: 18,
-                                fontWeight: FontWeight.w700,
-                              ),
-                            ),
-                            const SizedBox(
-                              height: 4.0,
-                            ),
-                            Text(
-                              "Now keep track of all your exchanges with your friends at one place.",
-                              maxLines: 3,
-                              softWrap: true,
-                              overflow: TextOverflow.fade,
-                              style: GoogleFonts.inter(
-                                fontSize: 14,
-                                fontWeight: FontWeight.w400,
-                              ),
-                            ),
-                          ],
+                child: GestureDetector(
+                  onTap: () {
+                    Get.to(
+                      const RepaymentsMainScreen(),
+                    );
+                  },
+                  child: Container(
+                    decoration: BoxDecoration(
+                      color: Colors.grey.withOpacity(0.2),
+                      borderRadius: BorderRadius.circular(16.0),
+                    ),
+                    padding: const EdgeInsets.all(10.0),
+                    child: Row(
+                      children: [
+                        Image.asset(
+                          "assets/repay_logo.png",
+                          height: 64.0,
+                          width: MediaQuery.of(context).size.width * 0.2,
+                          fit: BoxFit.contain,
                         ),
-                      ),
-                    ],
+                        Expanded(
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Text(
+                                "Introducing Repay by Moneyboi",
+                                overflow: TextOverflow.fade,
+                                softWrap: false,
+                                style: GoogleFonts.lato(
+                                  fontSize: 18,
+                                  fontWeight: FontWeight.w700,
+                                ),
+                              ),
+                              const SizedBox(
+                                height: 4.0,
+                              ),
+                              Text(
+                                "Now keep track of all your exchanges with your friends at one place.",
+                                maxLines: 3,
+                                softWrap: true,
+                                overflow: TextOverflow.fade,
+                                style: GoogleFonts.inter(
+                                  fontSize: 14,
+                                  fontWeight: FontWeight.w400,
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                      ],
+                    ),
                   ),
                 ),
               ),

@@ -165,3 +165,12 @@ Auth Required : yes,
 */
 
 const String getRepaymentTransactionsEndPoint = "/repayments/transactions";
+
+/*
+GET
+
+Auth Required : yes,
+
+*/
+
+const String newRepaymentTransactionEndPoint = "/repayments/transaction";

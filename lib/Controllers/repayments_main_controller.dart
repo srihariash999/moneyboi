@@ -19,6 +19,7 @@ class RepaymentsMainController extends GetxController {
   set isLoading(bool value) => _isLoading.value = value;
 
   Future<void> init() async {
+    _repaymentAccounts.clear();
     await _getRepaymentAccs();
   }
 
