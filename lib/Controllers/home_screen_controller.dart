@@ -1,4 +1,5 @@
 import 'package:bot_toast/bot_toast.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:moneyboi/Constants/enums.dart';
@@ -14,6 +15,18 @@ class HomeScreenController extends GetxController {
   RxInt totExp = 0.obs;
   List<ExpenseRecordItem> expenseRecords = <ExpenseRecordItem>[].obs;
   final Rx<ToggleLabelEnum> toggleEnum = ToggleLabelEnum.weekly.obs;
+
+  Future<void> getFcmToken() async {
+    FirebaseMessaging.instance.getToken().then((token) {
+      debugPrint("FCM Token: $token");
+      if (token != null) {
+        _apiService.saveNotificationToken(token).then(
+              (value) =>
+                  debugPrint(" notification save res: ${value.responseJson}"),
+            );
+      }
+    });
+  }
 
   Future<void> getExpenseRecords(
     ToggleLabelEnum newToggleLabel, {
