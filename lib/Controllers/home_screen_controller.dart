@@ -2,6 +2,7 @@ import 'package:bot_toast/bot_toast.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+// import 'package:get/get_connect/http/src/utils/utils.dart';
 import 'package:moneyboi/Constants/enums.dart';
 import 'package:moneyboi/Data%20Models/api_response_model.dart';
 import 'package:moneyboi/Data%20Models/expense_record.dart';
@@ -14,11 +15,11 @@ class HomeScreenController extends GetxController {
   final RxBool isCreateLoading = false.obs;
   RxInt totExp = 0.obs;
   List<ExpenseRecordItem> expenseRecords = <ExpenseRecordItem>[].obs;
-  final Rx<ToggleLabelEnum> toggleEnum = ToggleLabelEnum.weekly.obs;
+  final Rx<ToggleLabelEnum> toggleEnum = ToggleLabelEnum.daily.obs;
 
   Future<void> getFcmToken() async {
     FirebaseMessaging.instance.getToken().then((token) {
-      debugPrint("FCM Token: $token");
+      // debugPrint("FCM Token: $token");
       if (token != null) {
         _apiService.saveNotificationToken(token).then(
               (value) =>
@@ -26,6 +27,35 @@ class HomeScreenController extends GetxController {
             );
       }
     });
+  }
+
+  DateTime getDurationDateTime(ToggleLabelEnum t) {
+    if (t == ToggleLabelEnum.daily) {
+      final now = DateTime.now().toUtc();
+      final today = DateTime(
+        now.year,
+        now.month,
+        now.day,
+      );
+      return today;
+    } else if (t == ToggleLabelEnum.weekly) {
+      final d = DateTime.now().toUtc().subtract(
+            Duration(days: DateTime.now().weekday - 1),
+          );
+      final weekAgo = DateTime(
+        d.year,
+        d.month,
+        d.day,
+      );
+      return weekAgo;
+    } else {
+      final d = DateTime.now().toUtc();
+      final monthAgo = DateTime(
+        d.year,
+        d.month,
+      );
+      return monthAgo;
+    }
   }
 
   Future<void> getExpenseRecords(
@@ -39,17 +69,9 @@ class HomeScreenController extends GetxController {
 
     try {
       _expRecsResp = await _apiService.getExpenseRecords(
-        dateIn: newToggleLabel == ToggleLabelEnum.weekly
-            ? DateTime.now()
-                .toUtc()
-                .subtract(const Duration(days: 7))
-                .toString()
-            : newToggleLabel == ToggleLabelEnum.monthly
-                ? DateTime.now()
-                    .toUtc()
-                    .subtract(const Duration(days: 30))
-                    .toString()
-                : null,
+        dateIn: getDurationDateTime(
+          newToggleLabel,
+        ).toString(),
         dateOut: DateTime.now().toUtc().toString(),
       );
       List _exps;
