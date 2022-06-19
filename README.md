@@ -21,7 +21,7 @@ MoneyBoi is an expense tracker app made with flutter. Moneyboi uses a custom bac
 
 This project is still in development stage. So, feature requests are welcome. Feel free to open an issue if you have something in mind or if something is not working right. it might make a large impact 💓
 
-- [x] List expenses weekly, monthly, all time.
+- [x] List expenses Daily, weekly, monthly.
 - [x] Add new expense of certain category.
 - [x] View expenses in a pie chart form.
 - [x] Login, signup, forgot password flows.

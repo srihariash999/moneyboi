@@ -6,7 +6,9 @@ import 'package:get/get.dart';
 import 'package:hive/hive.dart';
 import 'package:moneyboi/Blocs/ForgotPasswordBloc/forgotpassword_bloc.dart';
 import 'package:moneyboi/Blocs/SignupBloc/signupbloc_bloc.dart';
+import 'package:moneyboi/Constants/box_names.dart';
 import 'package:moneyboi/Controllers/chart_screen_controller.dart';
+import 'package:moneyboi/Controllers/hive_controller.dart';
 import 'package:moneyboi/Controllers/home_screen_controller.dart';
 import 'package:moneyboi/Controllers/login_controller.dart';
 import 'package:moneyboi/Controllers/profile_controller.dart';
@@ -22,7 +24,8 @@ void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   final dir = await getApplicationDocumentsDirectory();
   Hive.init(dir.path);
-  await Hive.openBox('authBox');
+  await Hive.openBox(authBoxName);
+  await Hive.openBox(generalBoxName);
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
   );
@@ -37,24 +40,27 @@ class MyApp extends StatefulWidget {
 class _MyAppState extends State<MyApp> {
   // This widget is the root of your application.
 
-  // @override
-  // void initState() {
-  //   // FirebaseMessaging.instance.setForegroundNotificationPresentationOptions(
-  //   //   alert: true,
-  //   //   badge: true,
-  //   //   sound: true,
-  //   // );
-  //   // var _fcm = FirebaseMessaging.onMessage;
+  @override
+  void initState() {
+    // FirebaseMessaging.instance.setForegroundNotificationPresentationOptions(
+    //   alert: true,
+    //   badge: true,
+    //   sound: true,
+    // );
+    // var _fcm = FirebaseMessaging.onMessage;
 
-  //   // _fcm.listen((event) {
-  //   //   print(" event: $event");
-  //   // });
-  //   super.initState();
-  // }
+    // _fcm.listen((event) {
+    //   print(" event: $event");
+    // });
+
+    Get.put<HiveService>(HiveService());
+
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
-    final Box _authBox = Hive.box('authBox');
+    final Box _authBox = Hive.box(authBoxName);
     final _token = _authBox.get('token');
 
     Get.lazyPut<LoginController>(() => LoginController(), fenix: true);

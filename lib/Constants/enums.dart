@@ -1,5 +1,18 @@
-enum ToggleLabelEnum  {
+enum ToggleLabelEnum {
+  daily,
   weekly,
   monthly,
-  allTime,
+}
+
+String toggleLabelEnumToString(ToggleLabelEnum en) {
+  switch (en) {
+    case ToggleLabelEnum.daily:
+      return "Daily";
+    case ToggleLabelEnum.weekly:
+      return "Weekly";
+    case ToggleLabelEnum.monthly:
+      return "Monthly";
+    default:
+      return "";
+  }
 }

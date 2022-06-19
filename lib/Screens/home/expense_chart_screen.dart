@@ -2,19 +2,24 @@ import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:intl/intl.dart';
 import 'package:moneyboi/Constants/colors.dart';
 import 'package:moneyboi/Controllers/chart_screen_controller.dart';
 import 'package:moneyboi/Data%20Models/expense_record.dart';
 
 class ExpenseChartScreen extends StatelessWidget {
   const ExpenseChartScreen({
-    required this.expenseRecordItem,
+    required this.expenseRecordItems,
     required this.totalExpense,
     required this.title,
+    required this.endDate,
+    required this.startDate,
   });
-  final List<ExpenseRecordItem> expenseRecordItem;
+  final List<ExpenseRecordItem> expenseRecordItems;
   final String title;
   final int totalExpense;
+  final DateTime startDate;
+  final DateTime endDate;
 
   @override
   Widget build(BuildContext context) {
@@ -38,10 +43,10 @@ class ExpenseChartScreen extends StatelessWidget {
         initState: (state) {
           Get.find<ChartScreenController>().chartScreenControllerInit(
             totalExpense: totalExpense,
-            expenseRecordItem: expenseRecordItem,
+            expenseRecordItem: expenseRecordItems,
           );
         },
-        builder: (_controller) => expenseRecordItem.isEmpty
+        builder: (_controller) => expenseRecordItems.isEmpty
             ? Container(
                 alignment: Alignment.center,
                 child: Text(
@@ -54,83 +59,119 @@ class ExpenseChartScreen extends StatelessWidget {
                   ),
                 ),
               )
-            : Column(
-                children: <Widget>[
-                  SizedBox(
-                    height: MediaQuery.of(context).size.height * 0.4,
-                    child: PieChart(
-                      PieChartData(
-                        pieTouchData: PieTouchData(
-                          touchCallback:
-                              (FlTouchEvent event, pieTouchResponse) {
-                            _controller.updateChartTouch(
-                              event,
-                              pieTouchResponse,
-                            );
-                          },
+            : SingleChildScrollView(
+                child: Column(
+                  children: <Widget>[
+                    const SizedBox(height: 28.0),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                      children: [
+                        Text(
+                          "${DateFormat('E').format(startDate)}, ${DateFormat('d MMM').format(startDate)}",
+                          style: GoogleFonts.montserrat(
+                            fontSize: 16.0,
+                            letterSpacing: 1.2,
+                            fontWeight: FontWeight.w700,
+                            color: Colors.black.withOpacity(0.5),
+                          ),
                         ),
-                        borderData: FlBorderData(
-                          show: false,
+                        Text(
+                          " to ",
+                          style: GoogleFonts.montserrat(
+                            fontSize: 16.0,
+                            letterSpacing: 1.2,
+                            fontWeight: FontWeight.w700,
+                            color: Colors.black.withOpacity(0.5),
+                          ),
                         ),
-                        sectionsSpace: 0,
-                        centerSpaceRadius: 40,
-                        sections: showingSections(_controller),
+                        Text(
+                          "${DateFormat('E').format(endDate)}, ${DateFormat('d MMM').format(endDate)}",
+                          style: GoogleFonts.montserrat(
+                            fontSize: 16.0,
+                            letterSpacing: 1.2,
+                            fontWeight: FontWeight.w700,
+                            color: Colors.black.withOpacity(0.5),
+                          ),
+                        ),
+                      ],
+                    ),
+                    SizedBox(
+                      height: MediaQuery.of(context).size.height * 0.30,
+                      child: PieChart(
+                        PieChartData(
+                          pieTouchData: PieTouchData(
+                            touchCallback:
+                                (FlTouchEvent event, pieTouchResponse) {
+                              _controller.updateChartTouch(
+                                event,
+                                pieTouchResponse,
+                              );
+                            },
+                          ),
+                          borderData: FlBorderData(
+                            show: false,
+                          ),
+                          sectionsSpace: 0,
+                          centerSpaceRadius: 40,
+                          sections: showingSections(_controller),
+                        ),
                       ),
                     ),
-                  ),
-                  Column(
-                    children: _controller.categoryWiseExpenses.keys.map((key) {
-                      final List<String> _data = _controller
-                          .categoryWiseExpenses.keys
-                          .map((key) => key)
-                          .toList();
+                    Column(
+                      children:
+                          _controller.categoryWiseExpenses.keys.map((key) {
+                        final List<String> _data = _controller
+                            .categoryWiseExpenses.keys
+                            .map((key) => key)
+                            .toList();
 
-                      return Padding(
-                        padding: const EdgeInsets.all(8.0),
-                        child: Row(
-                          children: [
-                            SizedBox(
-                              width: MediaQuery.of(context).size.width * 0.36,
-                            ),
-                            Row(
-                              mainAxisSize: MainAxisSize.min,
-                              children: <Widget>[
-                                Container(
-                                  width: _controller.touchedIndex ==
-                                          _data.indexOf(key)
-                                      ? 26.0
-                                      : 16.0,
-                                  height: _controller.touchedIndex ==
-                                          _data.indexOf(key)
-                                      ? 26.0
-                                      : 16.0,
-                                  decoration: BoxDecoration(
-                                    color:
-                                        listOfChartColors[_data.indexOf(key)],
-                                  ),
-                                ),
-                                const SizedBox(
-                                  width: 4,
-                                ),
-                                Text(
-                                  key,
-                                  style: TextStyle(
-                                    fontSize: _controller.touchedIndex ==
+                        return Padding(
+                          padding: const EdgeInsets.all(8.0),
+                          child: Row(
+                            children: [
+                              SizedBox(
+                                width: MediaQuery.of(context).size.width * 0.36,
+                              ),
+                              Row(
+                                mainAxisSize: MainAxisSize.min,
+                                children: <Widget>[
+                                  Container(
+                                    width: _controller.touchedIndex ==
                                             _data.indexOf(key)
-                                        ? 24
-                                        : 16,
-                                    fontWeight: FontWeight.bold,
-                                    color: const Color(0xff505050),
+                                        ? 26.0
+                                        : 16.0,
+                                    height: _controller.touchedIndex ==
+                                            _data.indexOf(key)
+                                        ? 26.0
+                                        : 16.0,
+                                    decoration: BoxDecoration(
+                                      color:
+                                          listOfChartColors[_data.indexOf(key)],
+                                    ),
                                   ),
-                                )
-                              ],
-                            ),
-                          ],
-                        ),
-                      );
-                    }).toList(),
-                  ),
-                ],
+                                  const SizedBox(
+                                    width: 4,
+                                  ),
+                                  Text(
+                                    key,
+                                    style: TextStyle(
+                                      fontSize: _controller.touchedIndex ==
+                                              _data.indexOf(key)
+                                          ? 24
+                                          : 16,
+                                      fontWeight: FontWeight.bold,
+                                      color: const Color(0xff505050),
+                                    ),
+                                  )
+                                ],
+                              ),
+                            ],
+                          ),
+                        );
+                      }).toList(),
+                    ),
+                  ],
+                ),
               ),
       ),
     );
