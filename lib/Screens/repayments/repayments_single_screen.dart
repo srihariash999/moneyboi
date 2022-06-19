@@ -252,12 +252,15 @@ class RepaymentSingleScreen extends StatelessWidget {
                             Get.find<ProfileController>().id.value ==
                                 _transaction.user1;
                         return RepaymentHistoryListTile(
+                          id: _transaction.id,
                           giving: _isUser1
                               ? _transaction.user1Transaction > 0
                               : _transaction.user2Transaction > 0,
                           amount: _isUser1
                               ? _transaction.user1Transaction
                               : _transaction.user2Transaction,
+                          pending: !_transaction.user1Accepted ||
+                              !_transaction.user2Accepted,
                           date: DateFormat('yMMMd').format(
                             _transaction.createdAt,
                           ),
@@ -342,21 +345,42 @@ class RepaymentSingleScreen extends StatelessWidget {
 }
 
 class RepaymentHistoryListTile extends StatelessWidget {
-  const RepaymentHistoryListTile({
+  RepaymentHistoryListTile({
     Key? key,
     required this.amount,
     required this.giving,
     required this.date,
+    required this.pending,
+    required this.id,
   }) : super(key: key);
   final bool giving;
   final int amount;
   final String date;
+  final bool pending;
+  final String id;
+
+  Color getColor() {
+    if (pending) {
+      return Colors.orange;
+    }
+    if (giving) {
+      return Colors.green;
+    } else {
+      return Colors.red;
+    }
+  }
+
+  final RepaymentsSingleController controller =
+      Get.find<RepaymentsSingleController>();
 
   @override
   Widget build(BuildContext context) {
     return Row(
-      mainAxisAlignment:
-          giving ? MainAxisAlignment.end : MainAxisAlignment.start,
+      mainAxisAlignment: pending
+          ? MainAxisAlignment.center
+          : giving
+              ? MainAxisAlignment.end
+              : MainAxisAlignment.start,
       children: [
         Container(
           alignment: Alignment.center,
@@ -375,12 +399,27 @@ class RepaymentHistoryListTile extends StatelessWidget {
             color: Colors.grey.withOpacity(0.15),
           ),
           child: Column(
-            crossAxisAlignment:
-                giving ? CrossAxisAlignment.end : CrossAxisAlignment.start,
+            crossAxisAlignment: pending
+                ? CrossAxisAlignment.center
+                : giving
+                    ? CrossAxisAlignment.end
+                    : CrossAxisAlignment.start,
             children: [
+              // TOP DESCRIPTION
               Row(
                 children: [
-                  if (giving)
+                  if (pending)
+                    Text(
+                      "Pending Consent",
+                      maxLines: 1,
+                      overflow: TextOverflow.fade,
+                      style: GoogleFonts.montserrat(
+                        fontSize: 12.0,
+                        fontWeight: FontWeight.w500,
+                        color: getColor(),
+                      ),
+                    ),
+                  if (giving && !pending)
                     Text(
                       "You gave",
                       maxLines: 1,
@@ -388,17 +427,18 @@ class RepaymentHistoryListTile extends StatelessWidget {
                       style: GoogleFonts.montserrat(
                         fontSize: 12.0,
                         fontWeight: FontWeight.w500,
-                        color: Colors.green,
+                        color: getColor(),
                       ),
                     ),
-                  RotatedBox(
-                    quarterTurns: giving ? 0 : 2,
-                    child: Icon(
-                      Icons.arrow_right_alt,
-                      color: giving ? Colors.green : Colors.red,
+                  if (!pending)
+                    RotatedBox(
+                      quarterTurns: giving ? 0 : 2,
+                      child: Icon(
+                        Icons.arrow_right_alt,
+                        color: getColor(),
+                      ),
                     ),
-                  ),
-                  if (!giving)
+                  if (!giving && !pending)
                     Text(
                       "You took",
                       maxLines: 1,
@@ -406,11 +446,13 @@ class RepaymentHistoryListTile extends StatelessWidget {
                       style: GoogleFonts.montserrat(
                         fontSize: 12.0,
                         fontWeight: FontWeight.w500,
-                        color: Colors.red,
+                        color: getColor(),
                       ),
                     ),
                 ],
               ),
+
+              // AMOUNT TEXT
               Row(
                 children: [
                   Text(
@@ -420,7 +462,7 @@ class RepaymentHistoryListTile extends StatelessWidget {
                     style: GoogleFonts.montserrat(
                       fontSize: 28.0,
                       fontWeight: FontWeight.w600,
-                      color: giving ? Colors.green : Colors.red,
+                      color: getColor(),
                     ),
                   ),
                   Padding(
@@ -432,7 +474,7 @@ class RepaymentHistoryListTile extends StatelessWidget {
                       style: GoogleFonts.montserrat(
                         fontSize: 18.0,
                         fontWeight: FontWeight.w600,
-                        color: giving ? Colors.green : Colors.red,
+                        color: getColor(),
                       ),
                     ),
                   ),
@@ -441,6 +483,34 @@ class RepaymentHistoryListTile extends StatelessWidget {
               const SizedBox(
                 height: 4.0,
               ),
+
+              if (pending && !giving)
+                GestureDetector(
+                  onTap: () async {
+                    await controller.consentToTransaction(id: id);
+                  },
+                  child: Container(
+                    margin: const EdgeInsets.symmetric(vertical: 8.0),
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(18.0),
+                      color: moneyBoyPurple,
+                    ),
+                    padding: const EdgeInsets.symmetric(
+                      horizontal: 14.0,
+                      vertical: 8.0,
+                    ),
+                    child: Text(
+                      "Give Consent",
+                      style: GoogleFonts.montserrat(
+                        fontSize: 16,
+                        fontWeight: FontWeight.w500,
+                        color: Colors.white,
+                      ),
+                    ),
+                  ),
+                ),
+
+              // DATE TEXT
               Text(
                 date,
                 maxLines: 1,

@@ -174,3 +174,31 @@ Auth Required : yes,
 */
 
 const String newRepaymentTransactionEndPoint = "/repayments/transaction";
+
+/*
+POST
+
+Auth Required : yes,
+
+body {
+  "id" : <transaction id (string)>  (required) 
+}
+
+
+*/
+
+const String repaymentTransactionConsentEndPoint =
+    "/repayments/transaction/consent";
+
+/*
+POST
+
+Auth Required : yes
+
+body {
+  "token" : <fcm token (string)>  (required) 
+}
+
+*/
+
+const String saveNotificationTokenEndPoint = "/notification_tokens";

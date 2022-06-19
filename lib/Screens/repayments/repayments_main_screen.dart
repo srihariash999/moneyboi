@@ -7,8 +7,6 @@ import 'package:moneyboi/Controllers/profile_controller.dart';
 import 'package:moneyboi/Controllers/repayments_main_controller.dart';
 import 'package:moneyboi/Data%20Models/repayment_detail.dart';
 import 'package:moneyboi/Screens/repayments/repayments_single_screen.dart';
-import 'package:moneyboi/Widgets/big_bar_button.dart';
-import 'package:moneyboi/Widgets/text_field_widget.dart';
 
 class RepaymentsMainScreen extends StatelessWidget {
   const RepaymentsMainScreen({Key? key}) : super(key: key);
@@ -36,7 +34,7 @@ class RepaymentsMainScreen extends StatelessWidget {
             context: context,
             isScrollControlled: true,
             builder: (context) {
-              var list = Get.find<ProfileController>().friendList;
+              final list = Get.find<ProfileController>().friendList;
               return SizedBox(
                 height: MediaQuery.of(context).size.height * 0.75,
                 child: GetBuilder<RepaymentsMainController>(

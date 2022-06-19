@@ -14,8 +14,14 @@ import 'package:moneyboi/Widgets/timewise_expense_list.dart';
 import 'package:moneyboi/Widgets/toggle_label.dart';
 import 'package:moneyboi/Widgets/total_expenses_card.dart';
 
-class HomePage extends StatelessWidget {
+class HomePage extends StatefulWidget {
   const HomePage();
+
+  @override
+  State<HomePage> createState() => _HomePageState();
+}
+
+class _HomePageState extends State<HomePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -103,6 +109,7 @@ class HomePage extends StatelessWidget {
                     ToggleLabelEnum.weekly,
                     init: true,
                   );
+                  Get.find<HomeScreenController>().getFcmToken();
                   Get.find<ProfileController>().getUserProfileAndFriendData();
                 },
                 builder: (controller) => Column(

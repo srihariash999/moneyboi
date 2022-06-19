@@ -844,4 +844,92 @@ class NetworkService {
       );
     }
   }
+
+  Future<ApiResponseModel> consentRepaymentTransaction(
+    String id,
+  ) async {
+    final Dio _dio = Dio();
+    final String _token = _authBox.get('token').toString();
+    _dio.options.headers['x-auth-token'] = _token;
+    try {
+      final Response _result = await _dio.post(
+        '$baseUrl$repaymentTransactionConsentEndPoint',
+        data: {
+          'id': id,
+        },
+      );
+
+      if (_result.statusCode == 200) {
+        return ApiResponseModel(
+          statusCode: _result.statusCode ?? 200,
+          endPoint: repaymentTransactionConsentEndPoint,
+          specificMessage: '',
+          responseJson: _result,
+        );
+      }
+
+      return ApiResponseModel(
+        statusCode: 404,
+        endPoint: repaymentTransactionConsentEndPoint,
+        specificMessage: _result.data.toString(),
+      );
+    } on DioError catch (e) {
+      debugPrint("Dio Error: $repaymentTransactionConsentEndPoint $e");
+      debugPrint(e.response?.data.toString());
+      return ApiResponseModel(
+        statusCode: e.response?.statusCode ?? 404,
+        endPoint: repaymentTransactionConsentEndPoint,
+        specificMessage: e.response?.data.toString(),
+      );
+    } catch (e) {
+      debugPrint(" unknown error : $e");
+      return ApiResponseModel(
+        statusCode: 400,
+        endPoint: repaymentTransactionConsentEndPoint,
+        specificMessage: " unknown error",
+      );
+    }
+  }
+
+  Future<ApiResponseModel> saveNotificationToken(String token) async {
+    final Dio _dio = Dio();
+    final String _token = _authBox.get('token').toString();
+    _dio.options.headers['x-auth-token'] = _token;
+    try {
+      final Response _result = await _dio.post(
+        '$baseUrl$saveNotificationTokenEndPoint',
+        data: {'token': token},
+      );
+
+      if (_result.statusCode == 200) {
+        return ApiResponseModel(
+          statusCode: _result.statusCode ?? 200,
+          endPoint: saveNotificationTokenEndPoint,
+          specificMessage: '',
+          responseJson: _result,
+        );
+      }
+
+      return ApiResponseModel(
+        statusCode: 404,
+        endPoint: saveNotificationTokenEndPoint,
+        specificMessage: _result.data.toString(),
+      );
+    } on DioError catch (e) {
+      debugPrint("Dio Error: $saveNotificationTokenEndPoint $e");
+      debugPrint(e.response?.data.toString());
+      return ApiResponseModel(
+        statusCode: e.response?.statusCode ?? 404,
+        endPoint: saveNotificationTokenEndPoint,
+        specificMessage: e.response?.data.toString(),
+      );
+    } catch (e) {
+      debugPrint(" unknown error : $e");
+      return ApiResponseModel(
+        statusCode: 400,
+        endPoint: saveNotificationTokenEndPoint,
+        specificMessage: " unknown error",
+      );
+    }
+  }
 }

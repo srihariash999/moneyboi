@@ -85,15 +85,54 @@ class RepaymentsSingleController extends GetxController {
       update();
       // ignore: use_build_context_synchronously
       Navigator.pop(context);
-      isLoading = true;
+    } else {
+      isSubmitLoading = false;
       update();
-      final _old = repayAccount.value;
-      repayAccount.value = RepaymentAccount(
-        id: _old.id,
-        friend: _old.friend,
-        balance: _old.balance + amount,
-        createdAt: _old.createdAt,
+
+      debugPrint(_result.specificMessage);
+      BotToast.showText(
+        text: _result.specificMessage ??
+            " Cannot add a newrepayment transaction right now.",
       );
+    }
+  }
+
+  Future<void> consentToTransaction({
+    required String id,
+  }) async {
+    isLoading = true;
+    update();
+    final ApiResponseModel _result =
+        await _apiService.consentRepaymentTransaction(id);
+    if (_result.statusCode == 200) {
+      for (final i in _repayTransactions) {
+        if (i.id == id) {
+          if (i.user1Accepted == false) {
+            i.user1Accepted = true;
+            final _old = repayAccount.value;
+            repayAccount.value = RepaymentAccount(
+              id: _old.id,
+              friend: _old.friend,
+              balance: _old.balance + i.user1Transaction,
+              createdAt: _old.createdAt,
+            );
+          }
+          if (i.user2Accepted == false) {
+            i.user2Accepted = true;
+            final _old = repayAccount.value;
+            repayAccount.value = RepaymentAccount(
+              id: _old.id,
+              friend: _old.friend,
+              balance: _old.balance + i.user2Transaction,
+              createdAt: _old.createdAt,
+            );
+          }
+        }
+      }
+
+      isLoading = false;
+      update();
+
       isLoading = false;
       update();
     } else {
@@ -103,7 +142,7 @@ class RepaymentsSingleController extends GetxController {
       debugPrint(_result.specificMessage);
       BotToast.showText(
         text: _result.specificMessage ??
-            " Cannot add a newrepayment transaction right now.",
+            " Cannot consent the transaction right now.",
       );
     }
   }

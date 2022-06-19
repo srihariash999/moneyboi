@@ -1,4 +1,5 @@
 import 'package:bot_toast/bot_toast.dart';
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get/get.dart';
@@ -13,6 +14,7 @@ import 'package:moneyboi/Controllers/repayment_single_controller.dart';
 import 'package:moneyboi/Controllers/repayments_main_controller.dart';
 import 'package:moneyboi/Screens/home/home_page.dart';
 import 'package:moneyboi/Screens/login/login_page.dart';
+import 'package:moneyboi/firebase_options.dart';
 import 'package:path_provider/path_provider.dart';
 
 // ignore: avoid_void_async
@@ -21,11 +23,35 @@ void main() async {
   final dir = await getApplicationDocumentsDirectory();
   Hive.init(dir.path);
   await Hive.openBox('authBox');
+  await Firebase.initializeApp(
+    options: DefaultFirebaseOptions.currentPlatform,
+  );
   runApp(MyApp());
 }
 
-class MyApp extends StatelessWidget {
+class MyApp extends StatefulWidget {
+  @override
+  State<MyApp> createState() => _MyAppState();
+}
+
+class _MyAppState extends State<MyApp> {
   // This widget is the root of your application.
+
+  // @override
+  // void initState() {
+  //   // FirebaseMessaging.instance.setForegroundNotificationPresentationOptions(
+  //   //   alert: true,
+  //   //   badge: true,
+  //   //   sound: true,
+  //   // );
+  //   // var _fcm = FirebaseMessaging.onMessage;
+
+  //   // _fcm.listen((event) {
+  //   //   print(" event: $event");
+  //   // });
+  //   super.initState();
+  // }
+
   @override
   Widget build(BuildContext context) {
     final Box _authBox = Hive.box('authBox');
