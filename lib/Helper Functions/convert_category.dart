@@ -1,5 +1,5 @@
+import 'package:moneyboi/Constants/categories.dart';
 import 'package:moneyboi/Data%20Models/expense_category.dart';
-import 'package:moneyboi/Mock%20Data/mock_categories.dart';
 
 ExpenseCategory getCategoryFromString(String catString) {
   if (catString == 'Alcohol') {
