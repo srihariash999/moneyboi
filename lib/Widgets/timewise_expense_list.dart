@@ -22,6 +22,7 @@ class TimewiseExpensesList extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final ThemeData _theme = Theme.of(context);
     return Padding(
       padding: const EdgeInsets.only(top: 16.0, left: 12.0, right: 12.0),
       child: Container(
@@ -29,14 +30,22 @@ class TimewiseExpensesList extends StatelessWidget {
         clipBehavior: Clip.antiAlias,
         decoration: BoxDecoration(
           boxShadow: [
-            BoxShadow(
-              color: Colors.black.withOpacity(0.1),
-              offset: const Offset(-2.0, 2.0),
-              blurRadius: 5.0,
-              spreadRadius: 0.1,
-            )
+            if (_theme.brightness == Brightness.light)
+              BoxShadow(
+                color: Colors.black.withOpacity(0.1),
+                offset: const Offset(-2.0, 2.0),
+                blurRadius: 5.0,
+                spreadRadius: 0.1,
+              )
+            else
+              BoxShadow(
+                blurStyle: BlurStyle.inner,
+                color: _theme.colorScheme.secondary.withOpacity(0.5),
+                blurRadius: 50.0,
+                spreadRadius: 1.5,
+              ),
           ],
-          color: Colors.white,
+          color: _theme.backgroundColor,
           borderRadius: BorderRadius.circular(16.0),
         ),
         child: RefreshIndicator(
@@ -73,7 +82,8 @@ class TimewiseExpensesList extends StatelessWidget {
                                   style: GoogleFonts.montserrat(
                                     fontSize: 18.0,
                                     fontWeight: FontWeight.w500,
-                                    color: Colors.black.withOpacity(0.8),
+                                    color: _theme.colorScheme.secondary
+                                        .withOpacity(0.8),
                                   ),
                                 ),
                               ),
@@ -82,7 +92,8 @@ class TimewiseExpensesList extends StatelessWidget {
                                 style: GoogleFonts.montserrat(
                                   fontSize: 14.0,
                                   fontWeight: FontWeight.w300,
-                                  color: Colors.black.withOpacity(0.4),
+                                  color: _theme.colorScheme.secondary
+                                      .withOpacity(0.4),
                                 ),
                               ),
                             ],
@@ -111,15 +122,17 @@ class TimewiseExpensesList extends StatelessWidget {
                         IconButton(
                           onPressed: () {
                             Get.defaultDialog(
+                              backgroundColor: _theme.backgroundColor,
                               title: "Expense Details",
                               titleStyle: GoogleFonts.montserrat(
                                 fontSize: 22.0,
                                 fontWeight: FontWeight.w700,
-                                color: Colors.black.withOpacity(0.8),
+                                color: _theme.colorScheme.secondary
+                                    .withOpacity(0.8),
                               ),
                               content: Container(
                                 height: 350.0,
-                                color: Colors.white,
+                                color: _theme.backgroundColor,
                                 child: Column(
                                   crossAxisAlignment: CrossAxisAlignment.start,
                                   mainAxisSize: MainAxisSize.min,
@@ -127,19 +140,23 @@ class TimewiseExpensesList extends StatelessWidget {
                                     ExpenseInfoWidget(
                                       title: "Category",
                                       value: "${_eri.category.name} ",
+                                      color: _theme.colorScheme.secondary,
                                     ),
                                     ExpenseInfoWidget(
                                       title: "Amount",
                                       value: "₹ ${_eri.expense} ",
+                                      color: _theme.colorScheme.secondary,
                                     ),
                                     ExpenseInfoWidget(
                                       title: "Remarks",
                                       value: "${_eri.remark} ",
+                                      color: _theme.colorScheme.secondary,
                                     ),
                                     ExpenseInfoWidget(
                                       title: "Added on ",
                                       value: DateFormat('yMMMd')
                                           .format(_eri.createdDate),
+                                      color: _theme.colorScheme.secondary,
                                     ),
                                   ],
                                 ),
@@ -196,9 +213,11 @@ class ExpenseInfoWidget extends StatelessWidget {
     Key? key,
     required this.title,
     required this.value,
+    required this.color,
   }) : super(key: key);
   final String title;
   final String value;
+  final Color color;
   @override
   Widget build(BuildContext context) {
     return Padding(
@@ -216,7 +235,7 @@ class ExpenseInfoWidget extends StatelessWidget {
               style: GoogleFonts.inter(
                 fontSize: 14.0,
                 fontWeight: FontWeight.w500,
-                color: Colors.black.withOpacity(0.8),
+                color: color.withOpacity(0.8),
               ),
             ),
           ),
@@ -227,7 +246,7 @@ class ExpenseInfoWidget extends StatelessWidget {
               horizontal: 16.0,
             ),
             decoration: BoxDecoration(
-              color: Colors.grey.withOpacity(0.2),
+              color: Colors.grey.withOpacity(0.3),
               borderRadius: BorderRadius.circular(14.0),
             ),
             child: Text(
@@ -237,7 +256,7 @@ class ExpenseInfoWidget extends StatelessWidget {
               style: GoogleFonts.montserrat(
                 fontSize: 16.0,
                 fontWeight: FontWeight.w500,
-                color: Colors.black.withOpacity(0.8),
+                color: color.withOpacity(0.8),
               ),
             ),
           ),

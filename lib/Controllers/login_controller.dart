@@ -57,6 +57,7 @@ class LoginController extends GetxController {
     final Box _authBox = Hive.box(authBoxName);
     await _authBox.clear();
     await _hiveService.clearGeneralBox();
+    await _hiveService.clearThemeBox();
     await Get.off(LoginPage());
   }
 }

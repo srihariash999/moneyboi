@@ -5,6 +5,8 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:moneyboi/Constants/colors.dart';
 import 'package:moneyboi/Controllers/profile_controller.dart';
 import 'package:moneyboi/Screens/profile/friends_page.dart';
+import 'package:moneyboi/Theme/light_theme.dart';
+import 'package:moneyboi/Theme/theme_controller.dart';
 
 class ProfilePage extends StatelessWidget {
   ProfilePage({Key? key}) : super(key: key);
@@ -117,6 +119,86 @@ class ProfilePage extends StatelessWidget {
                         ),
                       ),
                     ),
+                  const SizedBox(
+                    height: 20.0,
+                  ),
+                  GetBuilder<ThemeController>(
+                    builder: (controller) {
+                      return Padding(
+                        padding: const EdgeInsets.symmetric(horizontal: 20.0),
+                        child: Row(
+                          children: [
+                            Expanded(
+                              flex: 3,
+                              child: Text(
+                                "Theme",
+                                style: TextStyle(
+                                  // fontFamily: 'Segoe',
+                                  fontSize: 20.0,
+                                  color:
+                                      Theme.of(context).colorScheme.secondary,
+                                  fontWeight: FontWeight.w500,
+                                ),
+                              ),
+                            ),
+                            Row(
+                              children: [
+                                AnimatedSwitcher(
+                                  duration: const Duration(milliseconds: 500),
+                                  switchInCurve: Curves.easeInSine,
+                                  switchOutCurve: Curves.easeOutSine,
+                                  transitionBuilder: (
+                                    Widget child,
+                                    Animation<double> animation,
+                                  ) {
+                                    // return ScaleTransition(
+                                    //   scale: animation,
+                                    //   child: child,
+                                    // );
+
+                                    final offsetAnimation = Tween<Offset>(
+                                      begin: const Offset(0.0, 0.8),
+                                      end: Offset.zero,
+                                    ).animate(animation);
+                                    return SlideTransition(
+                                      position: offsetAnimation,
+                                      child: child,
+                                    );
+                                  },
+                                  child: controller.currentTheme.value
+                                      ? Icon(
+                                          Icons.sunny,
+                                          key: UniqueKey(),
+                                          size: 30.0,
+                                          color: Theme.of(context)
+                                              .primaryColorLight,
+                                        )
+                                      : Icon(
+                                          Icons.nightlight,
+                                          key: UniqueKey(),
+                                          size: 30.0,
+                                          color: Theme.of(context)
+                                              .primaryColorLight,
+                                        ),
+                                ),
+                                const SizedBox(
+                                  width: 6.0,
+                                ),
+                                CupertinoSwitch(
+                                  value: controller.currentTheme.value,
+                                  trackColor: Theme.of(context).primaryColor,
+                                  activeColor: Theme.of(context).highlightColor,
+                                  onChanged: (val) async {
+                                    controller.toggleTheme();
+                                  },
+                                ),
+                              ],
+                            )
+                          ],
+                        ),
+                      );
+                    },
+                  ),
                 ],
               ),
             if (_profileController.isProfileLoading.value)

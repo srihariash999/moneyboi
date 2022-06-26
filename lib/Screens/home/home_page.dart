@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:moneyboi/Constants/colors.dart';
@@ -24,186 +25,209 @@ class HomePage extends StatefulWidget {
 
 class _HomePageState extends State<HomePage> {
   final _hiveService = Get.find<HiveService>();
-
   @override
   Widget build(BuildContext context) {
+    final ThemeData _theme = Theme.of(context);
     return Scaffold(
-      body: SafeArea(
-        child: SingleChildScrollView(
-          child: Column(
-            children: [
-              const HomeScreenTopBar(),
-              GetBuilder<HiveService>(
-                builder: (controller) {
-                  if (!controller.getBannerDismissable) {
-                    return Container();
-                  }
-                  return Padding(
-                    padding: const EdgeInsets.only(
-                      top: 4.0,
-                      left: 12.0,
-                      right: 12.0,
-                    ),
-                    child: GestureDetector(
-                      onTap: () {
-                        Get.to(
-                          const RepaymentsMainScreen(),
-                        );
-                      },
-                      child: Container(
-                        decoration: BoxDecoration(
-                          color: Colors.grey.withOpacity(0.2),
-                          borderRadius: BorderRadius.circular(16.0),
-                        ),
-                        padding: const EdgeInsets.all(10.0),
-                        child: Column(
-                          children: [
-                            Row(
-                              mainAxisAlignment: MainAxisAlignment.end,
-                              children: [
-                                GestureDetector(
-                                  onTap: () {
-                                    _hiveService.setBannerDismissable(
-                                      value: false,
-                                    );
-                                  },
-                                  child: const Icon(Icons.close),
-                                )
-                              ],
-                            ),
-                            Row(
-                              children: [
-                                Image.asset(
-                                  "assets/repay_logo.png",
-                                  height: 64.0,
-                                  width:
-                                      MediaQuery.of(context).size.width * 0.2,
-                                  fit: BoxFit.contain,
-                                ),
-                                Expanded(
-                                  child: Column(
-                                    crossAxisAlignment:
-                                        CrossAxisAlignment.start,
-                                    children: [
-                                      Text(
-                                        "Introducing Repay by Moneyboi",
-                                        overflow: TextOverflow.fade,
-                                        softWrap: false,
-                                        style: GoogleFonts.lato(
-                                          fontSize: 18,
-                                          fontWeight: FontWeight.w700,
-                                        ),
-                                      ),
-                                      const SizedBox(
-                                        height: 4.0,
-                                      ),
-                                      Text(
-                                        "Now keep track of all your exchanges with your friends at one place.",
-                                        maxLines: 3,
-                                        softWrap: true,
-                                        overflow: TextOverflow.fade,
-                                        style: GoogleFonts.inter(
-                                          fontSize: 14,
-                                          fontWeight: FontWeight.w400,
-                                        ),
-                                      ),
-                                    ],
-                                  ),
-                                ),
-                              ],
-                            ),
-                          ],
-                        ),
+      backgroundColor: _theme.backgroundColor,
+      body: AnnotatedRegion<SystemUiOverlayStyle>(
+        value: _theme.appBarTheme.systemOverlayStyle!,
+        child: SafeArea(
+          child: SingleChildScrollView(
+            child: Column(
+              children: [
+                const HomeScreenTopBar(),
+                GetBuilder<HiveService>(
+                  builder: (controller) {
+                    if (!controller.getBannerDismissable) {
+                      return Container();
+                    }
+                    return Padding(
+                      padding: const EdgeInsets.only(
+                        top: 4.0,
+                        left: 12.0,
+                        right: 12.0,
                       ),
-                    ),
-                  );
-                },
-              ),
-              Container(
-                alignment: Alignment.centerLeft,
-                padding: const EdgeInsets.only(left: 24.0, top: 12.0),
-                child: Text(
-                  "Expense Summary",
-                  style: GoogleFonts.montserrat(
-                    fontSize: 20.0,
-                    letterSpacing: 1.2,
-                    fontWeight: FontWeight.w500,
-                    color: Colors.black.withOpacity(0.8),
-                  ),
-                ),
-              ),
-              GetBuilder<HomeScreenController>(
-                initState: (state) {
-                  Get.find<HomeScreenController>().getExpenseRecords(
-                    ToggleLabelEnum.daily,
-                    init: true,
-                  );
-                  Get.find<HomeScreenController>().getFcmToken();
-                  Get.find<ProfileController>().getUserProfileAndFriendData();
-                },
-                builder: (controller) => Column(
-                  children: [
-                    if (controller.isHomeloading.value)
-                      TotalExpensesCard(
-                        height: MediaQuery.of(context).size.height * 0.22,
-                        totalExpense: "₹ ---",
-                        period: toggleLabelEnumToString(
-                          controller.toggleEnum.value,
-                        ),
-                      ),
-                    if (!controller.isHomeloading.value)
-                      GestureDetector(
+                      child: GestureDetector(
                         onTap: () {
                           Get.to(
-                            ExpenseChartScreen(
-                              expenseRecordItems: controller.expenseRecords,
-                              totalExpense: controller.totExp.value,
-                              title: toggleLabelEnumToString(
-                                controller.toggleEnum.value,
-                              ),
-                              endDate: DateTime.now(),
-                              startDate: controller.getDurationDateTime(
-                                controller.toggleEnum.value,
-                              ),
-                            ),
+                            const RepaymentsMainScreen(),
                           );
                         },
-                        child: TotalExpensesCard(
+                        child: Container(
+                          decoration: BoxDecoration(
+                            color: Colors.grey.withOpacity(0.2),
+                            borderRadius: BorderRadius.circular(16.0),
+                          ),
+                          padding: const EdgeInsets.only(
+                            top: 8.0,
+                            bottom: 18.0,
+                            left: 12.0,
+                            right: 12.0,
+                          ),
+                          child: Column(
+                            children: [
+                              Row(
+                                mainAxisAlignment: MainAxisAlignment.end,
+                                children: [
+                                  GestureDetector(
+                                    onTap: () {
+                                      _hiveService.setBannerDismissable(
+                                        value: false,
+                                      );
+                                    },
+                                    child: const Icon(
+                                      Icons.close,
+                                      size: 16.0,
+                                    ),
+                                  )
+                                ],
+                              ),
+                              Row(
+                                children: [
+                                  ClipRRect(
+                                    borderRadius: BorderRadius.circular(
+                                      18.0,
+                                    ),
+                                    child: Image.asset(
+                                      "assets/repay_logo.png",
+                                      height: 64.0,
+                                      width: 72.0,
+                                      fit: BoxFit.fill,
+                                    ),
+                                  ),
+                                  const SizedBox(
+                                    width: 12.0,
+                                  ),
+                                  Expanded(
+                                    child: Column(
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.start,
+                                      children: [
+                                        Text(
+                                          "Introducing Repay by Moneyboi",
+                                          overflow: TextOverflow.fade,
+                                          softWrap: false,
+                                          style: GoogleFonts.lato(
+                                            fontSize: 18,
+                                            fontWeight: FontWeight.w700,
+                                            color: _theme.colorScheme.secondary
+                                                .withOpacity(0.8),
+                                          ),
+                                        ),
+                                        const SizedBox(
+                                          height: 4.0,
+                                        ),
+                                        Text(
+                                          "Now keep track of all your exchanges with your friends at one place.",
+                                          maxLines: 3,
+                                          softWrap: true,
+                                          overflow: TextOverflow.fade,
+                                          style: GoogleFonts.inter(
+                                            fontSize: 14,
+                                            fontWeight: FontWeight.w400,
+                                            color: _theme.colorScheme.secondary
+                                                .withOpacity(0.8),
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ],
+                          ),
+                        ),
+                      ),
+                    );
+                  },
+                ),
+                Container(
+                  alignment: Alignment.centerLeft,
+                  padding: const EdgeInsets.only(left: 24.0, top: 12.0),
+                  child: Text(
+                    "Expense Summary",
+                    style: GoogleFonts.montserrat(
+                      fontSize: 20.0,
+                      letterSpacing: 1.2,
+                      fontWeight: FontWeight.w500,
+                      color: _theme.colorScheme.secondary.withOpacity(0.8),
+                    ),
+                  ),
+                ),
+                GetBuilder<HomeScreenController>(
+                  initState: (state) {
+                    Get.find<HomeScreenController>().getExpenseRecords(
+                      ToggleLabelEnum.daily,
+                      init: true,
+                    );
+                    Get.find<HomeScreenController>().getFcmToken();
+                    Get.find<ProfileController>().getUserProfileAndFriendData();
+                  },
+                  builder: (controller) => Column(
+                    children: [
+                      if (controller.isHomeloading.value)
+                        TotalExpensesCard(
                           height: MediaQuery.of(context).size.height * 0.22,
-                          totalExpense: "₹ ${controller.totExp}",
+                          totalExpense: "₹ ---",
                           period: toggleLabelEnumToString(
                             controller.toggleEnum.value,
                           ),
                         ),
-                      ),
-                    if (!controller.isHomeloading.value)
-                      ToggleLabelsRow(
-                        toggleLabel: controller.toggleEnum.value,
-                      ),
-                    if (!controller.isHomeloading.value)
-                      TimewiseExpensesList(
-                        height: MediaQuery.of(context).size.height * 0.38,
-                        listOfExpenses: controller.expenseRecords,
-                        refreshFunction: () async {
-                          controller.getExpenseRecords(
-                            controller.toggleEnum.value,
-                            init: true,
-                          );
-                        },
-                      ),
-                    if (controller.isHomeloading.value)
-                      Container(
-                        height: MediaQuery.of(context).size.height * 0.38,
-                        alignment: Alignment.center,
-                        child: const CircularProgressIndicator(
-                          color: moneyBoyPurple,
+                      if (!controller.isHomeloading.value)
+                        GestureDetector(
+                          onTap: () {
+                            Get.to(
+                              ExpenseChartScreen(
+                                expenseRecordItems: controller.expenseRecords,
+                                totalExpense: controller.totExp.value,
+                                title: toggleLabelEnumToString(
+                                  controller.toggleEnum.value,
+                                ),
+                                endDate: DateTime.now(),
+                                startDate: controller.getDurationDateTime(
+                                  controller.toggleEnum.value,
+                                ),
+                              ),
+                            );
+                          },
+                          child: TotalExpensesCard(
+                            height: MediaQuery.of(context).size.height * 0.22,
+                            totalExpense: "₹ ${controller.totExp}",
+                            period: toggleLabelEnumToString(
+                              controller.toggleEnum.value,
+                            ),
+                          ),
                         ),
-                      )
-                  ],
+                      if (!controller.isHomeloading.value)
+                        ToggleLabelsRow(
+                          toggleLabel: controller.toggleEnum.value,
+                        ),
+                      if (!controller.isHomeloading.value)
+                        TimewiseExpensesList(
+                          height: MediaQuery.of(context).size.height * 0.38,
+                          listOfExpenses: controller.expenseRecords,
+                          refreshFunction: () async {
+                            controller.getExpenseRecords(
+                              controller.toggleEnum.value,
+                              init: true,
+                            );
+                          },
+                        ),
+                      if (controller.isHomeloading.value)
+                        Container(
+                          height: MediaQuery.of(context).size.height * 0.38,
+                          alignment: Alignment.center,
+                          child: const CircularProgressIndicator(
+                            color: moneyBoyPurple,
+                          ),
+                        )
+                    ],
+                  ),
                 ),
-              ),
-              const SizedBox(height: 12.0),
-            ],
+                const SizedBox(height: 12.0),
+              ],
+            ),
           ),
         ),
       ),
@@ -220,9 +244,10 @@ class _HomePageState extends State<HomePage> {
         },
         backgroundColor: moneyBoyPurple,
         elevation: 1.0,
-        child: const Icon(
+        child: Icon(
           Icons.add,
           size: 42.0,
+          color: _theme.backgroundColor.withOpacity(0.7),
         ),
       ),
     );
@@ -289,6 +314,7 @@ class HomeScreenTopBar extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final ThemeData _theme = Theme.of(context);
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
@@ -309,7 +335,8 @@ class HomeScreenTopBar extends StatelessWidget {
                   child: Row(
                     children: [
                       CircleAvatar(
-                        backgroundColor: Colors.grey.withOpacity(0.2),
+                        backgroundColor:
+                            _theme.colorScheme.secondary.withOpacity(0.1),
                         child: const Icon(
                           Icons.person,
                           color: moneyBoyPurple,
@@ -321,7 +348,7 @@ class HomeScreenTopBar extends StatelessWidget {
                         style: GoogleFonts.montserrat(
                           fontSize: 20.0,
                           fontWeight: FontWeight.w500,
-                          color: Colors.black.withOpacity(0.8),
+                          color: _theme.colorScheme.secondary.withOpacity(0.8),
                         ),
                       ),
                     ],
