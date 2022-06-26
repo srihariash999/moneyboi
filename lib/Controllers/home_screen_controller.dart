@@ -22,9 +22,10 @@ class HomeScreenController extends GetxController {
       // debugPrint("FCM Token: $token");
       if (token != null) {
         _apiService.saveNotificationToken(token).then(
-              (value) =>
-                  debugPrint(" notification save res: ${value.responseJson}"),
-            );
+          (value) {
+            // debugPrint(" notification save res: ${value.responseJson}");
+          },
+        );
       }
     });
   }

@@ -18,11 +18,15 @@ class RepaymentSingleScreen extends StatelessWidget {
   }) : super(key: key);
   final RepaymentAccount repayAccount;
 
-  void showSheet({required BuildContext context, required bool giving}) {
+  void showSheet({
+    required BuildContext context,
+    required bool giving,
+  }) {
     final TextEditingController _amountController = TextEditingController();
     showModalBottomSheet(
       context: context,
       builder: (BuildContext context) {
+        final ThemeData _theme = Theme.of(context);
         return SizedBox(
           height: MediaQuery.of(context).size.height * 0.8,
           child: Column(
@@ -38,7 +42,7 @@ class RepaymentSingleScreen extends StatelessWidget {
                         style: GoogleFonts.montserrat(
                           fontSize: 20,
                           fontWeight: FontWeight.w600,
-                          color: Colors.black,
+                          color: _theme.colorScheme.secondary.withOpacity(0.7),
                         ),
                       ),
                     ),
@@ -54,6 +58,7 @@ class RepaymentSingleScreen extends StatelessWidget {
               Expanded(
                 child: GetBuilder<RepaymentsSingleController>(
                   builder: (controller) {
+                    final ThemeData _theme = Theme.of(context);
                     return Column(
                       children: [
                         TextFieldWidget(
@@ -93,9 +98,9 @@ class RepaymentSingleScreen extends StatelessWidget {
                                 ? SizedBox(
                                     width:
                                         MediaQuery.of(context).size.width * 0.6,
-                                    child: const LinearProgressIndicator(
+                                    child: LinearProgressIndicator(
                                       backgroundColor: moneyBoyPurple,
-                                      color: Colors.white,
+                                      color: _theme.backgroundColor,
                                     ),
                                   )
                                 : Text(
@@ -124,15 +129,20 @@ class RepaymentSingleScreen extends StatelessWidget {
     showDialog(
       context: context,
       builder: (context) {
+        final ThemeData _theme = Theme.of(context);
         return AlertDialog(
           shape: RoundedRectangleBorder(
+            side: BorderSide(
+              color: _theme.colorScheme.secondary,
+              width: 0.5,
+            ),
             borderRadius: BorderRadius.circular(18.0),
           ),
-          backgroundColor: Colors.transparent,
+          backgroundColor: _theme.backgroundColor,
           elevation: 0.0,
           content: Container(
             decoration: BoxDecoration(
-              color: Colors.white,
+              color: _theme.backgroundColor,
               borderRadius: BorderRadius.circular(18.0),
             ),
             padding: const EdgeInsets.symmetric(
@@ -208,11 +218,12 @@ class RepaymentSingleScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final ThemeData _theme = Theme.of(context);
     return Scaffold(
       appBar: AppBar(
         elevation: 0.0,
-        backgroundColor: Colors.white,
-        iconTheme: const IconThemeData(color: Colors.black),
+        backgroundColor: _theme.backgroundColor,
+        iconTheme: IconThemeData(color: _theme.colorScheme.secondary),
         title: Text(
           "You + ${repayAccount.friend.name}",
           style: GoogleFonts.inter(
@@ -222,7 +233,7 @@ class RepaymentSingleScreen extends StatelessWidget {
           ),
         ),
       ),
-      backgroundColor: Colors.white,
+      backgroundColor: _theme.backgroundColor,
       body: Padding(
         padding: const EdgeInsets.only(bottom: 20.0),
         child: GetBuilder<RepaymentsSingleController>(
@@ -233,8 +244,10 @@ class RepaymentSingleScreen extends StatelessWidget {
           },
           builder: (controller) {
             if (controller.isLoading) {
-              return const Center(
-                child: CircularProgressIndicator(),
+              return Center(
+                child: CircularProgressIndicator(
+                  color: _theme.colorScheme.secondary,
+                ),
               );
             } else {
               return Column(
@@ -251,19 +264,25 @@ class RepaymentSingleScreen extends StatelessWidget {
                         final _isUser1 =
                             Get.find<ProfileController>().id.value ==
                                 _transaction.user1;
+                        // if (_transaction.id == "62b83899163b3fefb921c0b9") {
+                        // print(_transaction.toJson());
+                        // }
+                        final bool _giving = _isUser1
+                            ? _transaction.user1Transaction > 0
+                            : _transaction.user2Transaction > 0;
                         return RepaymentHistoryListTile(
                           id: _transaction.id,
-                          giving: _isUser1
-                              ? _transaction.user1Transaction > 0
-                              : _transaction.user2Transaction > 0,
+                          giving: _giving,
                           amount: _isUser1
                               ? _transaction.user1Transaction
                               : _transaction.user2Transaction,
-                          pending: !_transaction.user1Accepted ||
-                              !_transaction.user2Accepted,
-                          date: DateFormat('yMMMd').format(
+                          pending: _transaction.user1Accepted == false ||
+                              _transaction.user2Accepted == false,
+                          date: "${DateFormat('yMMMd').format(
                             _transaction.createdAt,
-                          ),
+                          )} - ${DateFormat('hh:mm').format(
+                            _transaction.createdAt,
+                          )}",
                         );
                       },
                     ),
@@ -275,11 +294,12 @@ class RepaymentSingleScreen extends StatelessWidget {
                           decoration: BoxDecoration(
                             border: Border.all(
                               width: 0.5,
-                              color: Colors.black.withOpacity(0.4),
+                              color:
+                                  _theme.colorScheme.secondary.withOpacity(0.4),
                             ),
                             borderRadius: BorderRadius.circular(14.0),
                             color: controller.repayAccount.value.balance == 0
-                                ? Colors.white
+                                ? _theme.backgroundColor
                                 : controller.repayAccount.value.balance > 0
                                     ? Colors.green.withOpacity(0.25)
                                     : Colors.red.withOpacity(0.25),
@@ -304,7 +324,7 @@ class RepaymentSingleScreen extends StatelessWidget {
                               fontSize: 18.0,
                               fontWeight: FontWeight.w600,
                               color: controller.repayAccount.value.balance == 0
-                                  ? Colors.black
+                                  ? _theme.colorScheme.secondary
                                   : controller.repayAccount.value.balance > 0
                                       ? Colors.green
                                       : Colors.red,
@@ -325,9 +345,9 @@ class RepaymentSingleScreen extends StatelessWidget {
                           margin: const EdgeInsets.only(
                             right: 8.0,
                           ),
-                          child: const Icon(
+                          child: Icon(
                             Icons.add,
-                            color: Colors.white,
+                            color: _theme.backgroundColor,
                             size: 32.0,
                           ),
                         ),
@@ -375,6 +395,7 @@ class RepaymentHistoryListTile extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final ThemeData _theme = Theme.of(context);
     return Row(
       mainAxisAlignment: pending
           ? MainAxisAlignment.center
@@ -504,7 +525,7 @@ class RepaymentHistoryListTile extends StatelessWidget {
                       style: GoogleFonts.montserrat(
                         fontSize: 16,
                         fontWeight: FontWeight.w500,
-                        color: Colors.white,
+                        color: _theme.backgroundColor,
                       ),
                     ),
                   ),
@@ -518,7 +539,7 @@ class RepaymentHistoryListTile extends StatelessWidget {
                 style: GoogleFonts.montserrat(
                   fontSize: 12.0,
                   fontWeight: FontWeight.w500,
-                  color: Colors.black.withOpacity(0.5),
+                  color: _theme.colorScheme.secondary.withOpacity(0.5),
                 ),
               ),
             ],

@@ -20,6 +20,7 @@ class _ActiveLabel extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final ThemeData _theme = Theme.of(context);
     return Container(
       padding: const EdgeInsets.symmetric(vertical: 14.0, horizontal: 18.0),
       decoration: BoxDecoration(
@@ -32,8 +33,8 @@ class _ActiveLabel extends StatelessWidget {
           Container(
             height: 8.0,
             width: 8.0,
-            decoration: const BoxDecoration(
-              color: Colors.white,
+            decoration: BoxDecoration(
+              color: _theme.highlightColor,
               shape: BoxShape.circle,
             ),
           ),
@@ -44,7 +45,7 @@ class _ActiveLabel extends StatelessWidget {
               style: GoogleFonts.montserrat(
                 fontSize: 16.0,
                 fontWeight: FontWeight.w500,
-                color: Colors.white,
+                color: _theme.highlightColor,
               ),
             ),
           ),
@@ -60,10 +61,11 @@ class _InactiveLabel extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final ThemeData _theme = Theme.of(context);
     return Container(
       padding: const EdgeInsets.symmetric(vertical: 14.0, horizontal: 18.0),
       decoration: BoxDecoration(
-        color: const Color(0xFFF3F3F3),
+        color: Colors.grey.withOpacity(0.35),
         borderRadius: BorderRadius.circular(18.0),
       ),
       child: Text(
@@ -71,7 +73,7 @@ class _InactiveLabel extends StatelessWidget {
         style: GoogleFonts.montserrat(
           fontSize: 16.0,
           fontWeight: FontWeight.w500,
-          color: Colors.grey,
+          color: _theme.colorScheme.secondary.withOpacity(0.5),
         ),
       ),
     );

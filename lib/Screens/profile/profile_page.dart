@@ -5,6 +5,8 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:moneyboi/Constants/colors.dart';
 import 'package:moneyboi/Controllers/profile_controller.dart';
 import 'package:moneyboi/Screens/profile/friends_page.dart';
+// import 'package:moneyboi/Theme/light_theme.dart';
+import 'package:moneyboi/Theme/theme_controller.dart';
 
 class ProfilePage extends StatelessWidget {
   ProfilePage({Key? key}) : super(key: key);
@@ -12,11 +14,14 @@ class ProfilePage extends StatelessWidget {
   final ProfileController _profileController = Get.find<ProfileController>();
   @override
   Widget build(BuildContext context) {
+    final ThemeData _theme = Theme.of(context);
     return Scaffold(
       appBar: AppBar(
         elevation: 0.0,
-        backgroundColor: Colors.white,
-        iconTheme: const IconThemeData(color: Colors.black),
+        backgroundColor: _theme.backgroundColor,
+        iconTheme: IconThemeData(
+          color: _theme.colorScheme.secondary,
+        ),
         title: Text(
           'PROFILE',
           style: GoogleFonts.inter(
@@ -26,7 +31,7 @@ class ProfilePage extends StatelessWidget {
           ),
         ),
       ),
-      backgroundColor: Colors.white,
+      backgroundColor: _theme.backgroundColor,
       body: SafeArea(
         child: Column(
           children: [
@@ -34,10 +39,10 @@ class ProfilePage extends StatelessWidget {
               child: CircleAvatar(
                 radius: 38.0,
                 backgroundColor: Colors.grey.withOpacity(0.25),
-                child: const Icon(
+                child: Icon(
                   Icons.person,
                   size: 32.0,
-                  color: moneyBoyPurple,
+                  color: _theme.primaryColorLight,
                 ),
               ),
             ),
@@ -52,7 +57,7 @@ class ProfilePage extends StatelessWidget {
                       style: GoogleFonts.inter(
                         fontSize: 22.0,
                         fontWeight: FontWeight.w500,
-                        color: Colors.black.withOpacity(0.8),
+                        color: _theme.colorScheme.secondary.withOpacity(0.8),
                       ),
                     ),
                   ),
@@ -63,7 +68,7 @@ class ProfilePage extends StatelessWidget {
                       style: GoogleFonts.inter(
                         fontSize: 20.0,
                         fontWeight: FontWeight.w500,
-                        color: Colors.black.withOpacity(0.8),
+                        color: _theme.colorScheme.secondary.withOpacity(0.8),
                       ),
                     ),
                   ),
@@ -101,7 +106,8 @@ class ProfilePage extends StatelessWidget {
                                         style: GoogleFonts.inter(
                                           fontSize: 18.0,
                                           fontWeight: FontWeight.w700,
-                                          color: Colors.black.withOpacity(0.8),
+                                          color: _theme.colorScheme.secondary
+                                              .withOpacity(0.8),
                                         ),
                                       ),
                                     ],
@@ -117,12 +123,94 @@ class ProfilePage extends StatelessWidget {
                         ),
                       ),
                     ),
+                  const SizedBox(
+                    height: 20.0,
+                  ),
+                  GetBuilder<ThemeController>(
+                    builder: (controller) {
+                      return Padding(
+                        padding: const EdgeInsets.symmetric(horizontal: 20.0),
+                        child: Row(
+                          children: [
+                            Expanded(
+                              flex: 3,
+                              child: Text(
+                                "Theme",
+                                style: TextStyle(
+                                  // fontFamily: 'Segoe',
+                                  fontSize: 20.0,
+                                  color:
+                                      Theme.of(context).colorScheme.secondary,
+                                  fontWeight: FontWeight.w500,
+                                ),
+                              ),
+                            ),
+                            Row(
+                              children: [
+                                AnimatedSwitcher(
+                                  duration: const Duration(milliseconds: 500),
+                                  switchInCurve: Curves.easeInSine,
+                                  switchOutCurve: Curves.easeOutSine,
+                                  transitionBuilder: (
+                                    Widget child,
+                                    Animation<double> animation,
+                                  ) {
+                                    // return ScaleTransition(
+                                    //   scale: animation,
+                                    //   child: child,
+                                    // );
+
+                                    final offsetAnimation = Tween<Offset>(
+                                      begin: const Offset(0.0, 0.8),
+                                      end: Offset.zero,
+                                    ).animate(animation);
+                                    return SlideTransition(
+                                      position: offsetAnimation,
+                                      child: child,
+                                    );
+                                  },
+                                  child: controller.currentTheme.value
+                                      ? Icon(
+                                          Icons.sunny,
+                                          key: UniqueKey(),
+                                          size: 30.0,
+                                          color: Theme.of(context)
+                                              .primaryColorLight,
+                                        )
+                                      : Icon(
+                                          Icons.nightlight,
+                                          key: UniqueKey(),
+                                          size: 30.0,
+                                          color: Theme.of(context)
+                                              .primaryColorLight,
+                                        ),
+                                ),
+                                const SizedBox(
+                                  width: 6.0,
+                                ),
+                                CupertinoSwitch(
+                                  value: controller.currentTheme.value,
+                                  trackColor: Theme.of(context).primaryColor,
+                                  activeColor: Theme.of(context).highlightColor,
+                                  onChanged: (val) async {
+                                    controller.toggleTheme();
+                                  },
+                                ),
+                              ],
+                            )
+                          ],
+                        ),
+                      );
+                    },
+                  ),
                 ],
               ),
             if (_profileController.isProfileLoading.value)
               Container(
                 alignment: Alignment.center,
-                child: const CircularProgressIndicator(),
+                child: CircularProgressIndicator(
+                  color: _theme.colorScheme.secondary,
+                ),
               ),
           ],
         ),

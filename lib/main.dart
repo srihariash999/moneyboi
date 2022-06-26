@@ -16,6 +16,9 @@ import 'package:moneyboi/Controllers/repayment_single_controller.dart';
 import 'package:moneyboi/Controllers/repayments_main_controller.dart';
 import 'package:moneyboi/Screens/home/home_page.dart';
 import 'package:moneyboi/Screens/login/login_page.dart';
+import 'package:moneyboi/Theme/dark_theme.dart';
+import 'package:moneyboi/Theme/light_theme.dart';
+import 'package:moneyboi/Theme/theme_controller.dart';
 import 'package:moneyboi/firebase_options.dart';
 import 'package:path_provider/path_provider.dart';
 
@@ -26,6 +29,7 @@ void main() async {
   Hive.init(dir.path);
   await Hive.openBox(authBoxName);
   await Hive.openBox(generalBoxName);
+  await Hive.openBox<bool>(themeBoxName);
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
   );
@@ -54,7 +58,7 @@ class _MyAppState extends State<MyApp> {
     // });
 
     Get.put<HiveService>(HiveService());
-
+    Get.put<ThemeController>(ThemeController()..onInit());
     super.initState();
   }
 
@@ -62,6 +66,8 @@ class _MyAppState extends State<MyApp> {
   Widget build(BuildContext context) {
     final Box _authBox = Hive.box(authBoxName);
     final _token = _authBox.get('token');
+
+    final _themeController = Get.find<ThemeController>();
 
     Get.lazyPut<LoginController>(() => LoginController(), fenix: true);
     Get.lazyPut<HomeScreenController>(
@@ -85,6 +91,17 @@ class _MyAppState extends State<MyApp> {
       () => RepaymentsSingleController(),
       fenix: true,
     );
+    // SystemChrome.setSystemUIOverlayStyle(
+    //   _themeController.currentTheme.value
+    //       ? SystemUiOverlayStyle(
+    //           statusBarColor: Colors.white,
+    //           statusBarIconBrightness: Brightness.dark,
+    //         )
+    //       : SystemUiOverlayStyle(
+    //           statusBarColor: Colors.black,
+    //           statusBarIconBrightness: Brightness.light,
+    //         ),
+    // );
 
     return MaterialApp(
       debugShowCheckedModeBanner: false,
@@ -103,6 +120,7 @@ class _MyAppState extends State<MyApp> {
           ),
         ],
         child: GetMaterialApp(
+          theme: _themeController.currentTheme.value ? lightTheme : darkTheme,
           debugShowCheckedModeBanner: false,
           home: _token != null ? const HomePage() : LoginPage(),
         ),
