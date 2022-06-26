@@ -91,40 +91,34 @@ class _MyAppState extends State<MyApp> {
       () => RepaymentsSingleController(),
       fenix: true,
     );
-    // SystemChrome.setSystemUIOverlayStyle(
-    //   _themeController.currentTheme.value
-    //       ? SystemUiOverlayStyle(
-    //           statusBarColor: Colors.white,
-    //           statusBarIconBrightness: Brightness.dark,
-    //         )
-    //       : SystemUiOverlayStyle(
-    //           statusBarColor: Colors.black,
-    //           statusBarIconBrightness: Brightness.light,
-    //         ),
-    // );
 
-    return MaterialApp(
-      debugShowCheckedModeBanner: false,
-      title: 'MoneyBoi',
-      builder: BotToastInit(),
-      navigatorObservers: [BotToastNavigatorObserver()],
-      home: MultiBlocProvider(
-        providers: [
-          BlocProvider<SignupBloc>(
-            create: (context) => SignupBloc(),
-          ),
-          BlocProvider<ForgotPasswordBloc>(
-            create: (context) {
-              return ForgotPasswordBloc();
-            },
-          ),
-        ],
-        child: GetMaterialApp(
-          theme: _themeController.currentTheme.value ? lightTheme : darkTheme,
-          debugShowCheckedModeBanner: false,
-          home: _token != null ? const HomePage() : LoginPage(),
+    return GetBuilder<ThemeController>(builder: (context) {
+      return GetMaterialApp(
+        debugShowCheckedModeBanner: false,
+        title: 'MoneyBoi',
+        builder: BotToastInit(),
+        theme: _themeController.currentTheme.value ? lightTheme : darkTheme,
+        navigatorObservers: [BotToastNavigatorObserver()],
+        home: MultiBlocProvider(
+          providers: [
+            BlocProvider<SignupBloc>(
+              create: (context) => SignupBloc(),
+            ),
+            BlocProvider<ForgotPasswordBloc>(
+              create: (context) {
+                return ForgotPasswordBloc();
+              },
+            ),
+          ],
+          child: _token != null ? const HomePage() : LoginPage(),
+          // child: GetBuilder<ThemeController>(
+          //   builder: (context) {
+          //     if (_token != null) return const HomePage();
+          //     return LoginPage();
+          //   },
+          // ),
         ),
-      ),
-    );
+      );
+    });
   }
 }

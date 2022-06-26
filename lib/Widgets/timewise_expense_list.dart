@@ -171,10 +171,13 @@ class TimewiseExpensesList extends StatelessWidget {
                         ),
                         IconButton(
                           onPressed: () {
-                            Get.to(
-                              NewExpenseCategoryScreen(
-                                isUpdate: true,
-                                expenseItem: _eri,
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) => NewExpenseCategoryScreen(
+                                  isUpdate: true,
+                                  expenseItem: _eri,
+                                ),
                               ),
                             );
                           },

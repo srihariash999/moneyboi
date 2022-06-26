@@ -61,7 +61,12 @@ class LoginPage extends StatelessWidget {
             ),
             GestureDetector(
               onTap: () {
-                Get.to(ForgotPasswordScreen());
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => ForgotPasswordScreen(),
+                  ),
+                );
               },
               child: Align(
                 alignment: Alignment.topRight,
@@ -94,7 +99,7 @@ class LoginPage extends StatelessWidget {
 
                 return GestureDetector(
                   onTap: () async {
-                    _loginController.userLogin();
+                    _loginController.userLogin(context);
                   },
                   child: BigBarButtonBody(
                     horizontalPadding: 60.0,

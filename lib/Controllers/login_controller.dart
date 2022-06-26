@@ -1,5 +1,6 @@
 import 'package:bot_toast/bot_toast.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:hive/hive.dart';
 import 'package:moneyboi/Constants/box_names.dart';
@@ -20,7 +21,7 @@ class LoginController extends GetxController {
   final Rx<TextEditingController> passwordController =
       TextEditingController().obs;
 
-  Future<void> userLogin() async {
+  Future<void> userLogin(BuildContext context) async {
     if (emailController.value.text.trim().isNotEmpty &&
         passwordController.value.text.trim().isNotEmpty &&
         isLoginLoading.value != true) {
@@ -36,8 +37,14 @@ class LoginController extends GetxController {
         BotToast.showText(text: "Login Successful");
         isLoginLoading.value = false;
         update();
-
-        Get.off(const HomePage());
+        // ignore: use_build_context_synchronously
+        Navigator.pushReplacement(
+          context,
+          MaterialPageRoute(
+            builder: (_) => const HomePage(),
+          ),
+        );
+        // Get.off(const HomePage());
       } else {
         isLoginLoading.value = false;
         update();

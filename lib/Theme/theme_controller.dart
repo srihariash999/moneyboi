@@ -32,7 +32,9 @@ class ThemeController extends GetxController {
   }
 
   Future toggleTheme() async {
+    // Get.changeTheme(_currentTheme ? lightTheme : darkTheme);
     _currentTheme = !_currentTheme;
+    update();
     await _hiveService.saveTheme(
       value: _currentTheme,
     );
@@ -47,8 +49,6 @@ class ThemeController extends GetxController {
     //           statusBarIconBrightness: Brightness.light,
     //         ),
     // );
-    Get.changeTheme(_currentTheme ? lightTheme : darkTheme);
-
-    update();
+    // update();
   }
 }

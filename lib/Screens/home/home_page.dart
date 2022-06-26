@@ -50,8 +50,12 @@ class _HomePageState extends State<HomePage> {
                       ),
                       child: GestureDetector(
                         onTap: () {
-                          Get.to(
-                            const RepaymentsMainScreen(),
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) =>
+                                  const RepaymentsMainScreen(),
+                            ),
                           );
                         },
                         child: Container(
@@ -76,9 +80,13 @@ class _HomePageState extends State<HomePage> {
                                         value: false,
                                       );
                                     },
-                                    child: const Icon(
-                                      Icons.close,
-                                      size: 16.0,
+                                    child: const Padding(
+                                      padding:
+                                          EdgeInsets.symmetric(horizontal: 8.0),
+                                      child: Icon(
+                                        Icons.close,
+                                        size: 16.0,
+                                      ),
                                     ),
                                   )
                                 ],
@@ -91,13 +99,13 @@ class _HomePageState extends State<HomePage> {
                                     ),
                                     child: Image.asset(
                                       "assets/repay_logo.png",
-                                      height: 64.0,
-                                      width: 72.0,
+                                      height: 58.0,
+                                      width: 64.0,
                                       fit: BoxFit.fill,
                                     ),
                                   ),
                                   const SizedBox(
-                                    width: 12.0,
+                                    width: 8.0,
                                   ),
                                   Expanded(
                                     child: Column(
@@ -177,16 +185,19 @@ class _HomePageState extends State<HomePage> {
                       if (!controller.isHomeloading.value)
                         GestureDetector(
                           onTap: () {
-                            Get.to(
-                              ExpenseChartScreen(
-                                expenseRecordItems: controller.expenseRecords,
-                                totalExpense: controller.totExp.value,
-                                title: toggleLabelEnumToString(
-                                  controller.toggleEnum.value,
-                                ),
-                                endDate: DateTime.now(),
-                                startDate: controller.getDurationDateTime(
-                                  controller.toggleEnum.value,
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) => ExpenseChartScreen(
+                                  expenseRecordItems: controller.expenseRecords,
+                                  totalExpense: controller.totExp.value,
+                                  title: toggleLabelEnumToString(
+                                    controller.toggleEnum.value,
+                                  ),
+                                  endDate: DateTime.now(),
+                                  startDate: controller.getDurationDateTime(
+                                    controller.toggleEnum.value,
+                                  ),
                                 ),
                               ),
                             );
@@ -371,8 +382,11 @@ class HomeScreenTopBar extends StatelessWidget {
           children: [
             GestureDetector(
               onTap: () {
-                Get.to(
-                  const RepaymentsMainScreen(),
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => const RepaymentsMainScreen(),
+                  ),
                 );
               },
               child: ClipRRect(

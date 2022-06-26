@@ -200,9 +200,13 @@ class RepaymentsMainScreen extends StatelessWidget {
                   }
                   return GestureDetector(
                     onTap: () async {
-                      await Get.to(
-                        RepaymentSingleScreen(
-                          repayAccount: controller.repaymentAccounts[index - 1],
+                      await Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => RepaymentSingleScreen(
+                            repayAccount:
+                                controller.repaymentAccounts[index - 1],
+                          ),
                         ),
                       );
                       controller.init();
