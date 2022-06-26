@@ -1,14 +1,10 @@
-
-
 # MoneyBoi
 
 <p float="left">
   
-<img src="./Screenshots/MoneyBoi.png" width="500" height="500"> 
+<img src="./Screenshots/MoneyBoi.png" width="500" height="500">
 
-</p> 
-
- 
+</p>
 
 MoneyBoi is an expense tracker app made with flutter. Moneyboi uses a custom backend made in node js found [here](https://github.com/srihariash999/moneyboi_backend) .
 
@@ -25,13 +21,9 @@ This project is still in development stage. So, feature requests are welcome. Fe
 - [x] Add new expense of certain category.
 - [x] View expenses in a pie chart form.
 - [x] Login, signup, forgot password flows.
+- [x] Dark Mode
 - [ ] Profile section and its features
 - [ ] Custom month dates setup and view
-- [ ] Dark Mode
- 
-
-
-
 
 ## How to setup locally ?
 
@@ -57,13 +49,11 @@ $ flutter run
 
 See the [contributor's guide!](contributing.md)
 
-
 ## Screenshots
- <img src="./Screenshots/login.png" width="250"> | <img src="./Screenshots/home.png" width="250"> 
 
+<img src="./Screenshots/login.png" width="250"> | <img src="./Screenshots/home.png" width="250">
 
-  <img src="./Screenshots/expense.png" width="250"> | <img src="./Screenshots/chart.png" width="250">   
-
+<img src="./Screenshots/expense.png" width="250"> | <img src="./Screenshots/chart.png" width="250">
 
 ## Questions or issues ?
 
