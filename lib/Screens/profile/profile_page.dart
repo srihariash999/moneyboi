@@ -5,7 +5,7 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:moneyboi/Constants/colors.dart';
 import 'package:moneyboi/Controllers/profile_controller.dart';
 import 'package:moneyboi/Screens/profile/friends_page.dart';
-import 'package:moneyboi/Theme/light_theme.dart';
+// import 'package:moneyboi/Theme/light_theme.dart';
 import 'package:moneyboi/Theme/theme_controller.dart';
 
 class ProfilePage extends StatelessWidget {
@@ -14,11 +14,14 @@ class ProfilePage extends StatelessWidget {
   final ProfileController _profileController = Get.find<ProfileController>();
   @override
   Widget build(BuildContext context) {
+    final ThemeData _theme = Theme.of(context);
     return Scaffold(
       appBar: AppBar(
         elevation: 0.0,
-        backgroundColor: Colors.white,
-        iconTheme: const IconThemeData(color: Colors.black),
+        backgroundColor: _theme.backgroundColor,
+        iconTheme: IconThemeData(
+          color: _theme.colorScheme.secondary,
+        ),
         title: Text(
           'PROFILE',
           style: GoogleFonts.inter(
@@ -28,7 +31,7 @@ class ProfilePage extends StatelessWidget {
           ),
         ),
       ),
-      backgroundColor: Colors.white,
+      backgroundColor: _theme.backgroundColor,
       body: SafeArea(
         child: Column(
           children: [
@@ -36,10 +39,10 @@ class ProfilePage extends StatelessWidget {
               child: CircleAvatar(
                 radius: 38.0,
                 backgroundColor: Colors.grey.withOpacity(0.25),
-                child: const Icon(
+                child: Icon(
                   Icons.person,
                   size: 32.0,
-                  color: moneyBoyPurple,
+                  color: _theme.primaryColorLight,
                 ),
               ),
             ),
@@ -54,7 +57,7 @@ class ProfilePage extends StatelessWidget {
                       style: GoogleFonts.inter(
                         fontSize: 22.0,
                         fontWeight: FontWeight.w500,
-                        color: Colors.black.withOpacity(0.8),
+                        color: _theme.colorScheme.secondary.withOpacity(0.8),
                       ),
                     ),
                   ),
@@ -65,7 +68,7 @@ class ProfilePage extends StatelessWidget {
                       style: GoogleFonts.inter(
                         fontSize: 20.0,
                         fontWeight: FontWeight.w500,
-                        color: Colors.black.withOpacity(0.8),
+                        color: _theme.colorScheme.secondary.withOpacity(0.8),
                       ),
                     ),
                   ),
@@ -103,7 +106,8 @@ class ProfilePage extends StatelessWidget {
                                         style: GoogleFonts.inter(
                                           fontSize: 18.0,
                                           fontWeight: FontWeight.w700,
-                                          color: Colors.black.withOpacity(0.8),
+                                          color: _theme.colorScheme.secondary
+                                              .withOpacity(0.8),
                                         ),
                                       ),
                                     ],
@@ -204,7 +208,9 @@ class ProfilePage extends StatelessWidget {
             if (_profileController.isProfileLoading.value)
               Container(
                 alignment: Alignment.center,
-                child: const CircularProgressIndicator(),
+                child: CircularProgressIndicator(
+                  color: _theme.colorScheme.secondary,
+                ),
               ),
           ],
         ),

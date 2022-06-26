@@ -85,6 +85,20 @@ class RepaymentsSingleController extends GetxController {
       update();
       // ignore: use_build_context_synchronously
       Navigator.pop(context);
+
+      if (amount < 0) {
+        isLoading = true;
+        update();
+        final _old = repayAccount.value;
+        repayAccount.value = RepaymentAccount(
+          id: _old.id,
+          friend: _old.friend,
+          balance: _old.balance + amount,
+          createdAt: _old.createdAt,
+        );
+        isLoading = false;
+        update();
+      }
     } else {
       isSubmitLoading = false;
       update();
@@ -129,9 +143,6 @@ class RepaymentsSingleController extends GetxController {
           }
         }
       }
-
-      isLoading = false;
-      update();
 
       isLoading = false;
       update();

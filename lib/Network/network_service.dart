@@ -17,7 +17,7 @@ class NetworkService {
       final Response _loginResp = await _dio.post(
         '$baseUrl$loginEndPoint',
         data: {
-          "email": email,
+          "email": email.toLowerCase(),
           "password": password,
         },
       );
@@ -813,6 +813,8 @@ class NetworkService {
           'amount': amount,
         },
       );
+
+      // print(" something : $amount");
 
       if (_result.statusCode == 200) {
         return ApiResponseModel(

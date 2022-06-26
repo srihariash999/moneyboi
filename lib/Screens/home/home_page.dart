@@ -375,15 +375,21 @@ class HomeScreenTopBar extends StatelessWidget {
                   const RepaymentsMainScreen(),
                 );
               },
-              child: Image.asset(
-                'assets/repay_logo.png',
-                height: 32.0,
-                width: 64.0,
-                fit: BoxFit.contain,
+              child: ClipRRect(
+                borderRadius: BorderRadius.circular(8.0),
+                child: Image.asset(
+                  'assets/repay_logo.png',
+                  height: 30.0,
+                  width: 30.0,
+                  fit: BoxFit.fill,
+                ),
               ),
             ),
             Padding(
-              padding: const EdgeInsets.only(right: 16.0),
+              padding: const EdgeInsets.only(
+                right: 16.0,
+                left: 8.0,
+              ),
               child: IconButton(
                 onPressed: () async {
                   Get.find<LoginController>().userLogout();
@@ -391,6 +397,7 @@ class HomeScreenTopBar extends StatelessWidget {
                 icon: const Icon(
                   Icons.logout,
                   color: moneyBoyPurple,
+                  size: 32.0,
                 ),
               ),
             ),

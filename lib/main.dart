@@ -1,14 +1,12 @@
 import 'package:bot_toast/bot_toast.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get/get.dart';
 import 'package:hive/hive.dart';
 import 'package:moneyboi/Blocs/ForgotPasswordBloc/forgotpassword_bloc.dart';
 import 'package:moneyboi/Blocs/SignupBloc/signupbloc_bloc.dart';
 import 'package:moneyboi/Constants/box_names.dart';
-import 'package:moneyboi/Constants/colors.dart';
 import 'package:moneyboi/Controllers/chart_screen_controller.dart';
 import 'package:moneyboi/Controllers/hive_controller.dart';
 import 'package:moneyboi/Controllers/home_screen_controller.dart';

@@ -13,11 +13,12 @@ class RepaymentsMainScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final ThemeData _theme = Theme.of(context);
     return Scaffold(
       appBar: AppBar(
         elevation: 0.0,
-        backgroundColor: Colors.white,
-        iconTheme: const IconThemeData(color: Colors.black),
+        backgroundColor: _theme.backgroundColor,
+        iconTheme: IconThemeData(color: _theme.colorScheme.secondary),
         title: Text(
           'REPAYMENTS',
           style: GoogleFonts.inter(
@@ -27,7 +28,7 @@ class RepaymentsMainScreen extends StatelessWidget {
           ),
         ),
       ),
-      backgroundColor: Colors.white,
+      backgroundColor: _theme.backgroundColor,
       floatingActionButton: FloatingActionButton(
         onPressed: () {
           showModalBottomSheet(
@@ -63,7 +64,8 @@ class RepaymentsMainScreen extends StatelessWidget {
                             style: GoogleFonts.montserrat(
                               fontSize: 16.0,
                               fontWeight: FontWeight.w400,
-                              color: Colors.black.withOpacity(0.85),
+                              color: _theme.colorScheme.secondary
+                                  .withOpacity(0.85),
                             ),
                           ),
                         ),
@@ -99,7 +101,8 @@ class RepaymentsMainScreen extends StatelessWidget {
                                               style: GoogleFonts.inter(
                                                 fontSize: 20.0,
                                                 fontWeight: FontWeight.w700,
-                                                color: Colors.black
+                                                color: _theme
+                                                    .colorScheme.secondary
                                                     .withOpacity(0.85),
                                               ),
                                             ),
@@ -108,7 +111,8 @@ class RepaymentsMainScreen extends StatelessWidget {
                                               style: GoogleFonts.inter(
                                                 fontSize: 16.0,
                                                 fontWeight: FontWeight.w600,
-                                                color: Colors.black
+                                                color: _theme
+                                                    .colorScheme.secondary
                                                     .withOpacity(0.75),
                                               ),
                                             ),
@@ -158,8 +162,9 @@ class RepaymentsMainScreen extends StatelessWidget {
         },
         backgroundColor: moneyBoyPurple,
         elevation: 1.0,
-        child: const Icon(
+        child: Icon(
           Icons.add,
+          color: _theme.backgroundColor.withOpacity(0.7),
           size: 42.0,
         ),
       ),
@@ -188,7 +193,7 @@ class RepaymentsMainScreen extends StatelessWidget {
                         style: GoogleFonts.inter(
                           fontSize: 20.0,
                           fontWeight: FontWeight.w600,
-                          color: Colors.black.withOpacity(0.7),
+                          color: _theme.colorScheme.secondary.withOpacity(0.7),
                         ),
                       ),
                     );
@@ -225,6 +230,7 @@ class RepaymentListTile extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final ThemeData _theme = Theme.of(context);
     return Container(
       alignment: Alignment.center,
       padding: const EdgeInsets.only(
@@ -254,7 +260,7 @@ class RepaymentListTile extends StatelessWidget {
                   style: GoogleFonts.montserrat(
                     fontSize: 20.0,
                     fontWeight: FontWeight.w600,
-                    color: Colors.black,
+                    color: _theme.colorScheme.secondary,
                   ),
                 ),
                 const SizedBox(
@@ -265,7 +271,7 @@ class RepaymentListTile extends StatelessWidget {
                   style: GoogleFonts.montserrat(
                     fontSize: 14.0,
                     fontWeight: FontWeight.w500,
-                    color: Colors.black.withOpacity(0.4),
+                    color: _theme.colorScheme.secondary.withOpacity(0.4),
                   ),
                 ),
               ],

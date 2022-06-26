@@ -26,9 +26,10 @@ class TextFieldWidget extends StatelessWidget {
   final double? hintFontSize;
   @override
   Widget build(BuildContext context) {
+    final ThemeData _theme = Theme.of(context);
     return Container(
       decoration: BoxDecoration(
-        color: moneyBoyPurpleLight.withOpacity(0.2),
+        color: moneyBoyPurpleLight.withOpacity(0.5),
         borderRadius: BorderRadius.circular(18.0),
       ),
       padding: EdgeInsets.symmetric(
@@ -50,7 +51,7 @@ class TextFieldWidget extends StatelessWidget {
           style: GoogleFonts.lato(
             fontSize: fontSize ?? 18.0,
             fontWeight: FontWeight.w600,
-            color: moneyBoyPurple.withOpacity(0.8),
+            color: _theme.colorScheme.secondary,
           ),
           decoration: InputDecoration(
             border: InputBorder.none,
@@ -60,12 +61,12 @@ class TextFieldWidget extends StatelessWidget {
             labelText: label,
             labelStyle: GoogleFonts.lato(
               fontWeight: FontWeight.w600,
-              color: moneyBoyPurple.withOpacity(0.8),
+              color: _theme.colorScheme.secondary.withOpacity(0.5),
             ),
             hintStyle: GoogleFonts.lato(
               fontWeight: FontWeight.w400,
               fontSize: hintFontSize ?? 14.0,
-              color: moneyBoyPurple.withOpacity(0.5),
+              color: _theme.colorScheme.secondary.withOpacity(0.5),
             ),
           ),
         ),

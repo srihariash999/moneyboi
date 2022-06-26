@@ -15,12 +15,13 @@ class FriendsPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final ThemeData _theme = Theme.of(context);
     return Scaffold(
       key: scaffoldState,
       appBar: AppBar(
         elevation: 0.0,
-        backgroundColor: Colors.white,
-        iconTheme: const IconThemeData(color: Colors.black),
+        backgroundColor: _theme.backgroundColor,
+        iconTheme: IconThemeData(color: _theme.colorScheme.secondary),
         title: Text(
           'FRIENDS',
           style: GoogleFonts.inter(
@@ -49,7 +50,7 @@ class FriendsPage extends StatelessWidget {
                     style: GoogleFonts.inter(
                       fontSize: 18.0,
                       fontWeight: FontWeight.w500,
-                      color: Colors.black.withOpacity(0.8),
+                      color: _theme.colorScheme.secondary.withOpacity(0.8),
                     ),
                   ),
                 ),
@@ -58,7 +59,7 @@ class FriendsPage extends StatelessWidget {
           ),
         ],
       ),
-      backgroundColor: Colors.white,
+      backgroundColor: _theme.backgroundColor,
       floatingActionButton: FloatingActionButton(
         onPressed: () {
           showModalBottomSheet(
@@ -93,7 +94,8 @@ class FriendsPage extends StatelessWidget {
                             style: GoogleFonts.montserrat(
                               fontSize: 16.0,
                               fontWeight: FontWeight.w400,
-                              color: Colors.black.withOpacity(0.85),
+                              color: _theme.colorScheme.secondary
+                                  .withOpacity(0.85),
                             ),
                           ),
                         ),
@@ -140,8 +142,9 @@ class FriendsPage extends StatelessWidget {
         },
         backgroundColor: moneyBoyPurple,
         elevation: 1.0,
-        child: const Icon(
+        child: Icon(
           Icons.add,
+          color: Colors.white.withOpacity(0.7),
           size: 42.0,
         ),
       ),
@@ -169,8 +172,8 @@ class FriendsPage extends StatelessWidget {
           GetBuilder<ProfileController>(
             builder: (controller) {
               return controller.friendsTabIndex.value == 0
-                  ? buildFriends(controller)
-                  : buildRequests(controller);
+                  ? buildFriends(controller, context)
+                  : buildRequests(controller, context);
             },
           ),
         ],
@@ -178,13 +181,14 @@ class FriendsPage extends StatelessWidget {
     );
   }
 
-  Expanded buildFriends(ProfileController controller) {
+  Expanded buildFriends(ProfileController controller, BuildContext context) {
+    final ThemeData _theme = Theme.of(context);
     return Expanded(
       child: controller.isFriendsLoading.value
           ? Container(
               alignment: Alignment.center,
-              child: const CircularProgressIndicator(
-                color: moneyBoyPurple,
+              child: CircularProgressIndicator(
+                color: _theme.primaryColorLight,
                 strokeWidth: 2.0,
               ),
             )
@@ -228,7 +232,8 @@ class FriendsPage extends StatelessWidget {
                                         style: GoogleFonts.inter(
                                           fontSize: 18.0,
                                           fontWeight: FontWeight.w500,
-                                          color: Colors.black.withOpacity(0.8),
+                                          color: _theme.colorScheme.secondary
+                                              .withOpacity(0.8),
                                         ),
                                       ),
                                       Text(
@@ -236,16 +241,17 @@ class FriendsPage extends StatelessWidget {
                                         style: GoogleFonts.inter(
                                           fontSize: 18.0,
                                           fontWeight: FontWeight.w500,
-                                          color: Colors.black.withOpacity(0.8),
+                                          color: _theme.colorScheme.secondary
+                                              .withOpacity(0.8),
                                         ),
                                       ),
                                     ],
                                   ),
                                 ),
                                 PopupMenuButton(
-                                  icon: const Icon(
+                                  icon: Icon(
                                     Icons.more_vert,
-                                    color: moneyBoyPurple,
+                                    color: _theme.primaryColorLight,
                                   ),
                                   shape: RoundedRectangleBorder(
                                     borderRadius: BorderRadius.circular(16.0),
@@ -265,8 +271,8 @@ class FriendsPage extends StatelessWidget {
                                           style: GoogleFonts.inter(
                                             fontSize: 18.0,
                                             fontWeight: FontWeight.w500,
-                                            color:
-                                                Colors.black.withOpacity(0.8),
+                                            color: _theme.colorScheme.secondary
+                                                .withOpacity(0.8),
                                           ),
                                         ),
                                       ),
@@ -285,7 +291,8 @@ class FriendsPage extends StatelessWidget {
     );
   }
 
-  Expanded buildRequests(ProfileController controller) {
+  Expanded buildRequests(ProfileController controller, BuildContext context) {
+    final ThemeData _theme = Theme.of(context);
     return Expanded(
       child: controller.isFriendsLoading.value
           ? Container(
@@ -339,7 +346,8 @@ class FriendsPage extends StatelessWidget {
                                               style: GoogleFonts.inter(
                                                 fontSize: 18.0,
                                                 fontWeight: FontWeight.w500,
-                                                color: Colors.black
+                                                color: _theme
+                                                    .colorScheme.secondary
                                                     .withOpacity(0.8),
                                               ),
                                             ),
@@ -348,7 +356,8 @@ class FriendsPage extends StatelessWidget {
                                               style: GoogleFonts.inter(
                                                 fontSize: 18.0,
                                                 fontWeight: FontWeight.w500,
-                                                color: Colors.black
+                                                color: _theme
+                                                    .colorScheme.secondary
                                                     .withOpacity(0.8),
                                               ),
                                             ),
@@ -466,7 +475,8 @@ class FriendsPage extends StatelessWidget {
                                                 style: GoogleFonts.inter(
                                                   fontSize: 18.0,
                                                   fontWeight: FontWeight.w500,
-                                                  color: Colors.black
+                                                  color: _theme
+                                                      .colorScheme.secondary
                                                       .withOpacity(0.8),
                                                 ),
                                               ),
@@ -475,7 +485,8 @@ class FriendsPage extends StatelessWidget {
                                                 style: GoogleFonts.inter(
                                                   fontSize: 18.0,
                                                   fontWeight: FontWeight.w500,
-                                                  color: Colors.black
+                                                  color: _theme
+                                                      .colorScheme.secondary
                                                       .withOpacity(0.8),
                                                 ),
                                               ),
@@ -506,7 +517,8 @@ class FriendsPage extends StatelessWidget {
                                                   style: GoogleFonts.inter(
                                                     fontSize: 18.0,
                                                     fontWeight: FontWeight.w500,
-                                                    color: Colors.black
+                                                    color: _theme
+                                                        .colorScheme.secondary
                                                         .withOpacity(0.8),
                                                   ),
                                                 ),
@@ -540,14 +552,15 @@ class FriendsPage extends StatelessWidget {
                                             style: GoogleFonts.inter(
                                               fontSize: 18.0,
                                               fontWeight: FontWeight.w500,
-                                              color:
-                                                  Colors.black.withOpacity(0.5),
+                                              color: _theme
+                                                  .colorScheme.secondary
+                                                  .withOpacity(0.5),
                                             ),
                                           ),
                                           Icon(
                                             Icons.check,
-                                            color:
-                                                Colors.black.withOpacity(0.5),
+                                            color: _theme.colorScheme.secondary
+                                                .withOpacity(0.5),
                                             size: 20.0,
                                           ),
                                         ],
@@ -582,6 +595,7 @@ class TabLabel extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final ThemeData _theme = Theme.of(context);
     return Expanded(
       child: GestureDetector(
         onTap: () => onTap(),
@@ -592,7 +606,7 @@ class TabLabel extends StatelessWidget {
               style: GoogleFonts.inter(
                 fontSize: 18.0,
                 fontWeight: FontWeight.w500,
-                color: Colors.black.withOpacity(0.8),
+                color: _theme.colorScheme.secondary.withOpacity(0.8),
               ),
             ),
             Container(

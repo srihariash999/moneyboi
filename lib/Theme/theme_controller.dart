@@ -1,12 +1,7 @@
-import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:get/get.dart';
-import 'package:get/get_state_manager/get_state_manager.dart';
 import 'package:moneyboi/Controllers/hive_controller.dart';
 import 'package:moneyboi/Theme/dark_theme.dart';
 import 'package:moneyboi/Theme/light_theme.dart';
-
-import '../Constants/colors.dart';
 
 class ThemeController extends GetxController {
   /// Actual variable holding the value of current theme.

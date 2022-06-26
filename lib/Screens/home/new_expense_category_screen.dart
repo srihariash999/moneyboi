@@ -47,11 +47,12 @@ class _NewExpenseCategoryScreenState extends State<NewExpenseCategoryScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final ThemeData _theme = Theme.of(context);
     return Scaffold(
       appBar: AppBar(
         elevation: 0.0,
-        backgroundColor: Colors.white,
-        iconTheme: const IconThemeData(color: Colors.black),
+        backgroundColor: _theme.backgroundColor,
+        iconTheme: IconThemeData(color: _theme.colorScheme.secondary),
         title: Text(
           widget.isUpdate ? 'EDIT EXPENSE RECORD' : 'ADD EXPENSES',
           style: GoogleFonts.inter(
@@ -61,7 +62,7 @@ class _NewExpenseCategoryScreenState extends State<NewExpenseCategoryScreen> {
           ),
         ),
       ),
-      backgroundColor: Colors.white,
+      backgroundColor: _theme.backgroundColor,
       body: SafeArea(
         child: Column(
           children: [
@@ -74,7 +75,7 @@ class _NewExpenseCategoryScreenState extends State<NewExpenseCategoryScreen> {
                 style: GoogleFonts.lato(
                   fontSize: 20.0,
                   fontWeight: FontWeight.w600,
-                  color: Colors.black,
+                  color: _theme.colorScheme.secondary,
                 ),
               ),
             ),
@@ -104,7 +105,7 @@ class _NewExpenseCategoryScreenState extends State<NewExpenseCategoryScreen> {
                           borderRadius: BorderRadius.circular(6.0),
                           color: _isSelected
                               ? moneyBoyPurple.withOpacity(0.8)
-                              : Colors.white,
+                              : _theme.backgroundColor,
                         ),
                         alignment: Alignment.center,
                         child: Column(
@@ -117,7 +118,7 @@ class _NewExpenseCategoryScreenState extends State<NewExpenseCategoryScreen> {
                               decoration: BoxDecoration(
                                 shape: BoxShape.circle,
                                 color: _isSelected
-                                    ? Colors.white
+                                    ? _theme.backgroundColor
                                     : Colors.grey.withOpacity(0.3),
                               ),
                               child: Image.asset(_ec.categoryImage),
@@ -132,8 +133,9 @@ class _NewExpenseCategoryScreenState extends State<NewExpenseCategoryScreen> {
                                   fontSize: 12.0,
                                   fontWeight: FontWeight.w500,
                                   color: _isSelected
-                                      ? Colors.white
-                                      : Colors.black.withOpacity(0.7),
+                                      ? _theme.backgroundColor
+                                      : _theme.colorScheme.secondary
+                                          .withOpacity(0.7),
                                 ),
                               ),
                             ),
@@ -160,13 +162,31 @@ class _NewExpenseCategoryScreenState extends State<NewExpenseCategoryScreen> {
                     style: GoogleFonts.lato(
                       fontSize: 20.0,
                       fontWeight: FontWeight.w600,
-                      color: Colors.black,
+                      color: _theme.colorScheme.secondary,
                     ),
                   ),
                   GestureDetector(
                     onTap: () {
                       DatePicker.showDatePicker(
                         context,
+                        theme: DatePickerTheme(
+                          backgroundColor: _theme.backgroundColor,
+                          cancelStyle: TextStyle(
+                            color:
+                                _theme.colorScheme.secondary.withOpacity(0.6),
+                            fontSize: 16,
+                          ),
+                          doneStyle: const TextStyle(
+                            color: Colors.blue,
+                            fontWeight: FontWeight.w600,
+                            fontSize: 16,
+                          ),
+                          itemStyle: TextStyle(
+                            color:
+                                _theme.colorScheme.secondary.withOpacity(0.85),
+                            fontSize: 18,
+                          ),
+                        ),
                         minTime: DateTime(2018, 3, 5),
                         maxTime: DateTime.now(),
                         onConfirm: (date) {
@@ -224,7 +244,7 @@ class _NewExpenseCategoryScreenState extends State<NewExpenseCategoryScreen> {
                     style: GoogleFonts.lato(
                       fontSize: 18.0,
                       fontWeight: FontWeight.w600,
-                      color: Colors.black.withOpacity(0.8),
+                      color: _theme.colorScheme.secondary.withOpacity(0.8),
                     ),
                     decoration: InputDecoration(
                       border: InputBorder.none,
@@ -234,12 +254,12 @@ class _NewExpenseCategoryScreenState extends State<NewExpenseCategoryScreen> {
                       labelText: "Expense Amount *",
                       labelStyle: GoogleFonts.lato(
                         fontWeight: FontWeight.w600,
-                        color: Colors.black.withOpacity(0.8),
+                        color: _theme.colorScheme.secondary.withOpacity(0.8),
                       ),
                       hintStyle: GoogleFonts.lato(
                         fontWeight: FontWeight.w400,
                         fontSize: 14.0,
-                        color: Colors.black.withOpacity(0.5),
+                        color: _theme.colorScheme.secondary.withOpacity(0.5),
                       ),
                     ),
                   ),
@@ -268,7 +288,7 @@ class _NewExpenseCategoryScreenState extends State<NewExpenseCategoryScreen> {
                     style: GoogleFonts.lato(
                       fontSize: 18.0,
                       fontWeight: FontWeight.w600,
-                      color: Colors.black.withOpacity(0.8),
+                      color: _theme.colorScheme.secondary.withOpacity(0.8),
                     ),
                     decoration: InputDecoration(
                       border: InputBorder.none,
@@ -278,12 +298,12 @@ class _NewExpenseCategoryScreenState extends State<NewExpenseCategoryScreen> {
                       labelText: "Remarks",
                       labelStyle: GoogleFonts.lato(
                         fontWeight: FontWeight.w600,
-                        color: Colors.black.withOpacity(0.8),
+                        color: _theme.colorScheme.secondary.withOpacity(0.8),
                       ),
                       hintStyle: GoogleFonts.lato(
                         fontWeight: FontWeight.w400,
                         fontSize: 14.0,
-                        color: Colors.black.withOpacity(0.5),
+                        color: _theme.colorScheme.secondary.withOpacity(0.5),
                       ),
                     ),
                   ),

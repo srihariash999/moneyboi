@@ -23,18 +23,19 @@ class ExpenseChartScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final ThemeData _theme = Theme.of(context);
     return Scaffold(
-      backgroundColor: Colors.white,
+      backgroundColor: _theme.backgroundColor,
       appBar: AppBar(
-        iconTheme: const IconThemeData(color: Colors.black),
-        backgroundColor: Colors.white,
+        iconTheme: IconThemeData(color: _theme.colorScheme.secondary),
+        backgroundColor: _theme.backgroundColor,
         title: Text(
           title,
           style: GoogleFonts.montserrat(
             fontSize: 20.0,
             letterSpacing: 1.2,
             fontWeight: FontWeight.w500,
-            color: Colors.black.withOpacity(0.8),
+            color: _theme.colorScheme.secondary.withOpacity(0.8),
           ),
         ),
         elevation: 0.0,
@@ -55,7 +56,7 @@ class ExpenseChartScreen extends StatelessWidget {
                     fontSize: 16.0,
                     letterSpacing: 1.2,
                     fontWeight: FontWeight.w700,
-                    color: Colors.black.withOpacity(0.5),
+                    color: _theme.colorScheme.secondary.withOpacity(0.5),
                   ),
                 ),
               )
@@ -72,7 +73,8 @@ class ExpenseChartScreen extends StatelessWidget {
                             fontSize: 16.0,
                             letterSpacing: 1.2,
                             fontWeight: FontWeight.w700,
-                            color: Colors.black.withOpacity(0.5),
+                            color:
+                                _theme.colorScheme.secondary.withOpacity(0.5),
                           ),
                         ),
                         Text(
@@ -81,7 +83,8 @@ class ExpenseChartScreen extends StatelessWidget {
                             fontSize: 16.0,
                             letterSpacing: 1.2,
                             fontWeight: FontWeight.w700,
-                            color: Colors.black.withOpacity(0.5),
+                            color:
+                                _theme.colorScheme.secondary.withOpacity(0.5),
                           ),
                         ),
                         Text(
@@ -90,7 +93,8 @@ class ExpenseChartScreen extends StatelessWidget {
                             fontSize: 16.0,
                             letterSpacing: 1.2,
                             fontWeight: FontWeight.w700,
-                            color: Colors.black.withOpacity(0.5),
+                            color:
+                                _theme.colorScheme.secondary.withOpacity(0.5),
                           ),
                         ),
                       ],
@@ -113,7 +117,10 @@ class ExpenseChartScreen extends StatelessWidget {
                           ),
                           sectionsSpace: 0,
                           centerSpaceRadius: 40,
-                          sections: showingSections(_controller),
+                          sections: showingSections(
+                            _controller,
+                            _theme.backgroundColor,
+                          ),
                         ),
                       ),
                     ),
@@ -160,7 +167,8 @@ class ExpenseChartScreen extends StatelessWidget {
                                           ? 24
                                           : 16,
                                       fontWeight: FontWeight.bold,
-                                      color: const Color(0xff505050),
+                                      color: _theme.colorScheme.secondary
+                                          .withOpacity(0.6),
                                     ),
                                   )
                                 ],
@@ -177,7 +185,10 @@ class ExpenseChartScreen extends StatelessWidget {
     );
   }
 
-  List<PieChartSectionData> showingSections(ChartScreenController controller) {
+  List<PieChartSectionData> showingSections(
+    ChartScreenController controller,
+    Color color,
+  ) {
     final List<PieChartSectionData> _list = [];
 
     for (int i = 0; i < controller.pieData.length; i++) {
@@ -195,7 +206,9 @@ class ExpenseChartScreen extends StatelessWidget {
             fontWeight: FontWeight.bold,
             color: Colors.white,
           ),
-          borderSide: const BorderSide(color: Colors.white),
+          borderSide: BorderSide(
+            color: color,
+          ),
         ),
       );
     }
