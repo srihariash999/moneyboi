@@ -2,7 +2,7 @@
 
 <p float="left">
   
-<img src="./Screenshots/MoneyBoi.png" width="500" height="500">
+<img src="./Screenshots/MoneyBoi.png" width="256" height="256">
 
 </p>
 
