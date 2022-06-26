@@ -1,12 +1,18 @@
-# MoneyBoi
-
-<p float="left">
+<p align="center">
   
-<img src="./Screenshots/MoneyBoi.png" width="256" height="256">
+<img src="./Screenshots/MoneyBoi.png" width="256" height="256" align="center">
 
 </p>
+<h3 align="center">MoneyBoi</h3>
 
-MoneyBoi is an expense tracker app made with flutter. Moneyboi uses a custom backend made in node js found [here](https://github.com/srihariash999/moneyboi_backend) .
+<p align="center">
+  MoneyBoi is an expense tracker app made with Flutter.
+</p>  
+
+##
+<p>
+  Moneyboi uses a backend made using Node js and Express with MongoDb as database solution. The code for it can be found <a href="https://github.com/srihariash999/moneyboi_backend">here.</a>
+ </p> 
 
 ## Tech Stack:
 
