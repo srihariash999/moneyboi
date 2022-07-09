@@ -1,7 +1,5 @@
 import 'package:get/get.dart';
 import 'package:moneyboi/Controllers/hive_controller.dart';
-import 'package:moneyboi/Theme/dark_theme.dart';
-import 'package:moneyboi/Theme/light_theme.dart';
 
 class ThemeController extends GetxController {
   /// Actual variable holding the value of current theme.
@@ -38,17 +36,5 @@ class ThemeController extends GetxController {
     await _hiveService.saveTheme(
       value: _currentTheme,
     );
-    // SystemChrome.setSystemUIOverlayStyle(
-    //   _currentTheme
-    //       ? SystemUiOverlayStyle(
-    //           statusBarColor: Colors.white,
-    //           statusBarIconBrightness: Brightness.dark,
-    //         )
-    //       : SystemUiOverlayStyle(
-    //           statusBarColor: Colors.black,
-    //           statusBarIconBrightness: Brightness.light,
-    //         ),
-    // );
-    // update();
   }
 }

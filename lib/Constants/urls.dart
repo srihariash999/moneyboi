@@ -1,7 +1,7 @@
 import 'package:flutter/foundation.dart';
 
 const String baseUrl = kDebugMode
-    ? "http://192.168.0.133:3000/api"
+    ? "http://192.168.137.195:3000/api"
     : "https://moneyboi-backend.herokuapp.com/api";
 
 // const String baseUrl = "http://192.168.0.133:3000/api";

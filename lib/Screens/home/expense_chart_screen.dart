@@ -4,6 +4,7 @@ import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:intl/intl.dart';
 import 'package:moneyboi/Constants/colors.dart';
+import 'package:moneyboi/Constants/enums.dart';
 import 'package:moneyboi/Controllers/chart_screen_controller.dart';
 import 'package:moneyboi/Data%20Models/expense_record.dart';
 
@@ -16,7 +17,7 @@ class ExpenseChartScreen extends StatelessWidget {
     required this.startDate,
   });
   final List<ExpenseRecordItem> expenseRecordItems;
-  final String title;
+  final ToggleLabelEnum title;
   final int totalExpense;
   final DateTime startDate;
   final DateTime endDate;
@@ -30,7 +31,7 @@ class ExpenseChartScreen extends StatelessWidget {
         iconTheme: IconThemeData(color: _theme.colorScheme.secondary),
         backgroundColor: _theme.backgroundColor,
         title: Text(
-          title,
+          toggleLabelEnumToString(title),
           style: GoogleFonts.montserrat(
             fontSize: 20.0,
             letterSpacing: 1.2,
@@ -45,6 +46,8 @@ class ExpenseChartScreen extends StatelessWidget {
           Get.find<ChartScreenController>().chartScreenControllerInit(
             totalExpense: totalExpense,
             expenseRecordItem: expenseRecordItems,
+            startDate: startDate,
+            days: toggleLabelEnumToNumber(title),
           );
         },
         builder: (_controller) => expenseRecordItems.isEmpty
@@ -63,7 +66,28 @@ class ExpenseChartScreen extends StatelessWidget {
             : SingleChildScrollView(
                 child: Column(
                   children: <Widget>[
-                    const SizedBox(height: 28.0),
+                    const SizedBox(height: 16.0),
+                    if (!_controller.previousLoading)
+                      Padding(
+                        padding: const EdgeInsets.only(bottom: 28.0),
+                        child: Container(
+                          padding: const EdgeInsets.all(16.0),
+                          decoration: BoxDecoration(
+                            color:
+                                _theme.colorScheme.secondary.withOpacity(0.15),
+                            borderRadius: BorderRadius.circular(16.0),
+                          ),
+                          child: Text(
+                            _controller.previousStatisticString,
+                            style: GoogleFonts.inter(
+                              fontSize: 16.0,
+                              fontWeight: FontWeight.w600,
+                              color:
+                                  _theme.colorScheme.secondary.withOpacity(0.7),
+                            ),
+                          ),
+                        ),
+                      ),
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                       children: [
