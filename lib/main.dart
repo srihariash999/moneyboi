@@ -92,33 +92,36 @@ class _MyAppState extends State<MyApp> {
       fenix: true,
     );
 
-    return GetBuilder<ThemeController>(builder: (context) {
-      return GetMaterialApp(
-        debugShowCheckedModeBanner: false,
-        title: 'MoneyBoi',
-        builder: BotToastInit(),
-        theme: _themeController.currentTheme.value ? lightTheme : darkTheme,
-        navigatorObservers: [BotToastNavigatorObserver()],
-        home: MultiBlocProvider(
-          providers: [
-            BlocProvider<SignupBloc>(
-              create: (context) => SignupBloc(),
-            ),
-            BlocProvider<ForgotPasswordBloc>(
-              create: (context) {
-                return ForgotPasswordBloc();
-              },
-            ),
-          ],
-          child: _token != null ? const HomePage() : LoginPage(),
-          // child: GetBuilder<ThemeController>(
-          //   builder: (context) {
-          //     if (_token != null) return const HomePage();
-          //     return LoginPage();
-          //   },
-          // ),
-        ),
-      );
-    });
+    return GetBuilder<ThemeController>(
+      builder: (context) {
+        debugPrint("token : $_token");
+        return GetMaterialApp(
+          debugShowCheckedModeBanner: false,
+          title: 'MoneyBoi',
+          builder: BotToastInit(),
+          theme: _themeController.currentTheme.value ? lightTheme : darkTheme,
+          navigatorObservers: [BotToastNavigatorObserver()],
+          home: MultiBlocProvider(
+            providers: [
+              BlocProvider<SignupBloc>(
+                create: (context) => SignupBloc(),
+              ),
+              BlocProvider<ForgotPasswordBloc>(
+                create: (context) {
+                  return ForgotPasswordBloc();
+                },
+              ),
+            ],
+            child: _token != null ? const HomePage() : LoginPage(),
+            // child: GetBuilder<ThemeController>(
+            //   builder: (context) {
+            //     if (_token != null) return const HomePage();
+            //     return LoginPage();
+            //   },
+            // ),
+          ),
+        );
+      },
+    );
   }
 }

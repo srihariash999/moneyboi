@@ -16,3 +16,16 @@ String toggleLabelEnumToString(ToggleLabelEnum en) {
       return "";
   }
 }
+
+int toggleLabelEnumToNumber(ToggleLabelEnum en) {
+  switch (en) {
+    case ToggleLabelEnum.daily:
+      return 1;
+    case ToggleLabelEnum.weekly:
+      return 7;
+    case ToggleLabelEnum.monthly:
+      return 30;
+    default:
+      return 0;
+  }
+}

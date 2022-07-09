@@ -191,9 +191,7 @@ class _HomePageState extends State<HomePage> {
                                 builder: (context) => ExpenseChartScreen(
                                   expenseRecordItems: controller.expenseRecords,
                                   totalExpense: controller.totExp.value,
-                                  title: toggleLabelEnumToString(
-                                    controller.toggleEnum.value,
-                                  ),
+                                  title: controller.toggleEnum.value,
                                   endDate: DateTime.now(),
                                   startDate: controller.getDurationDateTime(
                                     controller.toggleEnum.value,
