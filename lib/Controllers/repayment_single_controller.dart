@@ -67,11 +67,12 @@ class RepaymentsSingleController extends GetxController {
     String id,
     int amount,
     BuildContext context,
+    String? note,
   ) async {
     isSubmitLoading = true;
     update();
     final ApiResponseModel _result =
-        await _apiService.newRepaymentTransaction(id, amount);
+        await _apiService.newRepaymentTransaction(id, amount, note);
     if (_result.statusCode == 200 && _result.responseJson != null) {
       final RepaymentTransaction _newTransaction =
           RepaymentTransaction.fromJson(

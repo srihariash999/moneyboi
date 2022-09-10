@@ -23,6 +23,7 @@ class RepaymentSingleScreen extends StatelessWidget {
     required bool giving,
   }) {
     final TextEditingController _amountController = TextEditingController();
+    final TextEditingController _noteController = TextEditingController();
     showModalBottomSheet(
       context: context,
       builder: (BuildContext context) {
@@ -37,12 +38,16 @@ class RepaymentSingleScreen extends StatelessWidget {
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: <Widget>[
                     Expanded(
-                      child: Text(
-                        'New Repayment Transaction',
-                        style: GoogleFonts.montserrat(
-                          fontSize: 20,
-                          fontWeight: FontWeight.w600,
-                          color: _theme.colorScheme.secondary.withOpacity(0.7),
+                      child: Padding(
+                        padding: const EdgeInsets.only(left: 8.0),
+                        child: Text(
+                          'New Repayment Transaction',
+                          style: GoogleFonts.montserrat(
+                            fontSize: 20,
+                            fontWeight: FontWeight.w600,
+                            color:
+                                _theme.colorScheme.secondary.withOpacity(0.7),
+                          ),
                         ),
                       ),
                     ),
@@ -64,10 +69,21 @@ class RepaymentSingleScreen extends StatelessWidget {
                         TextFieldWidget(
                           controller: _amountController,
                           horizontalMargin: 32.0,
-                          verticalPadding: 8.0,
+                          // verticalPadding: 4.0,
                           inputType: TextInputType.number,
                           label: "Amount",
                           hint: "Enter amount in Rupees",
+                        ),
+                        const SizedBox(
+                          height: 32.0,
+                        ),
+                        TextFieldWidget(
+                          controller: _noteController,
+                          horizontalMargin: 32.0,
+                          // verticalPadding: 4.0,
+                          inputType: TextInputType.number,
+                          label: "Note",
+                          hint: "Enter a note",
                         ),
                         const SizedBox(
                           height: 32.0,
@@ -82,12 +98,14 @@ class RepaymentSingleScreen extends StatelessWidget {
                                   repayAccount.id,
                                   int.parse(_amountController.text),
                                   context,
+                                  _noteController.text.trim(),
                                 );
                               } else {
                                 await controller.addNewTransaction(
                                   repayAccount.id,
                                   int.parse(_amountController.text) * -1,
                                   context,
+                                  _noteController.text.trim(),
                                 );
                               }
                             }
@@ -283,6 +301,7 @@ class RepaymentSingleScreen extends StatelessWidget {
                           )} - ${DateFormat('hh:mm').format(
                             _transaction.createdAt,
                           )}",
+                          note: _transaction.note,
                         );
                       },
                     ),
@@ -372,12 +391,14 @@ class RepaymentHistoryListTile extends StatelessWidget {
     required this.date,
     required this.pending,
     required this.id,
+    required this.note,
   }) : super(key: key);
   final bool giving;
   final int amount;
   final String date;
   final bool pending;
   final String id;
+  final String? note;
 
   Color getColor() {
     if (pending) {
@@ -504,6 +525,22 @@ class RepaymentHistoryListTile extends StatelessWidget {
               const SizedBox(
                 height: 4.0,
               ),
+
+              if (note != null && note!.isNotEmpty)
+                Padding(
+                  padding: const EdgeInsets.only(top: 8.0, bottom: 16.0),
+                  child: Text(
+                    note!,
+                    maxLines: 3,
+                    overflow: TextOverflow.fade,
+                    textAlign: TextAlign.left,
+                    style: GoogleFonts.montserrat(
+                      fontSize: 14.0,
+                      fontWeight: FontWeight.w500,
+                      color: _theme.colorScheme.secondary,
+                    ),
+                  ),
+                ),
 
               if (pending && !giving)
                 GestureDetector(
