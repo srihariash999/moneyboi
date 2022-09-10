@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:moneyboi/Blocs/SignupBloc/signupbloc_bloc.dart';
 import 'package:moneyboi/Constants/colors.dart';
+import 'package:moneyboi/Controllers/signup_controller.dart';
 import 'package:moneyboi/Widgets/text_field_widget.dart';
 
 class SignupEmailWidget extends StatelessWidget {
@@ -13,6 +13,7 @@ class SignupEmailWidget extends StatelessWidget {
   }) : super(key: key);
 
   final TextEditingController _emailController = TextEditingController();
+  final SignupController _signupController = Get.find<SignupController>();
 
   @override
   Widget build(BuildContext context) {
@@ -28,7 +29,8 @@ class SignupEmailWidget extends StatelessWidget {
               backgroundColor: moneyBoyPurple.withOpacity(0.3),
             ),
             onPressed: () {
-              BlocProvider.of<SignupBloc>(context).add(MoveToNameEvent());
+              _signupController.moveToName();
+              // BlocProvider.of<SignupBloc>(context).add(MoveToNameEvent());
             },
             child: const Icon(
               Icons.chevron_left,
@@ -90,9 +92,12 @@ class SignupEmailWidget extends StatelessWidget {
                       r'^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$',
                     );
                     if (regex.hasMatch(_emailController.text.trim())) {
-                      BlocProvider.of<SignupBloc>(context).add(
-                        MoveToPasswordEvent(email: _emailController.text),
+                      _signupController.moveToPassword(
+                        email: _emailController.text,
                       );
+                      // BlocProvider.of<SignupBloc>(context).add(
+                      //   MoveToPasswordEvent(email: _emailController.text),
+                      // );
                     } else {}
                   },
                   child: const Icon(

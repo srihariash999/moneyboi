@@ -4,7 +4,6 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:moneyboi/Constants/colors.dart';
 import 'package:moneyboi/Controllers/login_controller.dart';
 import 'package:moneyboi/Screens/login/forgot_password_screen.dart';
-import 'package:moneyboi/Screens/signup/signup_page.dart';
 import 'package:moneyboi/Widgets/big_bar_button.dart';
 import 'package:moneyboi/Widgets/text_field_widget.dart';
 
@@ -85,8 +84,8 @@ class LoginPage extends StatelessWidget {
             ),
             const SizedBox(height: 52.0),
             GetBuilder<LoginController>(
-              builder: (cont) {
-                if (_loginController.isLoginLoading.value) {
+              builder: (controller) {
+                if (controller.isLoginLoading.value) {
                   return const BigBarButtonBody(
                     horizontalPadding: 60.0,
                     borderRadius: 30.0,
@@ -99,7 +98,7 @@ class LoginPage extends StatelessWidget {
 
                 return GestureDetector(
                   onTap: () async {
-                    _loginController.userLogin(context);
+                    controller.userLogin(context);
                   },
                   child: BigBarButtonBody(
                     horizontalPadding: 60.0,
@@ -130,13 +129,7 @@ class LoginPage extends StatelessWidget {
                 ),
                 GestureDetector(
                   onTap: () async {
-                    Navigator.pop(context);
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                        builder: (_) => const SignupPage(),
-                      ),
-                    );
+                    _loginController.goToSignup(context);
                   },
                   child: Text(
                     "SignUp",

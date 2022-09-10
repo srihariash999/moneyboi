@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:moneyboi/Blocs/SignupBloc/signupbloc_bloc.dart';
 import 'package:moneyboi/Constants/colors.dart';
+import 'package:moneyboi/Controllers/signup_controller.dart';
 import 'package:moneyboi/Widgets/text_field_widget.dart';
 
 class SignupPasswordWidget extends StatelessWidget {
@@ -17,6 +17,7 @@ class SignupPasswordWidget extends StatelessWidget {
   final TextEditingController _passwordController = TextEditingController();
   final TextEditingController _confirmPasswordController =
       TextEditingController();
+  final SignupController _signupController = Get.find<SignupController>();
 
   @override
   Widget build(BuildContext context) {
@@ -32,11 +33,12 @@ class SignupPasswordWidget extends StatelessWidget {
               backgroundColor: moneyBoyPurple.withOpacity(0.3),
             ),
             onPressed: () {
-              BlocProvider.of<SignupBloc>(context).add(
-                MoveToEmailEvent(
-                  name: name,
-                ),
-              );
+              _signupController.moveToEmail(name: name);
+              // BlocProvider.of<SignupBloc>(context).add(
+              //   MoveToEmailEvent(
+              //     name: name,
+              //   ),
+              // );
             },
             child: const Icon(
               Icons.chevron_left,
@@ -94,11 +96,14 @@ class SignupPasswordWidget extends StatelessWidget {
                     if (_passwordController.text ==
                             _confirmPasswordController.text &&
                         _passwordController.text.trim().isNotEmpty) {
-                      BlocProvider.of<SignupBloc>(context).add(
-                        SignupEvent(
-                          password: _passwordController.text,
-                        ),
+                      _signupController.signup(
+                        password: _passwordController.text,
                       );
+                      // BlocProvider.of<SignupBloc>(context).add(
+                      //   SignupEvent(
+                      //     password: _passwordController.text,
+                      //   ),
+                      // );
                     }
                   },
                   child: const Icon(

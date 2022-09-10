@@ -1,10 +1,10 @@
 import 'package:flutter/foundation.dart';
 
 const String baseUrl = kDebugMode
-    ? "http://192.168.247.13:3000/api"
-    : "https://zealous-gold-lab-coat.cyclic.app";
+    ? "http://192.168.31.188:3000/api"
+    : "https://zealous-gold-lab-coat.cyclic.app/api";
 
-// const String baseUrl = "http://192.168.0.133:3000/api";
+// const String baseUrl = "https://zealous-gold-lab-coat.cyclic.app/api";
 
 /*
 POST 

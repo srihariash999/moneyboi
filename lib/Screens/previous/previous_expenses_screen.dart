@@ -195,181 +195,215 @@ class PreviousExpensesScreen extends StatelessWidget {
                       ),
                     ),
                   Expanded(
-                    child: RefreshIndicator(
-                      onRefresh: controller.searchExpenseRecords,
-                      child: ListView.builder(
-                        itemCount: controller.expenses.length,
-                        itemBuilder: (context, index) {
-                          final ExpenseRecordItem _eri =
-                              controller.expenses[index];
-                          return Padding(
-                            padding: const EdgeInsets.all(12.0),
-                            child: ExpandablePanel(
-                              header: Row(
-                                children: [
-                                  Image.asset(
-                                    _eri.category.categoryImage,
-                                    height: 45.0,
-                                    width: 45.0,
-                                    fit: BoxFit.cover,
-                                  ),
-                                  Expanded(
-                                    child: Padding(
-                                      padding:
-                                          const EdgeInsets.only(left: 18.0),
-                                      child: Column(
-                                        crossAxisAlignment:
-                                            CrossAxisAlignment.start,
+                    child: controller.expenses.isEmpty
+                        ? Container(
+                            alignment: Alignment.center,
+                            child: Text(
+                              "No Expenses between these days.",
+                              style: TextStyle(
+                                color: _theme.colorScheme.secondary
+                                    .withOpacity(0.7),
+                                fontSize: 16.0,
+                              ),
+                            ),
+                          )
+                        : RefreshIndicator(
+                            onRefresh: controller.searchExpenseRecords,
+                            child: ListView.builder(
+                              itemCount: controller.expenses.length,
+                              itemBuilder: (context, index) {
+                                final ExpenseRecordItem _eri =
+                                    controller.expenses[index];
+                                return Padding(
+                                  padding: const EdgeInsets.all(12.0),
+                                  child: ExpandablePanel(
+                                    header: Row(
+                                      children: [
+                                        Image.asset(
+                                          _eri.category.categoryImage,
+                                          height: 45.0,
+                                          width: 45.0,
+                                          fit: BoxFit.cover,
+                                        ),
+                                        Expanded(
+                                          child: Padding(
+                                            padding: const EdgeInsets.only(
+                                              left: 18.0,
+                                            ),
+                                            child: Column(
+                                              crossAxisAlignment:
+                                                  CrossAxisAlignment.start,
+                                              mainAxisAlignment:
+                                                  MainAxisAlignment.spaceEvenly,
+                                              children: [
+                                                Padding(
+                                                  padding:
+                                                      const EdgeInsets.only(
+                                                    top: 6.0,
+                                                    bottom: 4.0,
+                                                  ),
+                                                  child: Text(
+                                                    _eri.category.name,
+                                                    style:
+                                                        GoogleFonts.montserrat(
+                                                      fontSize: 18.0,
+                                                      fontWeight:
+                                                          FontWeight.w500,
+                                                      color: _theme
+                                                          .colorScheme.secondary
+                                                          .withOpacity(0.8),
+                                                    ),
+                                                  ),
+                                                ),
+                                                Text(
+                                                  DateFormat('yMMMd')
+                                                      .format(_eri.createdDate),
+                                                  style: GoogleFonts.montserrat(
+                                                    fontSize: 14.0,
+                                                    fontWeight: FontWeight.w300,
+                                                    color: _theme
+                                                        .colorScheme.secondary
+                                                        .withOpacity(0.4),
+                                                  ),
+                                                ),
+                                              ],
+                                            ),
+                                          ),
+                                        ),
+                                        Padding(
+                                          padding: const EdgeInsets.only(
+                                            right: 16.0,
+                                          ),
+                                          child: Text(
+                                            "₹ ${_eri.expense}",
+                                            style: GoogleFonts.montserrat(
+                                              fontSize: 18.0,
+                                              fontWeight: FontWeight.w700,
+                                              color: moneyBoyPurple,
+                                            ),
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                    collapsed: Container(),
+                                    expanded: Padding(
+                                      padding: const EdgeInsets.only(top: 12.0),
+                                      child: Row(
                                         mainAxisAlignment:
                                             MainAxisAlignment.spaceEvenly,
                                         children: [
-                                          Padding(
-                                            padding: const EdgeInsets.only(
-                                              top: 6.0,
-                                              bottom: 4.0,
-                                            ),
-                                            child: Text(
-                                              _eri.category.name,
-                                              style: GoogleFonts.montserrat(
-                                                fontSize: 18.0,
-                                                fontWeight: FontWeight.w500,
-                                                color: _theme
-                                                    .colorScheme.secondary
-                                                    .withOpacity(0.8),
-                                              ),
+                                          IconButton(
+                                            onPressed: () {
+                                              Get.defaultDialog(
+                                                backgroundColor:
+                                                    _theme.backgroundColor,
+                                                title: "Expense Details",
+                                                titleStyle:
+                                                    GoogleFonts.montserrat(
+                                                  fontSize: 22.0,
+                                                  fontWeight: FontWeight.w700,
+                                                  color: _theme
+                                                      .colorScheme.secondary
+                                                      .withOpacity(0.8),
+                                                ),
+                                                content: Container(
+                                                  height: 350.0,
+                                                  color: _theme.backgroundColor,
+                                                  child: Column(
+                                                    crossAxisAlignment:
+                                                        CrossAxisAlignment
+                                                            .start,
+                                                    mainAxisSize:
+                                                        MainAxisSize.min,
+                                                    children: [
+                                                      ExpenseInfoWidget(
+                                                        title: "Category",
+                                                        value:
+                                                            "${_eri.category.name} ",
+                                                        color: _theme
+                                                            .colorScheme
+                                                            .secondary,
+                                                      ),
+                                                      ExpenseInfoWidget(
+                                                        title: "Amount",
+                                                        value:
+                                                            "₹ ${_eri.expense} ",
+                                                        color: _theme
+                                                            .colorScheme
+                                                            .secondary,
+                                                      ),
+                                                      ExpenseInfoWidget(
+                                                        title: "Remarks",
+                                                        value:
+                                                            "${_eri.remark} ",
+                                                        color: _theme
+                                                            .colorScheme
+                                                            .secondary,
+                                                      ),
+                                                      ExpenseInfoWidget(
+                                                        title: "Added on ",
+                                                        value: DateFormat(
+                                                          'yMMMd',
+                                                        ).format(
+                                                          _eri.createdDate,
+                                                        ),
+                                                        color: _theme
+                                                            .colorScheme
+                                                            .secondary,
+                                                      ),
+                                                    ],
+                                                  ),
+                                                ),
+                                              );
+                                            },
+                                            icon: const Icon(
+                                              CupertinoIcons.info,
+                                              size: 36.0,
+                                              color: moneyBoyPurple,
                                             ),
                                           ),
-                                          Text(
-                                            DateFormat('yMMMd')
-                                                .format(_eri.createdDate),
-                                            style: GoogleFonts.montserrat(
-                                              fontSize: 14.0,
-                                              fontWeight: FontWeight.w300,
-                                              color: _theme
-                                                  .colorScheme.secondary
-                                                  .withOpacity(0.4),
+                                          IconButton(
+                                            onPressed: () async {
+                                              await Navigator.push(
+                                                context,
+                                                MaterialPageRoute(
+                                                  builder: (context) =>
+                                                      NewExpenseCategoryScreen(
+                                                    isUpdate: true,
+                                                    expenseItem: _eri,
+                                                  ),
+                                                ),
+                                              );
+                                              controller.searchExpenseRecords();
+                                            },
+                                            icon: const Icon(
+                                              CupertinoIcons.pencil_circle,
+                                              size: 36.0,
+                                              color: moneyBoyPurpleLight,
+                                            ),
+                                          ),
+                                          IconButton(
+                                            onPressed: () {
+                                              Get.find<HomeScreenController>()
+                                                  .deleteExpenseRecord(
+                                                id: _eri.id,
+                                              );
+                                            },
+                                            icon: Icon(
+                                              CupertinoIcons.trash_circle,
+                                              size: 36.0,
+                                              color:
+                                                  Colors.red.withOpacity(0.7),
                                             ),
                                           ),
                                         ],
                                       ),
                                     ),
                                   ),
-                                  Padding(
-                                    padding: const EdgeInsets.only(right: 16.0),
-                                    child: Text(
-                                      "₹ ${_eri.expense}",
-                                      style: GoogleFonts.montserrat(
-                                        fontSize: 18.0,
-                                        fontWeight: FontWeight.w700,
-                                        color: moneyBoyPurple,
-                                      ),
-                                    ),
-                                  ),
-                                ],
-                              ),
-                              collapsed: Container(),
-                              expanded: Padding(
-                                padding: const EdgeInsets.only(top: 12.0),
-                                child: Row(
-                                  mainAxisAlignment:
-                                      MainAxisAlignment.spaceEvenly,
-                                  children: [
-                                    IconButton(
-                                      onPressed: () {
-                                        Get.defaultDialog(
-                                          backgroundColor:
-                                              _theme.backgroundColor,
-                                          title: "Expense Details",
-                                          titleStyle: GoogleFonts.montserrat(
-                                            fontSize: 22.0,
-                                            fontWeight: FontWeight.w700,
-                                            color: _theme.colorScheme.secondary
-                                                .withOpacity(0.8),
-                                          ),
-                                          content: Container(
-                                            height: 350.0,
-                                            color: _theme.backgroundColor,
-                                            child: Column(
-                                              crossAxisAlignment:
-                                                  CrossAxisAlignment.start,
-                                              mainAxisSize: MainAxisSize.min,
-                                              children: [
-                                                ExpenseInfoWidget(
-                                                  title: "Category",
-                                                  value:
-                                                      "${_eri.category.name} ",
-                                                  color: _theme
-                                                      .colorScheme.secondary,
-                                                ),
-                                                ExpenseInfoWidget(
-                                                  title: "Amount",
-                                                  value: "₹ ${_eri.expense} ",
-                                                  color: _theme
-                                                      .colorScheme.secondary,
-                                                ),
-                                                ExpenseInfoWidget(
-                                                  title: "Remarks",
-                                                  value: "${_eri.remark} ",
-                                                  color: _theme
-                                                      .colorScheme.secondary,
-                                                ),
-                                                ExpenseInfoWidget(
-                                                  title: "Added on ",
-                                                  value: DateFormat('yMMMd')
-                                                      .format(_eri.createdDate),
-                                                  color: _theme
-                                                      .colorScheme.secondary,
-                                                ),
-                                              ],
-                                            ),
-                                          ),
-                                        );
-                                      },
-                                      icon: const Icon(
-                                        CupertinoIcons.info,
-                                        size: 36.0,
-                                        color: moneyBoyPurple,
-                                      ),
-                                    ),
-                                    IconButton(
-                                      onPressed: () async {
-                                        await Navigator.push(
-                                          context,
-                                          MaterialPageRoute(
-                                            builder: (context) =>
-                                                NewExpenseCategoryScreen(
-                                              isUpdate: true,
-                                              expenseItem: _eri,
-                                            ),
-                                          ),
-                                        );
-                                        controller.searchExpenseRecords();
-                                      },
-                                      icon: const Icon(
-                                        CupertinoIcons.pencil_circle,
-                                        size: 36.0,
-                                        color: moneyBoyPurpleLight,
-                                      ),
-                                    ),
-                                    IconButton(
-                                      onPressed: () {
-                                        Get.find<HomeScreenController>()
-                                            .deleteExpenseRecord(id: _eri.id);
-                                      },
-                                      icon: Icon(
-                                        CupertinoIcons.trash_circle,
-                                        size: 36.0,
-                                        color: Colors.red.withOpacity(0.7),
-                                      ),
-                                    ),
-                                  ],
-                                ),
-                              ),
+                                );
+                              },
                             ),
-                          );
-                        },
-                      ),
-                    ),
+                          ),
                   ),
                 ],
               );
