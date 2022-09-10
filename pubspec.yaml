@@ -29,7 +29,7 @@ dependencies:
   expandable: ^5.0.1
   firebase_core: ^1.17.1
   firebase_messaging: ^11.4.1
-  fl_chart: ^0.51.0
+  fl_chart: ^0.55.1
   flutter:
     sdk: flutter
   flutter_bloc: ^7.3.3

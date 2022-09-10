@@ -2,6 +2,7 @@ String previousStatisticGenerationHelper({
   required int currentExpense,
   required int previousExpense,
   required int days,
+  required bool isPrevious,
 }) {
   String stat = "";
 
@@ -9,13 +10,21 @@ String previousStatisticGenerationHelper({
 
   stat += "${(currentExpense - previousExpense).abs()}";
 
-  if (currentExpense > previousExpense) {
-    stat += " more ";
+  if (isPrevious) {
+    stat += " in these $days ";
+
+    stat += days > 1 ? "days" : "day";
   } else {
-    stat += " less ";
+    if (currentExpense > previousExpense) {
+      stat += " more ";
+    } else {
+      stat += " less ";
+    }
+
+    stat += "than last $days ";
+
+    stat += days > 1 ? "days" : "day";
   }
 
-  stat += "than last $days ";
-
-  return stat += days > 1 ? "days" : "day";
+  return stat;
 }

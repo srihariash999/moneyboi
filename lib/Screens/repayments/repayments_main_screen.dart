@@ -84,6 +84,7 @@ class RepaymentsMainScreen extends StatelessWidget {
                                   ),
                                   margin: const EdgeInsets.symmetric(
                                     horizontal: 12.0,
+                                    vertical: 4.0,
                                   ),
                                   padding: const EdgeInsets.symmetric(
                                     vertical: 24.0,
