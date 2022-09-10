@@ -801,6 +801,7 @@ class NetworkService {
   Future<ApiResponseModel> newRepaymentTransaction(
     String id,
     int amount,
+    String? note,
   ) async {
     final Dio _dio = Dio();
     final String _token = _authBox.get('token').toString();
@@ -811,6 +812,7 @@ class NetworkService {
         data: {
           'id': id,
           'amount': amount,
+          'note': note,
         },
       );
 

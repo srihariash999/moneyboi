@@ -18,11 +18,13 @@ class RepaymentTransaction {
     required this.user2Accepted,
     required this.createdAt,
     required this.v,
+    this.note,
   });
 
   String id;
   String user1;
   String user2;
+  String? note;
   String repaymentAccount;
   int user1Transaction;
   int user2Transaction;
@@ -43,6 +45,7 @@ class RepaymentTransaction {
         user2Accepted: json["user2_accepted"] as bool,
         createdAt: DateTime.parse(json["created_at"] as String),
         v: json["__v"] as int,
+        note: json["note"] as String?,
       );
 
   Map<String, dynamic> toJson() => {
@@ -56,5 +59,6 @@ class RepaymentTransaction {
         "user2_accepted": user2Accepted,
         "created_at": createdAt.toIso8601String(),
         "__v": v,
+        "note": note,
       };
 }

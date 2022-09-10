@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:moneyboi/Blocs/SignupBloc/signupbloc_bloc.dart';
+import 'package:get/get.dart';
 import 'package:moneyboi/Constants/colors.dart';
+import 'package:moneyboi/Controllers/signup_controller.dart';
 import 'package:moneyboi/Screens/signup/signup_email_screen.dart';
 import 'package:moneyboi/Screens/signup/signup_name_screen.dart';
 import 'package:moneyboi/Screens/signup/signup_password_screen.dart';
@@ -19,20 +19,20 @@ class SignupPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       body: SafeArea(
-        child: BlocBuilder<SignupBloc, SignupBlocState>(
-          builder: (context, state) {
+        child: GetBuilder<SignupController>(
+          builder: (controller) {
             return AnimatedSwitcher(
               duration: const Duration(milliseconds: 600),
-              child: state is SignupBlocInitial
+              child: controller.signupState == SignupState.initial
                   ? SignupNameWidget()
-                  : state is SignupBlocEmailState
-                      ? SignupEmailWidget(name: state.name)
-                      : state is SignupBlocPasswordState
+                  : controller.signupState == SignupState.email
+                      ? SignupEmailWidget(name: controller.name)
+                      : controller.signupState == SignupState.password
                           ? SignupPasswordWidget(
-                              name: state.name,
-                              email: state.email,
+                              name: controller.name,
+                              email: controller.email,
                             )
-                          : state is SignupBlocLoadingState
+                          : controller.signupState == SignupState.loading
                               ? Container(
                                   alignment: Alignment.center,
                                   child: const CircularProgressIndicator(

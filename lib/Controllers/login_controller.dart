@@ -8,6 +8,7 @@ import 'package:moneyboi/Data%20Models/api_response_model.dart';
 import 'package:moneyboi/Network/network_service.dart';
 import 'package:moneyboi/Screens/home/home_page.dart';
 import 'package:moneyboi/Screens/login/login_page.dart';
+import 'package:moneyboi/Screens/signup/signup_page.dart';
 
 class LoginController extends GetxController {
   final _apiService = NetworkService();
@@ -54,6 +55,15 @@ class LoginController extends GetxController {
         );
       }
     }
+  }
+
+  void goToSignup(BuildContext context) {
+    Navigator.push(
+      Get.context!,
+      MaterialPageRoute(
+        builder: (_) => const SignupPage(),
+      ),
+    );
   }
 
   Future<void> userLogout() async {

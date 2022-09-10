@@ -1,13 +1,11 @@
 import 'package:bot_toast/bot_toast.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get/get.dart';
 import 'package:hive/hive.dart';
-import 'package:moneyboi/Blocs/ForgotPasswordBloc/forgotpassword_bloc.dart';
-import 'package:moneyboi/Blocs/SignupBloc/signupbloc_bloc.dart';
 import 'package:moneyboi/Constants/box_names.dart';
 import 'package:moneyboi/Controllers/chart_screen_controller.dart';
+import 'package:moneyboi/Controllers/forgot_password_controller.dart';
 import 'package:moneyboi/Controllers/hive_controller.dart';
 import 'package:moneyboi/Controllers/home_screen_controller.dart';
 import 'package:moneyboi/Controllers/login_controller.dart';
@@ -15,6 +13,7 @@ import 'package:moneyboi/Controllers/previous_expenses_controller.dart';
 import 'package:moneyboi/Controllers/profile_controller.dart';
 import 'package:moneyboi/Controllers/repayment_single_controller.dart';
 import 'package:moneyboi/Controllers/repayments_main_controller.dart';
+import 'package:moneyboi/Controllers/signup_controller.dart';
 import 'package:moneyboi/Screens/home/home_page.dart';
 import 'package:moneyboi/Screens/login/login_page.dart';
 import 'package:moneyboi/Theme/dark_theme.dart';
@@ -64,11 +63,11 @@ class _MyAppState extends State<MyApp> {
   }
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext rootContext) {
     final Box _authBox = Hive.box(authBoxName);
     final _token = _authBox.get('token');
 
-    final _themeController = Get.find<ThemeController>();
+    // final _themeController = Get.find<ThemeController>();
 
     Get.lazyPut<LoginController>(() => LoginController(), fenix: true);
     Get.lazyPut<HomeScreenController>(
@@ -98,34 +97,26 @@ class _MyAppState extends State<MyApp> {
       fenix: true,
     );
 
+    Get.lazyPut<SignupController>(
+      () => SignupController(),
+      fenix: true,
+    );
+
+    Get.lazyPut<ForgotPasswordController>(
+      () => ForgotPasswordController(),
+      fenix: true,
+    );
+
     return GetBuilder<ThemeController>(
-      builder: (context) {
+      builder: (controller) {
         debugPrint("token : $_token");
         return GetMaterialApp(
           debugShowCheckedModeBanner: false,
           title: 'MoneyBoi',
           builder: BotToastInit(),
-          theme: _themeController.currentTheme.value ? lightTheme : darkTheme,
+          theme: controller.currentTheme.value ? lightTheme : darkTheme,
           navigatorObservers: [BotToastNavigatorObserver()],
-          home: MultiBlocProvider(
-            providers: [
-              BlocProvider<SignupBloc>(
-                create: (context) => SignupBloc(),
-              ),
-              BlocProvider<ForgotPasswordBloc>(
-                create: (context) {
-                  return ForgotPasswordBloc();
-                },
-              ),
-            ],
-            child: _token != null ? const HomePage() : LoginPage(),
-            // child: GetBuilder<ThemeController>(
-            //   builder: (context) {
-            //     if (_token != null) return const HomePage();
-            //     return LoginPage();
-            //   },
-            // ),
-          ),
+          home: _token != null ? const HomePage() : LoginPage(),
         );
       },
     );

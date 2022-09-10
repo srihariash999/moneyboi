@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:moneyboi/Blocs/SignupBloc/signupbloc_bloc.dart';
 import 'package:moneyboi/Constants/colors.dart';
+import 'package:moneyboi/Controllers/signup_controller.dart';
 import 'package:moneyboi/Screens/login/login_page.dart';
 import 'package:moneyboi/Widgets/text_field_widget.dart';
 
@@ -12,6 +12,7 @@ class SignupNameWidget extends StatelessWidget {
   }) : super(key: key);
 
   final TextEditingController _nameController = TextEditingController();
+  final SignupController _signupController = Get.find<SignupController>();
 
   @override
   Widget build(BuildContext context) {
@@ -92,8 +93,9 @@ class SignupNameWidget extends StatelessWidget {
                   ),
                   onPressed: () {
                     if (_nameController.text.isNotEmpty) {
-                      BlocProvider.of<SignupBloc>(context)
-                          .add(MoveToEmailEvent(name: _nameController.text));
+                      _signupController.moveToEmail(name: _nameController.text);
+                      // BlocProvider.of<SignupBloc>(context)
+                      //     .add(MoveToEmailEvent(name: _nameController.text));
                     }
                   },
                   child: const Icon(
