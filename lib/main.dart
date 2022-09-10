@@ -11,6 +11,7 @@ import 'package:moneyboi/Controllers/chart_screen_controller.dart';
 import 'package:moneyboi/Controllers/hive_controller.dart';
 import 'package:moneyboi/Controllers/home_screen_controller.dart';
 import 'package:moneyboi/Controllers/login_controller.dart';
+import 'package:moneyboi/Controllers/previous_expenses_controller.dart';
 import 'package:moneyboi/Controllers/profile_controller.dart';
 import 'package:moneyboi/Controllers/repayment_single_controller.dart';
 import 'package:moneyboi/Controllers/repayments_main_controller.dart';
@@ -89,6 +90,11 @@ class _MyAppState extends State<MyApp> {
 
     Get.lazyPut<RepaymentsSingleController>(
       () => RepaymentsSingleController(),
+      fenix: true,
+    );
+
+    Get.lazyPut<PreviousExpensesController>(
+      () => PreviousExpensesController(),
       fenix: true,
     );
 

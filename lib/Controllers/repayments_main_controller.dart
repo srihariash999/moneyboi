@@ -31,6 +31,7 @@ class RepaymentsMainController extends GetxController {
         await _apiService.getRepaymentAccounts();
     if (_repayAccsResp.statusCode == 200 &&
         _repayAccsResp.responseJson != null) {
+      _repaymentAccounts.clear();
       for (final i in _repayAccsResp.responseJson!.data as List<dynamic>) {
         _repaymentAccounts
             .add(RepaymentAccount.fromJson(i as Map<String, dynamic>));

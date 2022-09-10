@@ -15,12 +15,18 @@ class ExpenseChartScreen extends StatelessWidget {
     required this.title,
     required this.endDate,
     required this.startDate,
+    this.isPrevious = false,
+    this.titleText,
+    this.days,
   });
   final List<ExpenseRecordItem> expenseRecordItems;
   final ToggleLabelEnum title;
+  final String? titleText;
+  final int? days;
   final int totalExpense;
   final DateTime startDate;
   final DateTime endDate;
+  final bool isPrevious;
 
   @override
   Widget build(BuildContext context) {
@@ -31,7 +37,7 @@ class ExpenseChartScreen extends StatelessWidget {
         iconTheme: IconThemeData(color: _theme.colorScheme.secondary),
         backgroundColor: _theme.backgroundColor,
         title: Text(
-          toggleLabelEnumToString(title),
+          titleText != null ? titleText! : toggleLabelEnumToString(title),
           style: GoogleFonts.montserrat(
             fontSize: 20.0,
             letterSpacing: 1.2,
@@ -47,7 +53,8 @@ class ExpenseChartScreen extends StatelessWidget {
             totalExpense: totalExpense,
             expenseRecordItem: expenseRecordItems,
             startDate: startDate,
-            days: toggleLabelEnumToNumber(title),
+            days: days != null ? days! : toggleLabelEnumToNumber(title),
+            isPrevious: isPrevious,
           );
         },
         builder: (_controller) => expenseRecordItems.isEmpty
@@ -88,41 +95,42 @@ class ExpenseChartScreen extends StatelessWidget {
                           ),
                         ),
                       ),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                      children: [
-                        Text(
-                          "${DateFormat('E').format(startDate)}, ${DateFormat('d MMM').format(startDate)}",
-                          style: GoogleFonts.montserrat(
-                            fontSize: 16.0,
-                            letterSpacing: 1.2,
-                            fontWeight: FontWeight.w700,
-                            color:
-                                _theme.colorScheme.secondary.withOpacity(0.5),
+                    if (!isPrevious)
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                        children: [
+                          Text(
+                            "${DateFormat('E').format(startDate)}, ${DateFormat('d MMM').format(startDate)}",
+                            style: GoogleFonts.montserrat(
+                              fontSize: 16.0,
+                              letterSpacing: 1.2,
+                              fontWeight: FontWeight.w700,
+                              color:
+                                  _theme.colorScheme.secondary.withOpacity(0.5),
+                            ),
                           ),
-                        ),
-                        Text(
-                          " to ",
-                          style: GoogleFonts.montserrat(
-                            fontSize: 16.0,
-                            letterSpacing: 1.2,
-                            fontWeight: FontWeight.w700,
-                            color:
-                                _theme.colorScheme.secondary.withOpacity(0.5),
+                          Text(
+                            " to ",
+                            style: GoogleFonts.montserrat(
+                              fontSize: 16.0,
+                              letterSpacing: 1.2,
+                              fontWeight: FontWeight.w700,
+                              color:
+                                  _theme.colorScheme.secondary.withOpacity(0.5),
+                            ),
                           ),
-                        ),
-                        Text(
-                          "${DateFormat('E').format(endDate)}, ${DateFormat('d MMM').format(endDate)}",
-                          style: GoogleFonts.montserrat(
-                            fontSize: 16.0,
-                            letterSpacing: 1.2,
-                            fontWeight: FontWeight.w700,
-                            color:
-                                _theme.colorScheme.secondary.withOpacity(0.5),
+                          Text(
+                            "${DateFormat('E').format(endDate)}, ${DateFormat('d MMM').format(endDate)}",
+                            style: GoogleFonts.montserrat(
+                              fontSize: 16.0,
+                              letterSpacing: 1.2,
+                              fontWeight: FontWeight.w700,
+                              color:
+                                  _theme.colorScheme.secondary.withOpacity(0.5),
+                            ),
                           ),
-                        ),
-                      ],
-                    ),
+                        ],
+                      ),
                     SizedBox(
                       height: MediaQuery.of(context).size.height * 0.30,
                       child: PieChart(
@@ -184,7 +192,7 @@ class ExpenseChartScreen extends StatelessWidget {
                                     width: 4,
                                   ),
                                   Text(
-                                    key,
+                                    "$key (${_controller.pieData[_data.indexOf(key)].toInt()}%)",
                                     style: TextStyle(
                                       fontSize: _controller.touchedIndex ==
                                               _data.indexOf(key)
@@ -223,7 +231,7 @@ class ExpenseChartScreen extends StatelessWidget {
         PieChartSectionData(
           color: listOfChartColors[i],
           value: controller.pieData[i],
-          title: '${controller.pieData[i].toInt()}%',
+          title: "",
           radius: radius,
           titleStyle: TextStyle(
             fontSize: fontSize,

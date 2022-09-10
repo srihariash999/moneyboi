@@ -10,6 +10,7 @@ import 'package:moneyboi/Controllers/login_controller.dart';
 import 'package:moneyboi/Controllers/profile_controller.dart';
 import 'package:moneyboi/Screens/home/expense_chart_screen.dart';
 import 'package:moneyboi/Screens/home/new_expense_category_screen.dart';
+import 'package:moneyboi/Screens/previous/previous_expenses_screen.dart';
 import 'package:moneyboi/Screens/profile/profile_page.dart';
 import 'package:moneyboi/Screens/repayments/repayments_main_screen.dart';
 import 'package:moneyboi/Widgets/timewise_expense_list.dart';
@@ -28,12 +29,12 @@ class _HomePageState extends State<HomePage> {
   @override
   Widget build(BuildContext context) {
     final ThemeData _theme = Theme.of(context);
-    return Scaffold(
-      backgroundColor: _theme.backgroundColor,
-      body: AnnotatedRegion<SystemUiOverlayStyle>(
-        value: _theme.appBarTheme.systemOverlayStyle!,
-        child: SafeArea(
-          child: SingleChildScrollView(
+    return AnnotatedRegion<SystemUiOverlayStyle>(
+      value: _theme.appBarTheme.systemOverlayStyle!,
+      child: SafeArea(
+        child: Scaffold(
+          backgroundColor: _theme.backgroundColor,
+          body: SingleChildScrollView(
             child: Column(
               children: [
                 const HomeScreenTopBar(),
@@ -238,25 +239,25 @@ class _HomePageState extends State<HomePage> {
               ],
             ),
           ),
-        ),
-      ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: () {
-          Navigator.push(
-            context,
-            MaterialPageRoute(
-              builder: (context) => const NewExpenseCategoryScreen(
-                isUpdate: false,
-              ),
+          floatingActionButton: FloatingActionButton(
+            onPressed: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => const NewExpenseCategoryScreen(
+                    isUpdate: false,
+                  ),
+                ),
+              );
+            },
+            backgroundColor: moneyBoyPurple,
+            elevation: 1.0,
+            child: Icon(
+              Icons.add,
+              size: 42.0,
+              color: _theme.backgroundColor.withOpacity(0.7),
             ),
-          );
-        },
-        backgroundColor: moneyBoyPurple,
-        elevation: 1.0,
-        child: Icon(
-          Icons.add,
-          size: 42.0,
-          color: _theme.backgroundColor.withOpacity(0.7),
+          ),
         ),
       ),
     );
@@ -327,57 +328,82 @@ class HomeScreenTopBar extends StatelessWidget {
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
-        GetBuilder<ProfileController>(
-          builder: (controller) {
-            if (!controller.isProfileLoading.value) {
-              return Padding(
-                padding: const EdgeInsets.only(left: 20.0),
-                child: GestureDetector(
-                  onTap: () {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                        builder: (context) => ProfilePage(),
-                      ),
-                    );
-                  },
-                  child: Row(
-                    children: [
-                      CircleAvatar(
-                        backgroundColor:
-                            _theme.colorScheme.secondary.withOpacity(0.1),
-                        child: const Icon(
-                          Icons.person,
-                          color: moneyBoyPurple,
+        Expanded(
+          child: GetBuilder<ProfileController>(
+            builder: (controller) {
+              if (!controller.isProfileLoading.value) {
+                return Padding(
+                  padding: const EdgeInsets.only(left: 20.0),
+                  child: GestureDetector(
+                    onTap: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => ProfilePage(),
                         ),
-                      ),
-                      const SizedBox(width: 10.0),
-                      Text(
-                        controller.name(),
-                        style: GoogleFonts.montserrat(
-                          fontSize: 20.0,
-                          fontWeight: FontWeight.w500,
-                          color: _theme.colorScheme.secondary.withOpacity(0.8),
+                      );
+                    },
+                    child: Row(
+                      children: [
+                        CircleAvatar(
+                          backgroundColor:
+                              _theme.colorScheme.secondary.withOpacity(0.1),
+                          child: const Icon(
+                            Icons.person,
+                            color: moneyBoyPurple,
+                          ),
                         ),
-                      ),
-                    ],
+                        const SizedBox(width: 10.0),
+                        Expanded(
+                          child: Text(
+                            controller.name(),
+                            overflow: TextOverflow.fade,
+                            softWrap: false,
+                            style: GoogleFonts.montserrat(
+                              fontSize: 20.0,
+                              fontWeight: FontWeight.w500,
+                              color:
+                                  _theme.colorScheme.secondary.withOpacity(0.8),
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
                   ),
-                ),
-              );
-            } else {
-              return Container(
-                margin: const EdgeInsets.only(left: 20.0),
-                alignment: Alignment.center,
-                width: MediaQuery.of(context).size.width * 0.3,
-                child: const LinearProgressIndicator(
-                  color: moneyBoyPurple,
-                ),
-              );
-            }
-          },
+                );
+              } else {
+                return Container(
+                  margin: const EdgeInsets.only(left: 20.0),
+                  alignment: Alignment.center,
+                  width: MediaQuery.of(context).size.width * 0.3,
+                  child: const LinearProgressIndicator(
+                    color: moneyBoyPurple,
+                  ),
+                );
+              }
+            },
+          ),
         ),
         Row(
           children: [
+            Padding(
+              padding: const EdgeInsets.only(right: 8.0),
+              child: IconButton(
+                onPressed: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => PreviousExpensesScreen(),
+                    ),
+                  );
+                },
+                icon: const Icon(
+                  Icons.history,
+                  size: 30.0,
+                  color: moneyBoyPurple,
+                ),
+              ),
+            ),
             GestureDetector(
               onTap: () {
                 Navigator.push(
@@ -391,8 +417,8 @@ class HomeScreenTopBar extends StatelessWidget {
                 borderRadius: BorderRadius.circular(8.0),
                 child: Image.asset(
                   'assets/repay_logo.png',
-                  height: 30.0,
-                  width: 30.0,
+                  height: 31.0,
+                  width: 31.0,
                   fit: BoxFit.fill,
                 ),
               ),
@@ -409,7 +435,7 @@ class HomeScreenTopBar extends StatelessWidget {
                 icon: const Icon(
                   Icons.logout,
                   color: moneyBoyPurple,
-                  size: 32.0,
+                  size: 30.0,
                 ),
               ),
             ),

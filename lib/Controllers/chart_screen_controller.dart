@@ -33,6 +33,7 @@ class ChartScreenController extends GetxController {
     required int totalExpense,
     required DateTime startDate,
     required int days,
+    required bool isPrevious,
   }) {
     previousLoading = true;
     categoryWiseExpenses.clear();
@@ -70,10 +71,16 @@ class ChartScreenController extends GetxController {
       startDate,
       days,
       totalExpense,
+      isPrevious,
     );
   }
 
-  Future _getPreviousData(DateTime startDate, int days, int tot) async {
+  Future _getPreviousData(
+    DateTime startDate,
+    int days,
+    int tot,
+    bool isPrevious,
+  ) async {
     final dt = startDate.subtract(Duration(days: days)).toString();
     final _expRecsResp = await _apiService.getExpenseRecords(
       dateIn: dt,
@@ -91,6 +98,7 @@ class ChartScreenController extends GetxController {
         currentExpense: tot,
         previousExpense: _prevExp,
         days: days,
+        isPrevious: isPrevious,
       );
     }
   }
