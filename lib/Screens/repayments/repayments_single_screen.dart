@@ -29,7 +29,7 @@ class RepaymentSingleScreen extends StatelessWidget {
       builder: (BuildContext context) {
         final ThemeData _theme = Theme.of(context);
         return SizedBox(
-          height: MediaQuery.of(context).size.height * 0.8,
+          height: MediaQuery.of(context).size.height * 0.9,
           child: Column(
             children: <Widget>[
               SizedBox(
@@ -64,74 +64,80 @@ class RepaymentSingleScreen extends StatelessWidget {
                 child: GetBuilder<RepaymentsSingleController>(
                   builder: (controller) {
                     final ThemeData _theme = Theme.of(context);
-                    return Column(
-                      children: [
-                        TextFieldWidget(
-                          controller: _amountController,
-                          horizontalMargin: 32.0,
-                          // verticalPadding: 4.0,
-                          inputType: TextInputType.number,
-                          label: "Amount",
-                          hint: "Enter amount in Rupees",
-                        ),
-                        const SizedBox(
-                          height: 32.0,
-                        ),
-                        TextFieldWidget(
-                          controller: _noteController,
-                          horizontalMargin: 32.0,
-                          // verticalPadding: 4.0,
-                          inputType: TextInputType.number,
-                          label: "Note",
-                          hint: "Enter a note",
-                        ),
-                        const SizedBox(
-                          height: 32.0,
-                        ),
-                        GestureDetector(
-                          onTap: () async {
-                            if (_amountController.text.isEmpty) {
-                              BotToast.showText(text: "Amount cannot be empty");
-                            } else {
-                              if (giving) {
-                                await controller.addNewTransaction(
-                                  repayAccount.id,
-                                  int.parse(_amountController.text),
-                                  context,
-                                  _noteController.text.trim(),
+                    return SingleChildScrollView(
+                      child: Column(
+                        children: [
+                          TextFieldWidget(
+                            controller: _amountController,
+                            horizontalMargin: 32.0,
+                            // verticalPadding: 4.0,
+                            inputType: TextInputType.number,
+                            label: "Amount",
+                            hint: "Enter amount in Rupees",
+                          ),
+                          const SizedBox(
+                            height: 32.0,
+                          ),
+                          TextFieldWidget(
+                            controller: _noteController,
+                            horizontalMargin: 32.0,
+                            // verticalPadding: 4.0,
+                            label: "Note",
+                            hint: "Enter a note",
+                          ),
+                          const SizedBox(
+                            height: 32.0,
+                          ),
+                          GestureDetector(
+                            onTap: () async {
+                              if (_amountController.text.isEmpty) {
+                                BotToast.showText(
+                                  text: "Amount cannot be empty",
                                 );
                               } else {
-                                await controller.addNewTransaction(
-                                  repayAccount.id,
-                                  int.parse(_amountController.text) * -1,
-                                  context,
-                                  _noteController.text.trim(),
-                                );
+                                if (giving) {
+                                  await controller.addNewTransaction(
+                                    repayAccount.id,
+                                    int.parse(_amountController.text),
+                                    context,
+                                    _noteController.text.trim(),
+                                  );
+                                } else {
+                                  await controller.addNewTransaction(
+                                    repayAccount.id,
+                                    int.parse(_amountController.text) * -1,
+                                    context,
+                                    _noteController.text.trim(),
+                                  );
+                                }
                               }
-                            }
-                          },
-                          child: BigBarButtonBody(
-                            horizontalPadding: 64.0,
-                            child: controller.isSubmitLoading
-                                ? SizedBox(
-                                    width:
-                                        MediaQuery.of(context).size.width * 0.6,
-                                    child: LinearProgressIndicator(
-                                      backgroundColor: moneyBoyPurple,
-                                      color: _theme.backgroundColor,
+                            },
+                            child: BigBarButtonBody(
+                              horizontalPadding: 64.0,
+                              child: controller.isSubmitLoading
+                                  ? SizedBox(
+                                      width: MediaQuery.of(context).size.width *
+                                          0.6,
+                                      child: LinearProgressIndicator(
+                                        backgroundColor: moneyBoyPurple,
+                                        color: _theme.backgroundColor,
+                                      ),
+                                    )
+                                  : Text(
+                                      giving ? 'GIVE' : 'TAKE',
+                                      style: GoogleFonts.montserrat(
+                                        fontSize: 20,
+                                        fontWeight: FontWeight.w600,
+                                        color: Colors.white,
+                                      ),
                                     ),
-                                  )
-                                : Text(
-                                    giving ? 'GIVE' : 'TAKE',
-                                    style: GoogleFonts.montserrat(
-                                      fontSize: 20,
-                                      fontWeight: FontWeight.w600,
-                                      color: Colors.white,
-                                    ),
-                                  ),
+                            ),
                           ),
-                        ),
-                      ],
+                          SizedBox(
+                            height: MediaQuery.of(context).viewInsets.bottom,
+                          ),
+                        ],
+                      ),
                     );
                   },
                 ),
