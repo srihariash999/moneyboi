@@ -32,29 +32,29 @@ class HomeScreenController extends GetxController {
 
   DateTime getDurationDateTime(ToggleLabelEnum t) {
     if (t == ToggleLabelEnum.daily) {
-      final now = DateTime.now().toUtc();
+      final now = DateTime.now();
       final today = DateTime(
         now.year,
         now.month,
         now.day,
-      );
+      ).toUtc();
       return today;
     } else if (t == ToggleLabelEnum.weekly) {
-      final d = DateTime.now().toUtc().subtract(
-            Duration(days: DateTime.now().weekday - 1),
-          );
+      final d = DateTime.now().subtract(
+        Duration(days: DateTime.now().weekday - 1),
+      );
       final weekAgo = DateTime(
         d.year,
         d.month,
         d.day,
-      );
+      ).toUtc();
       return weekAgo;
     } else {
-      final d = DateTime.now().toUtc();
+      final d = DateTime.now();
       final monthAgo = DateTime(
         d.year,
         d.month,
-      );
+      ).toUtc();
       return monthAgo;
     }
   }
@@ -72,8 +72,8 @@ class HomeScreenController extends GetxController {
       _expRecsResp = await _apiService.getExpenseRecords(
         dateIn: getDurationDateTime(
           newToggleLabel,
-        ).toString(),
-        dateOut: DateTime.now().toUtc().toString(),
+        ).toIso8601String(),
+        dateOut: DateTime.now().toUtc().toIso8601String(),
       );
       List _exps;
       // ignore: prefer_final_locals

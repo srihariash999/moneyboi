@@ -46,7 +46,6 @@ class ProfileController extends GetxController {
     _apiService.getUserProfile().then((ApiResponseModel _profRes) {
       if (_profRes.statusCode == 200) {
         final _res = _profRes.responseJson!.data as Map;
-        // print(_res['name']);
         isProfileLoading.value = false;
         name.value = _res['name'].toString();
         email.value = _res['email'].toString();

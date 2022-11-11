@@ -1,4 +1,5 @@
 import 'package:dio/dio.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:hive/hive.dart';
 import 'package:moneyboi/Constants/box_names.dart';
@@ -108,33 +109,36 @@ class NetworkService {
     final Dio _dio = Dio();
     final String _token = _authBox.get('token').toString();
     _dio.options.headers['x-auth-token'] = _token;
+    debugPrint(" dates : ");
+    debugPrint(dateIn);
+    debugPrint(dateOut);
     try {
       final Response _expenseRecordsResp;
 
       if (dateIn != null && dateOut != null) {
-        _expenseRecordsResp = await _dio.get(
+        _expenseRecordsResp = await _dio.post(
           '$baseUrl$expenseRecordsListingEndPoint',
-          queryParameters: {
+          data: {
             "date_in": dateIn,
             "date_out": dateOut,
           },
         );
       } else if (dateIn == null && dateOut != null) {
-        _expenseRecordsResp = await _dio.get(
+        _expenseRecordsResp = await _dio.post(
           '$baseUrl$expenseRecordsListingEndPoint',
-          queryParameters: {
+          data: {
             "date_out": dateOut,
           },
         );
       } else if (dateIn != null && dateOut == null) {
-        _expenseRecordsResp = await _dio.get(
+        _expenseRecordsResp = await _dio.post(
           '$baseUrl$expenseRecordsListingEndPoint',
-          queryParameters: {
+          data: {
             "date_in": dateIn,
           },
         );
       } else {
-        _expenseRecordsResp = await _dio.get(
+        _expenseRecordsResp = await _dio.post(
           '$baseUrl$expenseRecordsListingEndPoint',
         );
       }
@@ -152,7 +156,7 @@ class NetworkService {
         );
       }
     } on DioError catch (e) {
-      debugPrint("Dio Error: $expenseRecordsListingEndPoint $e");
+      debugPrint("Dio Error: $expenseRecordsListingEndPoint ${e.error}");
       debugPrint(e.response?.data.toString());
       return ApiResponseModel(
         statusCode: e.response?.statusCode ?? 404,
@@ -160,7 +164,7 @@ class NetworkService {
         specificMessage: e.response?.data.toString(),
       );
     } catch (e) {
-      debugPrint(" unknown error : $e");
+      // debugPrint(" unknown error : $e");
       return ApiResponseModel(
         statusCode: 400,
         endPoint: expenseRecordsListingEndPoint,

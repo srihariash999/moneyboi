@@ -138,8 +138,8 @@ class PreviousExpensesController extends GetxController {
 
     try {
       _expRecsResp = await _apiService.getExpenseRecords(
-        dateIn: startDate.toString(),
-        dateOut: endDate.toString(),
+        dateIn: startDate?.toUtc().toString(),
+        dateOut: endDate?.toUtc().toString(),
       );
       List _exps;
       final List<ExpenseRecordItem> _expenseRecords = [];
