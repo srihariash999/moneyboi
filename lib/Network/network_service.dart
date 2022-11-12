@@ -3,104 +3,152 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:hive/hive.dart';
 import 'package:moneyboi/Constants/box_names.dart';
+import 'package:moneyboi/Constants/enums.dart';
 import 'package:moneyboi/Constants/urls.dart';
 import 'package:moneyboi/Data%20Models/api_response_model.dart';
 
 class NetworkService {
   final Box _authBox = Hive.box(authBoxName);
-  Future<ApiResponseModel> login({
-    required String email,
-    required String password,
+
+  final Dio _dio = Dio();
+
+  Future<ApiResponseModel> networkCall({
+    required NetworkCallMethod networkCallMethod,
+    required String endPointUrl,
+    required bool authenticated,
+    Map<String, dynamic>? queryParameters,
+    Map<String, dynamic>? bodyParameters,
   }) async {
-    final Dio _dio = Dio();
+    final String _token = _authBox.get('token').toString();
+    _dio.options.headers['x-auth-token'] = _token;
+    debugPrint(" dates : ");
 
     try {
-      final Response _loginResp = await _dio.post(
-        '$baseUrl$loginEndPoint',
-        data: {
-          "email": email.toLowerCase(),
-          "password": password,
-        },
+      final Response _resp = await _dio.request(
+        baseUrl + endPointUrl,
+        queryParameters: queryParameters,
+        data: bodyParameters,
+        options: Options(
+          method: networkCallMethod.name,
+        ),
       );
 
-      if (_loginResp.statusCode == 200) {
-        _authBox.put('token', (_loginResp.data as Map)['token']);
-        debugPrint((_loginResp.data as Map)['token'].toString());
-        return ApiResponseModel(
-          statusCode: _loginResp.statusCode!,
-          endPoint: loginEndPoint,
-          specificMessage: "Login Successful",
-        );
-      } else {
-        return ApiResponseModel(
-          statusCode: _loginResp.statusCode ?? 400,
-          endPoint: loginEndPoint,
-          specificMessage: _loginResp.data.toString(),
-        );
-      }
+      return ApiResponseModel(
+        statusCode: _resp.statusCode!,
+        endPoint: endPointUrl,
+        specificMessage: _resp.data.toString(),
+        responseJson: _resp,
+      );
     } on DioError catch (e) {
       debugPrint("Dio Error: $e");
       return ApiResponseModel(
         statusCode: e.response?.statusCode ?? 404,
-        endPoint: loginEndPoint,
+        endPoint: endPointUrl,
         specificMessage: e.response?.data.toString(),
       );
     } catch (e) {
       debugPrint(" unknown error : $e");
       return ApiResponseModel(
         statusCode: 400,
-        endPoint: loginEndPoint,
+        endPoint: endPointUrl,
         specificMessage: " unknown error",
       );
     }
   }
 
-  Future<ApiResponseModel> signup({
-    required String name,
-    required String email,
-    required String password,
-  }) async {
-    final Dio _dio = Dio();
+  // Future<ApiResponseModel> login({
+  //   required String email,
+  //   required String password,
+  // }) async {
+  //   final Dio _dio = Dio();
 
-    try {
-      final Response _signupResp = await _dio.post(
-        '$baseUrl$signupEndPoint',
-        data: {
-          "name": name,
-          "email": email,
-          "password": password,
-        },
-      );
+  //   try {
+  //     final Response _loginResp = await _dio.post(
+  //       '$baseUrl$loginEndPoint',
+  //       data: {
+  //         "email": email.toLowerCase(),
+  //         "password": password,
+  //       },
+  //     );
 
-      if (_signupResp.statusCode == 200) {
-        return ApiResponseModel(
-          statusCode: _signupResp.statusCode!,
-          endPoint: loginEndPoint,
-          specificMessage: "Signup Successful",
-        );
-      } else {
-        return ApiResponseModel(
-          statusCode: _signupResp.statusCode ?? 400,
-          endPoint: loginEndPoint,
-          specificMessage: _signupResp.data.toString(),
-        );
-      }
-    } on DioError catch (e) {
-      debugPrint("Dio Error $loginEndPoint $e");
-      return ApiResponseModel(
-        statusCode: e.response?.statusCode ?? 404,
-        endPoint: loginEndPoint,
-        specificMessage: e.response?.data.toString(),
-      );
-    } catch (e) {
-      debugPrint(" unknown error : $e");
-      return ApiResponseModel(
-        statusCode: 400,
-        endPoint: loginEndPoint,
-        specificMessage: " unknown error",
-      );
-    }
-  }
+  //     if (_loginResp.statusCode == 200) {
+  //       _authBox.put('token', (_loginResp.data as Map)['token']);
+  //       debugPrint((_loginResp.data as Map)['token'].toString());
+  //       return ApiResponseModel(
+  //         statusCode: _loginResp.statusCode!,
+  //         endPoint: loginEndPoint,
+  //         specificMessage: "Login Successful",
+  //       );
+  //     } else {
+  //       return ApiResponseModel(
+  //         statusCode: _loginResp.statusCode ?? 400,
+  //         endPoint: loginEndPoint,
+  //         specificMessage: _loginResp.data.toString(),
+  //       );
+  //     }
+  //   } on DioError catch (e) {
+  //     debugPrint("Dio Error: $e");
+  //     return ApiResponseModel(
+  //       statusCode: e.response?.statusCode ?? 404,
+  //       endPoint: loginEndPoint,
+  //       specificMessage: e.response?.data.toString(),
+  //     );
+  //   } catch (e) {
+  //     debugPrint(" unknown error : $e");
+  //     return ApiResponseModel(
+  //       statusCode: 400,
+  //       endPoint: loginEndPoint,
+  //       specificMessage: " unknown error",
+  //     );
+  //   }
+  // }
+
+  // Future<ApiResponseModel> signup({
+  //   required String name,
+  //   required String email,
+  //   required String password,
+  // }) async {
+  //   final Dio _dio = Dio();
+
+  //   try {
+  //     final Response _signupResp = await _dio.post(
+  //       '$baseUrl$signupEndPoint',
+  //       data: {
+  //         "name": name,
+  //         "email": email,
+  //         "password": password,
+  //       },
+  //     );
+
+  //     if (_signupResp.statusCode == 200) {
+  //       return ApiResponseModel(
+  //         statusCode: _signupResp.statusCode!,
+  //         endPoint: loginEndPoint,
+  //         specificMessage: "Signup Successful",
+  //       );
+  //     } else {
+  //       return ApiResponseModel(
+  //         statusCode: _signupResp.statusCode ?? 400,
+  //         endPoint: loginEndPoint,
+  //         specificMessage: _signupResp.data.toString(),
+  //       );
+  //     }
+  //   } on DioError catch (e) {
+  //     debugPrint("Dio Error $loginEndPoint $e");
+  //     return ApiResponseModel(
+  //       statusCode: e.response?.statusCode ?? 404,
+  //       endPoint: loginEndPoint,
+  //       specificMessage: e.response?.data.toString(),
+  //     );
+  //   } catch (e) {
+  //     debugPrint(" unknown error : $e");
+  //     return ApiResponseModel(
+  //       statusCode: 400,
+  //       endPoint: loginEndPoint,
+  //       specificMessage: " unknown error",
+  //     );
+  //   }
+  // }
 
   Future<ApiResponseModel> getExpenseRecords({
     String? dateIn,

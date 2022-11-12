@@ -1,6 +1,8 @@
 import 'package:bot_toast/bot_toast.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:moneyboi/Constants/enums.dart';
+import 'package:moneyboi/Constants/urls.dart';
 import 'package:moneyboi/Data%20Models/api_response_model.dart';
 import 'package:moneyboi/Network/network_service.dart';
 import 'package:moneyboi/Screens/login/login_page.dart';
@@ -40,10 +42,15 @@ class SignupController extends GetxController {
     _signupState.value = SignupState.loading;
     update();
     debugPrint("name : $name, email: $email password:$password");
-    final ApiResponseModel _signUpResult = await _apiService.signup(
-      name: name,
-      email: email,
-      password: password,
+    final ApiResponseModel _signUpResult = await _apiService.networkCall(
+      networkCallMethod: NetworkCallMethod.POST,
+      endPointUrl: signupEndPoint,
+      authenticated: false,
+      bodyParameters: {
+        'name': name,
+        'email': email,
+        'password': password,
+      },
     );
     // print(
     //     "${_signUpResult.endPoint} ${_signUpResult.responseJson}  ${_signUpResult.statusCode}  ${_signUpResult.specificMessage} ");

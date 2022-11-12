@@ -3,6 +3,8 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:hive/hive.dart';
 import 'package:moneyboi/Constants/box_names.dart';
+import 'package:moneyboi/Constants/enums.dart';
+import 'package:moneyboi/Constants/urls.dart';
 import 'package:moneyboi/Controllers/hive_controller.dart';
 import 'package:moneyboi/Data%20Models/api_response_model.dart';
 import 'package:moneyboi/Network/network_service.dart';
@@ -28,18 +30,29 @@ class LoginController extends GetxController {
       isLoginLoading.value = true;
       update();
 
-      final ApiResponseModel _loginResult = await _apiService.login(
-        email: emailController.value.text.trim(),
-        password: passwordController.value.text.trim(),
+      final ApiResponseModel _loginResult = await _apiService.networkCall(
+        networkCallMethod: NetworkCallMethod.POST,
+        endPointUrl: loginEndPoint,
+        authenticated: false,
+        bodyParameters: {
+          'email': emailController.value.text.trim(),
+          'password': passwordController.value.text.trim(),
+        },
       );
       if (_loginResult.statusCode == 200) {
         debugPrint("Login success");
         BotToast.showText(text: "Login Successful");
+        if (_loginResult.responseJson != null) {
+          final Box _authBox = Hive.box(authBoxName);
+          _authBox.put(
+            'token',
+            (_loginResult.responseJson!.data as Map)['token'],
+          );
+        }
         isLoginLoading.value = false;
         update();
-        // ignore: use_build_context_synchronously
         Navigator.pushReplacement(
-          context,
+          Get.context!,
           MaterialPageRoute(
             builder: (_) => const HomePage(),
           ),
