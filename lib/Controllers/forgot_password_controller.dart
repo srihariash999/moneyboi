@@ -1,5 +1,7 @@
 import 'package:bot_toast/bot_toast.dart';
 import 'package:get/get.dart';
+import 'package:moneyboi/Constants/enums.dart';
+import 'package:moneyboi/Constants/urls.dart';
 import 'package:moneyboi/Data%20Models/api_response_model.dart';
 import 'package:moneyboi/Network/network_service.dart';
 
@@ -15,8 +17,14 @@ class ForgotPasswordController extends GetxController {
   Future generateForgotPasswordOTPEvent({required String email}) async {
     _isLoading.value = true;
     update();
-    final ApiResponseModel _otpGenRes =
-        await _apiService.forgotPasswordOtpGenerate(email: email);
+    final ApiResponseModel _otpGenRes = await _apiService.networkCall(
+      networkCallMethod: NetworkCallMethod.POST,
+      endPointUrl: forgotPasswordOtpGetEndPoint,
+      authenticated: true,
+      bodyParameters: {
+        'email': email,
+      },
+    );
 
     if (_otpGenRes.statusCode == 200) {
       try {
@@ -46,11 +54,22 @@ class ForgotPasswordController extends GetxController {
   }) async {
     _isLoading.value = true;
     update();
-    final ApiResponseModel _otpVerifyRes =
-        await _apiService.forgotPasswordOtpVerify(
-      email: email,
-      otp: otp,
-      newPassword: newPassword,
+    // final ApiResponseModel _otpVerifyRes =
+    //     await _apiService.forgotPasswordOtpVerify(
+    //   email: email,
+    //   otp: otp,
+    //   newPassword: newPassword,
+    // );
+
+    final ApiResponseModel _otpVerifyRes = await _apiService.networkCall(
+      networkCallMethod: NetworkCallMethod.POST,
+      endPointUrl: forgotPasswordOtpVerifyEndPoint,
+      authenticated: true,
+      bodyParameters: {
+        'email': email,
+        'otp': otp,
+        'new_password': newPassword,
+      },
     );
 
     if (_otpVerifyRes.statusCode == 200) {

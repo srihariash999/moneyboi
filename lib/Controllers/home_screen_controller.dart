@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 // import 'package:get/get_connect/http/src/utils/utils.dart';
 import 'package:moneyboi/Constants/enums.dart';
+import 'package:moneyboi/Constants/urls.dart';
 import 'package:moneyboi/Data%20Models/api_response_model.dart';
 import 'package:moneyboi/Data%20Models/expense_record.dart';
 import 'package:moneyboi/Helper%20Functions/convert_category.dart';
@@ -21,7 +22,12 @@ class HomeScreenController extends GetxController {
     FirebaseMessaging.instance.getToken().then((token) {
       // debugPrint("FCM Token: $token");
       if (token != null) {
-        _apiService.saveNotificationToken(token).then(
+        _apiService.networkCall(
+          networkCallMethod: NetworkCallMethod.POST,
+          endPointUrl: saveNotificationTokenEndPoint,
+          authenticated: true,
+          bodyParameters: {'token': token},
+        ).then(
           (value) {
             // debugPrint(" notification save res: ${value.responseJson}");
           },
@@ -69,15 +75,27 @@ class HomeScreenController extends GetxController {
     final ApiResponseModel _expRecsResp;
 
     try {
-      _expRecsResp = await _apiService.getExpenseRecords(
-        dateIn: getDurationDateTime(
-          newToggleLabel,
-        ).toIso8601String(),
-        dateOut: DateTime.now().toUtc().toIso8601String(),
+      _expRecsResp = await _apiService.networkCall(
+        networkCallMethod: NetworkCallMethod.POST,
+        endPointUrl: expenseRecordsListingEndPoint,
+        authenticated: true,
+        bodyParameters: {
+          "date_in": getDurationDateTime(
+            newToggleLabel,
+          ).toIso8601String(),
+          "date_out": DateTime.now().toUtc().toIso8601String(),
+        },
       );
+      if (_expRecsResp.statusCode != 201 && _expRecsResp.statusCode != 200) {
+        isHomeloading.value = false;
+        BotToast.showText(text: "Cannot load data right now. Try again later.");
+        expenseRecords = [];
+        totExp.value = 0;
+        update();
+        return;
+      }
       List _exps;
-      // ignore: prefer_final_locals
-      List<ExpenseRecordItem> _expenseRecords = [];
+      final List<ExpenseRecordItem> _expenseRecords = [];
       int _totExp = 0;
       if (_expRecsResp.responseJson != null) {
         _exps = _expRecsResp.responseJson!.data as List;
@@ -134,19 +152,28 @@ class HomeScreenController extends GetxController {
 
     try {
       if (isUpdate) {
-        _expRecsResp = await _apiService.updateExpenseRecords(
-          recordDate: recordDate,
-          amount: amount,
-          category: category,
-          remarks: remarks,
-          id: id!,
+        _expRecsResp = await _apiService.networkCall(
+          networkCallMethod: NetworkCallMethod.POST,
+          endPointUrl: "expenseRecordCreateEndPoint/$id",
+          authenticated: true,
+          bodyParameters: {
+            "category": category,
+            "amount": amount,
+            "record_date": recordDate,
+            "remarks": remarks
+          },
         );
       } else {
-        _expRecsResp = await _apiService.createExpenseRecords(
-          recordDate: recordDate,
-          amount: amount,
-          category: category,
-          remarks: remarks,
+        _expRecsResp = await _apiService.networkCall(
+          networkCallMethod: NetworkCallMethod.POST,
+          endPointUrl: expenseRecordCreateEndPoint,
+          authenticated: true,
+          bodyParameters: {
+            "category": category,
+            "amount": amount,
+            "record_date": recordDate,
+            "remarks": remarks
+          },
         );
       }
 
@@ -177,8 +204,14 @@ class HomeScreenController extends GetxController {
     final ApiResponseModel _expRecsResp;
 
     try {
-      _expRecsResp = await _apiService.deleteExpenseRecords(
-        id: id,
+      // _expRecsResp = await _apiService.deleteExpenseRecords(
+      //   id: id,
+      // );
+
+      _expRecsResp = await _apiService.networkCall(
+        networkCallMethod: NetworkCallMethod.DELETE,
+        endPointUrl: "$expenseRecordCreateEndPoint/$id",
+        authenticated: true,
       );
 
       if (_expRecsResp.statusCode == 200) {

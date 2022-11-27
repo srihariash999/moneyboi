@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_datetime_picker/flutter_datetime_picker.dart';
 import 'package:get/get.dart';
 import 'package:moneyboi/Constants/enums.dart';
+import 'package:moneyboi/Constants/urls.dart';
 import 'package:moneyboi/Data%20Models/api_response_model.dart';
 import 'package:moneyboi/Data%20Models/expense_record.dart';
 import 'package:moneyboi/Helper%20Functions/convert_category.dart';
@@ -133,13 +134,16 @@ class PreviousExpensesController extends GetxController {
 
   /// Private function restricted to this page that makes api call and populates data.
   Future<void> _getExpenseRecords() async {
-    // await Future.delayed(Duration(seconds: 2));
     final ApiResponseModel _expRecsResp;
-
     try {
-      _expRecsResp = await _apiService.getExpenseRecords(
-        dateIn: startDate?.toUtc().toString(),
-        dateOut: endDate?.toUtc().toString(),
+      _expRecsResp = await _apiService.networkCall(
+        networkCallMethod: NetworkCallMethod.POST,
+        endPointUrl: expenseRecordsListingEndPoint,
+        authenticated: true,
+        bodyParameters: {
+          "date_in": startDate?.toUtc().toString(),
+          "date_out": endDate?.toUtc().toString(),
+        },
       );
       List _exps;
       final List<ExpenseRecordItem> _expenseRecords = [];

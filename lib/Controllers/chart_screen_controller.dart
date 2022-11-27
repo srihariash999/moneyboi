@@ -1,5 +1,7 @@
 import 'package:fl_chart/fl_chart.dart';
 import 'package:get/get.dart';
+import 'package:moneyboi/Constants/enums.dart';
+import 'package:moneyboi/Constants/urls.dart';
 import 'package:moneyboi/Data%20Models/expense_record.dart';
 import 'package:moneyboi/Helper%20Functions/prev_statistic_helper.dart';
 import 'package:moneyboi/Network/network_service.dart';
@@ -82,24 +84,35 @@ class ChartScreenController extends GetxController {
     bool isPrevious,
   ) async {
     final dt = startDate.subtract(Duration(days: days)).toString();
-    final _expRecsResp = await _apiService.getExpenseRecords(
-      dateIn: dt,
-      dateOut: startDate.toString(),
+
+    final _expRecsResp = await _apiService.networkCall(
+      networkCallMethod: NetworkCallMethod.POST,
+      endPointUrl: expenseRecordsListingEndPoint,
+      authenticated: true,
+      bodyParameters: {
+        "date_in": dt,
+        "date_out": startDate.toString(),
+      },
     );
-    List _exps;
-    int _prevExp = 0;
-    if (_expRecsResp.responseJson != null) {
-      _exps = _expRecsResp.responseJson!.data as List;
-      for (final i in _exps) {
-        _prevExp += (i as Map)['amount'] as int;
+    if (_expRecsResp.statusCode == 200 || _expRecsResp.statusCode == 201) {
+      List _exps;
+      int _prevExp = 0;
+      if (_expRecsResp.responseJson != null) {
+        _exps = _expRecsResp.responseJson!.data as List;
+        for (final i in _exps) {
+          _prevExp += (i as Map)['amount'] as int;
+        }
+        previousLoading = false;
+        previousStatisticString = previousStatisticGenerationHelper(
+          currentExpense: tot,
+          previousExpense: _prevExp,
+          days: days,
+          isPrevious: isPrevious,
+        );
       }
+    } else {
       previousLoading = false;
-      previousStatisticString = previousStatisticGenerationHelper(
-        currentExpense: tot,
-        previousExpense: _prevExp,
-        days: days,
-        isPrevious: isPrevious,
-      );
+      previousStatisticString = " Cannot fetch previous statistics right now.";
     }
   }
 
