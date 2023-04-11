@@ -20,13 +20,12 @@ import 'package:moneyboi/Theme/dark_theme.dart';
 import 'package:moneyboi/Theme/light_theme.dart';
 import 'package:moneyboi/Theme/theme_controller.dart';
 import 'package:moneyboi/firebase_options.dart';
-import 'package:path_provider/path_provider.dart';
+// import 'package:path_provider/path_provider.dart';
+import 'package:hive_flutter/hive_flutter.dart';
 
-// ignore: avoid_void_async
-void main() async {
+Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  final dir = await getApplicationDocumentsDirectory();
-  Hive.init(dir.path);
+  await Hive.initFlutter();
   await Hive.openBox(authBoxName);
   await Hive.openBox(generalBoxName);
   await Hive.openBox<bool>(themeBoxName);
@@ -46,17 +45,6 @@ class _MyAppState extends State<MyApp> {
 
   @override
   void initState() {
-    // FirebaseMessaging.instance.setForegroundNotificationPresentationOptions(
-    //   alert: true,
-    //   badge: true,
-    //   sound: true,
-    // );
-    // var _fcm = FirebaseMessaging.onMessage;
-
-    // _fcm.listen((event) {
-    //   print(" event: $event");
-    // });
-
     Get.put<HiveService>(HiveService());
     Get.put<ThemeController>(ThemeController()..onInit());
     super.initState();
@@ -66,8 +54,6 @@ class _MyAppState extends State<MyApp> {
   Widget build(BuildContext rootContext) {
     final Box _authBox = Hive.box(authBoxName);
     final _token = _authBox.get('token');
-
-    // final _themeController = Get.find<ThemeController>();
 
     Get.lazyPut<LoginController>(() => LoginController(), fenix: true);
     Get.lazyPut<HomeScreenController>(

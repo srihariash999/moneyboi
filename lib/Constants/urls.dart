@@ -1,7 +1,7 @@
 import 'package:flutter/foundation.dart';
 
 const String baseUrl = kDebugMode
-    ? "http://192.168.29.74:3000/api"
+    ? "http://192.168.29.74:3500/api"
     : "https://zealous-gold-lab-coat.cyclic.app/api";
 
 // const String baseUrl = "https://zealous-gold-lab-coat.cyclic.app/api";
