@@ -1,10 +1,11 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_datetime_picker/flutter_datetime_picker.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:intl/intl.dart';
-import 'package:moneyboi/Constants/categories.dart';
 import 'package:moneyboi/Constants/colors.dart';
+import 'package:moneyboi/Controllers/categories_controller.dart';
 import 'package:moneyboi/Controllers/home_screen_controller.dart';
 import 'package:moneyboi/Data%20Models/expense_category.dart';
 import 'package:moneyboi/Data%20Models/expense_record.dart';
@@ -30,10 +31,14 @@ class _NewExpenseCategoryScreenState extends State<NewExpenseCategoryScreen> {
   final TextEditingController _remarksCont = TextEditingController();
   final TextEditingController _amountCont = TextEditingController();
 
+  final CategoriesController _categoriesController =
+      Get.find<CategoriesController>();
+
   @override
   void initState() {
-    _selectedCategory =
-        widget.isUpdate ? widget.expenseItem!.category : catHome;
+    _selectedCategory = widget.isUpdate
+        ? widget.expenseItem!.category
+        : _categoriesController.categories[0];
     _recordDate =
         widget.isUpdate ? widget.expenseItem!.createdDate : DateTime.now();
     if (widget.isUpdate) {
@@ -71,9 +76,10 @@ class _NewExpenseCategoryScreenState extends State<NewExpenseCategoryScreen> {
                 crossAxisSpacing: 12.0,
                 mainAxisSpacing: 24.0,
               ),
-              itemCount: listOfCategories.length,
+              itemCount: _categoriesController.categories.length,
               itemBuilder: (context, index) {
-                final ExpenseCategory _ec = listOfCategories[index];
+                final ExpenseCategory _ec =
+                    _categoriesController.categories[index];
                 final bool _isSelected = _selectedCategory.name == _ec.name;
                 return GestureDetector(
                   onTap: () {
@@ -102,7 +108,9 @@ class _NewExpenseCategoryScreenState extends State<NewExpenseCategoryScreen> {
                                 ? _theme.backgroundColor
                                 : Colors.grey.withOpacity(0.3),
                           ),
-                          child: Image.asset(_ec.categoryImage),
+                          child: CachedNetworkImage(
+                            imageUrl: _ec.categoryImage,
+                          ),
                         ),
                         Padding(
                           padding: _isSelected

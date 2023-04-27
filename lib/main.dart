@@ -2,8 +2,10 @@ import 'package:bot_toast/bot_toast.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:hive/hive.dart';
+// import 'package:path_provider/path_provider.dart';
+import 'package:hive_flutter/hive_flutter.dart';
 import 'package:moneyboi/Constants/box_names.dart';
+import 'package:moneyboi/Controllers/categories_controller.dart';
 import 'package:moneyboi/Controllers/chart_screen_controller.dart';
 import 'package:moneyboi/Controllers/forgot_password_controller.dart';
 import 'package:moneyboi/Controllers/hive_controller.dart';
@@ -20,8 +22,6 @@ import 'package:moneyboi/Theme/dark_theme.dart';
 import 'package:moneyboi/Theme/light_theme.dart';
 import 'package:moneyboi/Theme/theme_controller.dart';
 import 'package:moneyboi/firebase_options.dart';
-// import 'package:path_provider/path_provider.dart';
-import 'package:hive_flutter/hive_flutter.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -54,6 +54,8 @@ class _MyAppState extends State<MyApp> {
   Widget build(BuildContext rootContext) {
     final Box _authBox = Hive.box(authBoxName);
     final _token = _authBox.get('token');
+
+    Get.put<CategoriesController>(CategoriesController());
 
     Get.lazyPut<LoginController>(() => LoginController(), fenix: true);
     Get.lazyPut<HomeScreenController>(

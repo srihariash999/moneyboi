@@ -202,3 +202,14 @@ body {
 */
 
 const String saveNotificationTokenEndPoint = "/notification_tokens";
+
+
+/*
+GET
+
+Auth Required: no 
+
+*/
+
+const String getCategoriesEndPoint = "/categories";
+
