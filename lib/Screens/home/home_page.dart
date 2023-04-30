@@ -33,7 +33,7 @@ class _HomePageState extends State<HomePage> {
       value: _theme.appBarTheme.systemOverlayStyle!,
       child: SafeArea(
         child: Scaffold(
-          backgroundColor: _theme.backgroundColor,
+          backgroundColor: _theme.colorScheme.background,
           body: SingleChildScrollView(
             child: Column(
               children: [
@@ -255,7 +255,7 @@ class _HomePageState extends State<HomePage> {
             child: Icon(
               Icons.add,
               size: 42.0,
-              color: _theme.backgroundColor.withOpacity(0.7),
+              color: _theme.colorScheme.background.withOpacity(0.7),
             ),
           ),
         ),

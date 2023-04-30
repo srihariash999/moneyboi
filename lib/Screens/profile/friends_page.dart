@@ -20,7 +20,7 @@ class FriendsPage extends StatelessWidget {
       key: scaffoldState,
       appBar: AppBar(
         elevation: 0.0,
-        backgroundColor: _theme.backgroundColor,
+        backgroundColor: _theme.colorScheme.background,
         iconTheme: IconThemeData(color: _theme.colorScheme.secondary),
         title: Text(
           'FRIENDS',
@@ -59,7 +59,7 @@ class FriendsPage extends StatelessWidget {
           ),
         ],
       ),
-      backgroundColor: _theme.backgroundColor,
+      backgroundColor: _theme.colorScheme.background,
       floatingActionButton: FloatingActionButton(
         onPressed: () {
           showModalBottomSheet(
@@ -375,7 +375,7 @@ class FriendsPage extends StatelessWidget {
                                         ElevatedButton(
                                           style: ElevatedButton.styleFrom(
                                             elevation: 0.0,
-                                            primary: moneyBoyPurple,
+                                            backgroundColor: moneyBoyPurple,
                                             padding: const EdgeInsets.symmetric(
                                               horizontal: 18.0,
                                               vertical: 10.0,
@@ -402,7 +402,7 @@ class FriendsPage extends StatelessWidget {
                                         ElevatedButton(
                                           style: ElevatedButton.styleFrom(
                                             elevation: 0.0,
-                                            primary:
+                                            backgroundColor:
                                                 Colors.red.withOpacity(0.7),
                                             padding: const EdgeInsets.symmetric(
                                               horizontal: 18.0,

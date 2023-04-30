@@ -17,7 +17,7 @@ class RepaymentsMainScreen extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
         elevation: 0.0,
-        backgroundColor: _theme.backgroundColor,
+        backgroundColor: _theme.colorScheme.background,
         iconTheme: IconThemeData(color: _theme.colorScheme.secondary),
         title: Text(
           'REPAYMENTS',
@@ -28,7 +28,7 @@ class RepaymentsMainScreen extends StatelessWidget {
           ),
         ),
       ),
-      backgroundColor: _theme.backgroundColor,
+      backgroundColor: _theme.colorScheme.background,
       floatingActionButton: FloatingActionButton(
         onPressed: () {
           showModalBottomSheet(
@@ -165,7 +165,7 @@ class RepaymentsMainScreen extends StatelessWidget {
         elevation: 1.0,
         child: Icon(
           Icons.add,
-          color: _theme.backgroundColor.withOpacity(0.7),
+          color: _theme.colorScheme.background.withOpacity(0.7),
           size: 42.0,
         ),
       ),

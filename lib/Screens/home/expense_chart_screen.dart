@@ -32,10 +32,10 @@ class ExpenseChartScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     final ThemeData _theme = Theme.of(context);
     return Scaffold(
-      backgroundColor: _theme.backgroundColor,
+      backgroundColor: _theme.colorScheme.background,
       appBar: AppBar(
         iconTheme: IconThemeData(color: _theme.colorScheme.secondary),
-        backgroundColor: _theme.backgroundColor,
+        backgroundColor: _theme.colorScheme.background,
         title: Text(
           titleText != null ? titleText! : toggleLabelEnumToString(title),
           style: GoogleFonts.montserrat(
@@ -151,7 +151,7 @@ class ExpenseChartScreen extends StatelessWidget {
                           centerSpaceRadius: 40,
                           sections: showingSections(
                             _controller,
-                            _theme.backgroundColor,
+                            _theme.colorScheme.background,
                           ),
                         ),
                       ),

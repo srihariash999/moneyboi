@@ -5,11 +5,11 @@ import 'package:moneyboi/Constants/colors.dart';
 ThemeData darkTheme = ThemeData(
   primaryColor: moneyBoyPurple,
   primaryColorLight: moneyBoyPurpleLight,
-  backgroundColor: Colors.black,
   brightness: Brightness.dark,
   highlightColor: Colors.white,
   colorScheme: const ColorScheme.dark(
     secondary: Colors.white,
+    background: Colors.black,
   ),
   appBarTheme: AppBarTheme(
     systemOverlayStyle: SystemUiOverlayStyle.dark.copyWith(

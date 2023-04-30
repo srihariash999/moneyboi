@@ -19,7 +19,7 @@ class ProfilePage extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
         elevation: 0.0,
-        backgroundColor: _theme.backgroundColor,
+        backgroundColor: _theme.colorScheme.background,
         iconTheme: IconThemeData(
           color: _theme.colorScheme.secondary,
         ),
@@ -32,7 +32,7 @@ class ProfilePage extends StatelessWidget {
           ),
         ),
       ),
-      backgroundColor: _theme.backgroundColor,
+      backgroundColor: _theme.colorScheme.background,
       body: SafeArea(
         child: AnnotatedRegion<SystemUiOverlayStyle>(
           value: _theme.appBarTheme.systemOverlayStyle!,

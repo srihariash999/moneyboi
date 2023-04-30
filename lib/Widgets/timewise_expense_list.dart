@@ -46,7 +46,7 @@ class TimewiseExpensesList extends StatelessWidget {
                 spreadRadius: 1.5,
               ),
           ],
-          color: _theme.backgroundColor,
+          color: _theme.colorScheme.background,
           borderRadius: BorderRadius.circular(16.0),
         ),
         child: RefreshIndicator(
@@ -123,7 +123,7 @@ class TimewiseExpensesList extends StatelessWidget {
                         IconButton(
                           onPressed: () {
                             Get.defaultDialog(
-                              backgroundColor: _theme.backgroundColor,
+                              backgroundColor: _theme.colorScheme.background,
                               title: "Expense Details",
                               titleStyle: GoogleFonts.montserrat(
                                 fontSize: 22.0,
@@ -133,7 +133,7 @@ class TimewiseExpensesList extends StatelessWidget {
                               ),
                               content: Container(
                                 height: 350.0,
-                                color: _theme.backgroundColor,
+                                color: _theme.colorScheme.background,
                                 child: Column(
                                   crossAxisAlignment: CrossAxisAlignment.start,
                                   mainAxisSize: MainAxisSize.min,

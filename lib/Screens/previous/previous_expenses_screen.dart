@@ -25,10 +25,10 @@ class PreviousExpensesScreen extends StatelessWidget {
       value: _theme.appBarTheme.systemOverlayStyle!,
       child: SafeArea(
         child: Scaffold(
-          backgroundColor: _theme.backgroundColor,
+          backgroundColor: _theme.colorScheme.background,
           appBar: AppBar(
             elevation: 0.0,
-            backgroundColor: _theme.backgroundColor,
+            backgroundColor: _theme.colorScheme.background,
             iconTheme: IconThemeData(color: _theme.colorScheme.secondary),
             title: Text(
               'PREVIOUS RECORDS',
@@ -112,7 +112,7 @@ class PreviousExpensesScreen extends StatelessWidget {
                                   isStart: true,
                                 ),
                                 style: ElevatedButton.styleFrom(
-                                  primary: moneyBoyPurple,
+                                  backgroundColor: moneyBoyPurple,
                                 ),
                                 child: Text(
                                   "${DateFormat('d MMM').format(controller.startDate!)} '${DateFormat('yy').format(controller.startDate!)}",
@@ -157,7 +157,7 @@ class PreviousExpensesScreen extends StatelessWidget {
                                   isStart: false,
                                 ),
                                 style: ElevatedButton.styleFrom(
-                                  primary: moneyBoyPurple,
+                                  backgroundColor: moneyBoyPurple,
                                 ),
                                 child: Text(
                                   "${DateFormat('d MMM').format(controller.endDate!)} '${DateFormat('yy').format(controller.endDate!)}",
@@ -182,7 +182,7 @@ class PreviousExpensesScreen extends StatelessWidget {
                           controller.searchExpenseRecords();
                         },
                         style: ElevatedButton.styleFrom(
-                          primary: moneyBoyPurple,
+                          backgroundColor: moneyBoyPurple,
                         ),
                         child: Text(
                           "Get Records",
@@ -296,8 +296,8 @@ class PreviousExpensesScreen extends StatelessWidget {
                                           IconButton(
                                             onPressed: () {
                                               Get.defaultDialog(
-                                                backgroundColor:
-                                                    _theme.backgroundColor,
+                                                backgroundColor: _theme
+                                                    .colorScheme.background,
                                                 title: "Expense Details",
                                                 titleStyle:
                                                     GoogleFonts.montserrat(
@@ -309,7 +309,8 @@ class PreviousExpensesScreen extends StatelessWidget {
                                                 ),
                                                 content: Container(
                                                   height: 350.0,
-                                                  color: _theme.backgroundColor,
+                                                  color: _theme
+                                                      .colorScheme.background,
                                                   child: Column(
                                                     crossAxisAlignment:
                                                         CrossAxisAlignment

@@ -67,7 +67,7 @@ class PreviousExpensesController extends GetxController {
     DatePicker.showDatePicker(
       context,
       theme: DatePickerTheme(
-        backgroundColor: theme.backgroundColor,
+        backgroundColor: theme.colorScheme.background,
         cancelStyle: TextStyle(
           color: theme.colorScheme.secondary.withOpacity(0.6),
           fontSize: 16,

@@ -120,7 +120,7 @@ class RepaymentSingleScreen extends StatelessWidget {
                                           0.6,
                                       child: LinearProgressIndicator(
                                         backgroundColor: moneyBoyPurple,
-                                        color: _theme.backgroundColor,
+                                        color: _theme.colorScheme.background,
                                       ),
                                     )
                                   : Text(
@@ -162,11 +162,11 @@ class RepaymentSingleScreen extends StatelessWidget {
             ),
             borderRadius: BorderRadius.circular(18.0),
           ),
-          backgroundColor: _theme.backgroundColor,
+          backgroundColor: _theme.colorScheme.background,
           elevation: 0.0,
           content: Container(
             decoration: BoxDecoration(
-              color: _theme.backgroundColor,
+              color: _theme.colorScheme.background,
               borderRadius: BorderRadius.circular(18.0),
             ),
             padding: const EdgeInsets.symmetric(
@@ -246,7 +246,7 @@ class RepaymentSingleScreen extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
         elevation: 0.0,
-        backgroundColor: _theme.backgroundColor,
+        backgroundColor: _theme.colorScheme.background,
         iconTheme: IconThemeData(color: _theme.colorScheme.secondary),
         title: Text(
           "You + ${repayAccount.friend.name}",
@@ -257,7 +257,7 @@ class RepaymentSingleScreen extends StatelessWidget {
           ),
         ),
       ),
-      backgroundColor: _theme.backgroundColor,
+      backgroundColor: _theme.colorScheme.background,
       body: Padding(
         padding: const EdgeInsets.only(bottom: 20.0),
         child: GetBuilder<RepaymentsSingleController>(
@@ -324,7 +324,7 @@ class RepaymentSingleScreen extends StatelessWidget {
                             ),
                             borderRadius: BorderRadius.circular(14.0),
                             color: controller.repayAccount.value.balance == 0
-                                ? _theme.backgroundColor
+                                ? _theme.colorScheme.background
                                 : controller.repayAccount.value.balance > 0
                                     ? Colors.green.withOpacity(0.25)
                                     : Colors.red.withOpacity(0.25),
@@ -372,7 +372,7 @@ class RepaymentSingleScreen extends StatelessWidget {
                           ),
                           child: Icon(
                             Icons.add,
-                            color: _theme.backgroundColor,
+                            color: _theme.colorScheme.background,
                             size: 32.0,
                           ),
                         ),
@@ -568,7 +568,7 @@ class RepaymentHistoryListTile extends StatelessWidget {
                       style: GoogleFonts.montserrat(
                         fontSize: 16,
                         fontWeight: FontWeight.w500,
-                        color: _theme.backgroundColor,
+                        color: _theme.colorScheme.background,
                       ),
                     ),
                   ),

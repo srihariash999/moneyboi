@@ -54,7 +54,7 @@ class _NewExpenseCategoryScreenState extends State<NewExpenseCategoryScreen> {
     return Scaffold(
       appBar: AppBar(
         elevation: 0.0,
-        backgroundColor: _theme.backgroundColor,
+        backgroundColor: _theme.colorScheme.background,
         iconTheme: IconThemeData(color: _theme.colorScheme.secondary),
         title: Text(
           widget.isUpdate ? 'EDIT EXPENSE RECORD' : 'ADD EXPENSES',
@@ -65,7 +65,7 @@ class _NewExpenseCategoryScreenState extends State<NewExpenseCategoryScreen> {
           ),
         ),
       ),
-      backgroundColor: _theme.backgroundColor,
+      backgroundColor: _theme.colorScheme.background,
       body: SafeArea(
         child: CustomScrollView(
           slivers: [
@@ -92,7 +92,7 @@ class _NewExpenseCategoryScreenState extends State<NewExpenseCategoryScreen> {
                       borderRadius: BorderRadius.circular(6.0),
                       color: _isSelected
                           ? moneyBoyPurple.withOpacity(0.8)
-                          : _theme.backgroundColor,
+                          : _theme.colorScheme.background,
                     ),
                     alignment: Alignment.center,
                     child: Column(
@@ -105,7 +105,7 @@ class _NewExpenseCategoryScreenState extends State<NewExpenseCategoryScreen> {
                           decoration: BoxDecoration(
                             shape: BoxShape.circle,
                             color: _isSelected
-                                ? _theme.backgroundColor
+                                ? _theme.colorScheme.background
                                 : Colors.grey.withOpacity(0.3),
                           ),
                           child: CachedNetworkImage(
@@ -122,7 +122,7 @@ class _NewExpenseCategoryScreenState extends State<NewExpenseCategoryScreen> {
                               fontSize: 12.0,
                               fontWeight: FontWeight.w500,
                               color: _isSelected
-                                  ? _theme.backgroundColor
+                                  ? _theme.colorScheme.background
                                   : _theme.colorScheme.secondary
                                       .withOpacity(0.7),
                             ),
@@ -162,7 +162,7 @@ class _NewExpenseCategoryScreenState extends State<NewExpenseCategoryScreen> {
                           DatePicker.showDatePicker(
                             context,
                             theme: DatePickerTheme(
-                              backgroundColor: _theme.backgroundColor,
+                              backgroundColor: _theme.colorScheme.background,
                               cancelStyle: TextStyle(
                                 color: _theme.colorScheme.secondary
                                     .withOpacity(0.6),
