@@ -1,3 +1,4 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:expandable/expandable.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -59,8 +60,8 @@ class TimewiseExpensesList extends StatelessWidget {
                 child: ExpandablePanel(
                   header: Row(
                     children: [
-                      Image.asset(
-                        _eri.category.categoryImage,
+                      CachedNetworkImage(
+                        imageUrl: _eri.category.categoryImage,
                         height: 45.0,
                         width: 45.0,
                         fit: BoxFit.cover,

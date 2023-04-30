@@ -1,6 +1,8 @@
 import 'package:bot_toast/bot_toast.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:get/get.dart';
+import 'package:moneyboi/Constants/enums.dart';
+import 'package:moneyboi/Constants/urls.dart';
 // import 'package:hive/hive.dart';
 import 'package:moneyboi/Data%20Models/api_response_model.dart';
 import 'package:moneyboi/Data%20Models/repayment_detail.dart';
@@ -40,7 +42,14 @@ class RepaymentsSingleController extends GetxController {
     update();
 
     final ApiResponseModel _repayTransactionsResult =
-        await _apiService.getRepaymentTransactions(id);
+        await _apiService.networkCall(
+      networkCallMethod: NetworkCallMethod.GET,
+      endPointUrl: getRepaymentTransactionsEndPoint,
+      authenticated: true,
+      queryParameters: {
+        'id': id,
+      },
+    );
     if (_repayTransactionsResult.statusCode == 200 &&
         _repayTransactionsResult.responseJson != null) {
       for (final i
@@ -71,8 +80,18 @@ class RepaymentsSingleController extends GetxController {
   ) async {
     isSubmitLoading = true;
     update();
-    final ApiResponseModel _result =
-        await _apiService.newRepaymentTransaction(id, amount, note);
+
+    final ApiResponseModel _result = await _apiService.networkCall(
+      networkCallMethod: NetworkCallMethod.POST,
+      endPointUrl: newRepaymentTransactionEndPoint,
+      authenticated: true,
+      bodyParameters: {
+        'id': id,
+        'amount': amount,
+        'note': note,
+      },
+    );
+
     if (_result.statusCode == 200 && _result.responseJson != null) {
       final RepaymentTransaction _newTransaction =
           RepaymentTransaction.fromJson(
@@ -117,8 +136,14 @@ class RepaymentsSingleController extends GetxController {
   }) async {
     isLoading = true;
     update();
-    final ApiResponseModel _result =
-        await _apiService.consentRepaymentTransaction(id);
+    final ApiResponseModel _result = await _apiService.networkCall(
+      networkCallMethod: NetworkCallMethod.POST,
+      endPointUrl: repaymentTransactionConsentEndPoint,
+      authenticated: true,
+      bodyParameters: {
+        'id': id,
+      },
+    );
     if (_result.statusCode == 200) {
       for (final i in _repayTransactions) {
         if (i.id == id) {

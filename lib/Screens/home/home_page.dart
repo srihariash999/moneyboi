@@ -49,7 +49,7 @@ class _HomePageState extends State<HomePage> {
                         left: 12.0,
                         right: 12.0,
                       ),
-                      child: GestureDetector(
+                      child: InkWell(
                         onTap: () {
                           Navigator.push(
                             context,

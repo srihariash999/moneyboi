@@ -2,6 +2,8 @@ import 'package:bot_toast/bot_toast.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:moneyboi/Constants/enums.dart';
+import 'package:moneyboi/Constants/urls.dart';
 import 'package:moneyboi/Data%20Models/api_response_model.dart';
 import 'package:moneyboi/Data%20Models/friend.dart';
 import 'package:moneyboi/Network/network_service.dart';
@@ -43,7 +45,13 @@ class ProfileController extends GetxController {
     isFriendsLoading.value = true;
     update();
     // await Future.delayed(Duration(seconds: 4));
-    _apiService.getUserProfile().then((ApiResponseModel _profRes) {
+    _apiService
+        .networkCall(
+      networkCallMethod: NetworkCallMethod.GET,
+      endPointUrl: profileGetEndPoint,
+      authenticated: true,
+    )
+        .then((ApiResponseModel _profRes) {
       if (_profRes.statusCode == 200) {
         final _res = _profRes.responseJson!.data as Map;
         isProfileLoading.value = false;
@@ -57,7 +65,14 @@ class ProfileController extends GetxController {
       }
     });
 
-    _apiService.getFriendsList().then((_friendRes) {
+    /// API function to get friends List of the user. (Only accepted ones)
+    _apiService
+        .networkCall(
+      networkCallMethod: NetworkCallMethod.GET,
+      endPointUrl: getFriendsListEndPoint,
+      authenticated: true,
+    )
+        .then((_friendRes) {
       if (_friendRes.statusCode == 200) {
         final _res = _friendRes.responseJson!.data as List;
         // debugPrint(" friends list : $_res");
@@ -72,7 +87,14 @@ class ProfileController extends GetxController {
       update();
     });
 
-    _apiService.getPendingActionFriendsList().then((_res) {
+    /// API function to get pending action friends List of the user. (pending, requested)
+    _apiService
+        .networkCall(
+      networkCallMethod: NetworkCallMethod.GET,
+      endPointUrl: getPendingActionsFriendsListEndPoint,
+      authenticated: true,
+    )
+        .then((_res) {
       if (_res.statusCode == 200) {
         final data = _res.responseJson!.data as Map<String, dynamic>;
         // debugPrint(" pending friends list : $_res");
@@ -96,7 +118,16 @@ class ProfileController extends GetxController {
   Future<void> acceptRequest(String id) async {
     isFriendsLoading.value = false;
     update();
-    final _res = await _apiService.acceptFriendRequest(friendRequestId: id);
+
+    /// API function to accept a pending friend request.
+    final _res = await _apiService.networkCall(
+      networkCallMethod: NetworkCallMethod.POST,
+      endPointUrl: acceptFriendRequestEndPoint,
+      authenticated: true,
+      bodyParameters: {
+        'id': id,
+      },
+    );
     // debugPrint(" res : ${_res.responseJson}");
     if (_res.statusCode == 200) {
       int _pendingReqIndex = -1;
@@ -125,7 +156,16 @@ class ProfileController extends GetxController {
   Future<void> sendRequest({required String email}) async {
     isFriendsLoading.value = false;
     update();
-    final _res = await _apiService.sendFriendRequest(friendEmail: email);
+
+    /// API function to send a friend request.
+    final _res = await _apiService.networkCall(
+      networkCallMethod: NetworkCallMethod.POST,
+      endPointUrl: sendFriendRequestEndPoint,
+      authenticated: true,
+      bodyParameters: {
+        'email': email,
+      },
+    );
     // debugPrint(" res : ${_res.responseJson}");
     if (_res.statusCode == 200 && _res.responseJson != null) {
       _requested.add(
@@ -158,7 +198,13 @@ class ProfileController extends GetxController {
   }) async {
     isFriendsLoading.value = false;
     update();
-    final _res = await _apiService.deleteFriendRequest(friendRequestId: id);
+
+    /// API function to delete a friend request.
+    final _res = await _apiService.networkCall(
+      networkCallMethod: NetworkCallMethod.DELETE,
+      endPointUrl: '$deleteFriendRequestEndPoint/$id',
+      authenticated: true,
+    );
     // debugPrint(" res : ${_res.responseJson}");
     if (_res.statusCode == 204) {
       int _index = -1;

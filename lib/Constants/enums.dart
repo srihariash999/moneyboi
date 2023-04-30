@@ -29,3 +29,6 @@ int toggleLabelEnumToNumber(ToggleLabelEnum en) {
       return 0;
   }
 }
+
+// ignore: constant_identifier_names
+enum NetworkCallMethod { GET, POST, PUT, DELETE }

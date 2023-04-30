@@ -1,6 +1,8 @@
 import 'package:bot_toast/bot_toast.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:get/get.dart';
+import 'package:moneyboi/Constants/enums.dart';
+import 'package:moneyboi/Constants/urls.dart';
 // import 'package:hive/hive.dart';
 import 'package:moneyboi/Data%20Models/api_response_model.dart';
 import 'package:moneyboi/Data%20Models/repayment_detail.dart';
@@ -27,8 +29,11 @@ class RepaymentsMainController extends GetxController {
     isLoading = true;
     update();
 
-    final ApiResponseModel _repayAccsResp =
-        await _apiService.getRepaymentAccounts();
+    final ApiResponseModel _repayAccsResp = await _apiService.networkCall(
+      networkCallMethod: NetworkCallMethod.GET,
+      endPointUrl: getRepaymentAccountsEndPoint,
+      authenticated: true,
+    );
     if (_repayAccsResp.statusCode == 200 &&
         _repayAccsResp.responseJson != null) {
       _repaymentAccounts.clear();
@@ -55,8 +60,14 @@ class RepaymentsMainController extends GetxController {
     isLoading = true;
     update();
 
-    final ApiResponseModel _result =
-        await _apiService.addRepaymentAccount(email);
+    final ApiResponseModel _result = await _apiService.networkCall(
+      networkCallMethod: NetworkCallMethod.POST,
+      endPointUrl: getRepaymentAccountsEndPoint,
+      authenticated: true,
+      bodyParameters: {
+        'friend': email,
+      },
+    );
     if (_result.statusCode == 200 && _result.responseJson != null) {
       _getRepaymentAccs();
     } else {
