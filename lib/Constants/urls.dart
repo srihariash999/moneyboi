@@ -1,5 +1,3 @@
-// const String baseUrl = "https://zealous-gold-lab-coat.cyclic.app/api";
-
 /*
 POST 
 example body:
