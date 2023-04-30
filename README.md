@@ -7,12 +7,13 @@
 
 <p align="center">
   MoneyBoi is an expense tracker app made with Flutter.
-</p>  
+</p>
 
 ##
+
 <p>
   Moneyboi uses a backend made using Node js and Express with MongoDb as database solution. The code for it can be found <a href="https://github.com/srihariash999/moneyboi_backend">here.</a>
- </p> 
+ </p>
 
 ## Tech Stack:
 
@@ -39,17 +40,19 @@ This project is still in development stage. So, feature requests are welcome. Fe
 
 3. Open the code in your favorite code editor.
 
-4. Install the dependencies using the following command:
+4. Create a file `secrets.dart` and place it in `lib/Constants`. Create a string variable inside this file with name `baseUrl` containing the url of the moneyboi backend.
 
-```
-$ flutter pub get
-```
+5. Install the dependencies using the following command:
 
-5. Run the app in debug mode using the following command:
+    ```
+    $ flutter pub get
+    ```
 
-```
-$ flutter run
-```
+6. Run the app in debug mode using the following command:
+
+    ```
+    $ flutter run
+    ```
 
 ## Interested in contributing ?
 
