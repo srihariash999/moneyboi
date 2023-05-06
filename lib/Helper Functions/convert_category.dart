@@ -11,9 +11,10 @@ ExpenseCategory getCategoryFromString(String catString) {
   }
   print(" category requested for : $catString which is unkown");
   return ExpenseCategory(
-      name: "Unkown Category",
-      categoryImage:
-          "https://firebasestorage.googleapis.com/v0/b/moneyboi-3c667.appspot.com/o/warning.png?alt=media");
+    name: "Unkown Category",
+    categoryImage:
+        "https://firebasestorage.googleapis.com/v0/b/moneyboi-3c667.appspot.com/o/warning.png?alt=media",
+  );
 
   // if (catString == 'Alcohol') {
   //   return catAlcohol;
