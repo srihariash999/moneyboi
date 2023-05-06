@@ -41,7 +41,7 @@ android {
     defaultConfig {
         applicationId "com.zepplaud.moneyboi"
         minSdkVersion 19
-        targetSdkVersion 30
+        targetSdkVersion 33
         versionCode flutterVersionCode.toInteger()
         versionName flutterVersionName
     }

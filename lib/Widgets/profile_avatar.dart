@@ -1,4 +1,3 @@
-import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 
 class ProfileAvatar extends StatelessWidget {
@@ -33,8 +32,8 @@ class ProfileAvatar extends StatelessWidget {
               )
             : ClipRRect(
                 borderRadius: BorderRadius.circular(radius ?? 35.0),
-                child: CachedNetworkImage(
-                  imageUrl: profileImage!,
+                child: Image.network(
+                  profileImage!,
                   fit: BoxFit.cover,
                 ),
               ),

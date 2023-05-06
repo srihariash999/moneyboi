@@ -1,4 +1,3 @@
-import 'package:cached_network_image/cached_network_image.dart';
 import 'package:expandable/expandable.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -220,8 +219,8 @@ class PreviousExpensesScreen extends StatelessWidget {
                                   child: ExpandablePanel(
                                     header: Row(
                                       children: [
-                                        CachedNetworkImage(
-                                          imageUrl: _eri.category.categoryImage,
+                                        Image.network(
+                                          _eri.category.categoryImage,
                                           height: 45.0,
                                           width: 45.0,
                                           fit: BoxFit.cover,

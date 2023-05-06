@@ -1,4 +1,3 @@
-import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_datetime_picker/flutter_datetime_picker.dart';
 import 'package:get/get.dart';
@@ -108,9 +107,7 @@ class _NewExpenseCategoryScreenState extends State<NewExpenseCategoryScreen> {
                                 ? _theme.colorScheme.background
                                 : Colors.grey.withOpacity(0.3),
                           ),
-                          child: CachedNetworkImage(
-                            imageUrl: _ec.categoryImage,
-                          ),
+                          child: Image.network(_ec.categoryImage),
                         ),
                         Padding(
                           padding: _isSelected
