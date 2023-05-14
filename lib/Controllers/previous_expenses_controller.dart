@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_datetime_picker/flutter_datetime_picker.dart';
+import 'package:flutter_datetime_picker/flutter_datetime_picker.dart' as dp;
 import 'package:get/get.dart';
 import 'package:moneyboi/Constants/enums.dart';
 import 'package:moneyboi/Constants/urls.dart';
@@ -64,9 +64,9 @@ class PreviousExpensesController extends GetxController {
     required BuildContext context,
     required ThemeData theme,
   }) {
-    DatePicker.showDatePicker(
+    dp.DatePicker.showDatePicker(
       context,
-      theme: DatePickerTheme(
+      theme: dp.DatePickerTheme(
         backgroundColor: theme.colorScheme.background,
         cancelStyle: TextStyle(
           color: theme.colorScheme.secondary.withOpacity(0.6),

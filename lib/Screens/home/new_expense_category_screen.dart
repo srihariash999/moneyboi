@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_datetime_picker/flutter_datetime_picker.dart';
+import 'package:flutter_datetime_picker/flutter_datetime_picker.dart' as dp;
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:intl/intl.dart';
@@ -156,9 +156,9 @@ class _NewExpenseCategoryScreenState extends State<NewExpenseCategoryScreen> {
                       ),
                       GestureDetector(
                         onTap: () {
-                          DatePicker.showDatePicker(
+                          dp.DatePicker.showDatePicker(
                             context,
-                            theme: DatePickerTheme(
+                            theme: dp.DatePickerTheme(
                               backgroundColor: _theme.colorScheme.background,
                               cancelStyle: TextStyle(
                                 color: _theme.colorScheme.secondary

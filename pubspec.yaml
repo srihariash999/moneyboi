@@ -6,7 +6,7 @@ publish_to: "none"
 version: 3.0.0+4
 
 environment:
-  sdk: ">=2.12.0 <3.0.0"
+  sdk: ">=3.0.0 <4.0.0"
 
 dependencies:
   bot_toast: ^4.0.1
@@ -14,14 +14,14 @@ dependencies:
   cupertino_icons: ^1.0.2
   dio: ^5.1.1
   expandable: ^5.0.1
-  firebase_core: ^2.4.1
-  firebase_messaging: ^14.2.1
+  firebase_core: ^2.12.0
+  firebase_messaging: ^14.6.0
   fl_chart: ^0.62.0
   flutter:
     sdk: flutter
   flutter_datetime_picker:
     git:
-      url: https://github.com/Realank/flutter_datetime_picker.git
+      url: https://github.com/HasanAlqaisi/flutter_datetime_picker.git
   get: ^4.6.1
   google_fonts: ^4.0.1
   hive: ^2.2.3
